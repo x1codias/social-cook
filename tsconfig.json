@@ -1,0 +1,7 @@
+{
+  "include": ["backend/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
