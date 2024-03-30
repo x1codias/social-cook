@@ -1,9 +1,24 @@
-import { Secret, sign } from 'jsonwebtoken'
+import { Secret, sign, verify } from 'jsonwebtoken'
 import { compare, hash, genSalt } from 'bcryptjs'
 import User, { UserType } from '../models/user.model'
 import { Model, Op } from 'sequelize'
-import { Response, Request } from 'express'
+import { Response, Request, NextFunction } from 'express'
 import { Errors, errorHandler } from './error.controller'
+
+const verifyToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.headers.authorization
+
+  if (!token) errorHandler(401, Errors.tokenMissing, res)
+
+  verify(token, process.env.JWT_KEY, err => {
+    if (err) errorHandler(401, Errors.tokenInvalid, res)
+    next()
+  })
+}
 
 const generateToken = (user: Model<UserType, UserType>) => {
   const token = sign(
@@ -109,4 +124,4 @@ const logout = async (req: Request, res: Response) => {
   })
 }
 
-export { register, login, logout }
+export { verifyToken, register, login, logout }

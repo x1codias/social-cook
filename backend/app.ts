@@ -1,4 +1,8 @@
-import express, { Request, Response } from 'express'
+import express, {
+  NextFunction,
+  Request,
+  Response,
+} from 'express'
 import dotenv from 'dotenv'
 import { Sequelize } from 'sequelize'
 import authRoutes from './routes/auth.routes'
@@ -37,21 +41,20 @@ sequelize
 // Middleware
 app.use(express.json())
 
-// Protection middleware
-app.use((req, res, next) => {
-  const token = req.headers.authorization
-  if (token !== 'secret-token') {
-    return res.status(401).json({ message: 'Unauthorized' })
-  }
-  next()
-})
-
 app.use('', authRoutes)
 
-app.use((error: Error, req: Request, res: Response) => {
-  console.error('Global error handler:', error)
-  errorHandler(500, Errors.serverError, res) // Handle internal server error
-})
+app.use(
+  (
+    error: Error,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    console.error('Global error handler:', error)
+    errorHandler(500, Errors.serverError, res) // Handle internal server error
+    next()
+  }
+)
 
 // Start the server
 app.listen(PORT, () => {

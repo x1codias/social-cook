@@ -5,6 +5,8 @@ export enum Errors {
   userExists = 'userAlreadyExists',
   userNotFound = 'userNotFound',
   serverError = 'serverError',
+  tokenMissing = 'missingToken',
+  tokenInvalid = 'invalidToken',
 }
 
 export const errorHandler = (
