@@ -1,47 +1,24 @@
-import { AuthState } from '../context/auth.context'
-import { Account } from '../types/Account'
-import { AuthAction } from './types/reducer.types'
+import { LOGIN, LOGOUT } from '../actions/types';
 
-// Define action types
-export const LOGIN = 'LOGIN'
-export const LOGOUT = 'LOGOUT'
-export const REGISTER = 'REGISTER'
-
-// Define action creators
-export const login = (userData: Partial<Account>) => ({
-  type: LOGIN,
-  payload: userData,
-})
-
-export const logout = () => ({
-  type: LOGOUT,
-})
-
-// Define initial state
-export const initialState: AuthState = {
-  isAuthenticated: false,
+const initialState = {
   user: null,
-}
+};
 
-// Define reducer function
-const authReducer = (state = initialState, action: AuthAction): AuthState => {
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case REGISTER:
     case LOGIN:
       return {
         ...state,
-        isAuthenticated: true,
         user: action.payload,
-      }
+      };
     case LOGOUT:
       return {
         ...state,
-        isAuthenticated: false,
         user: null,
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default authReducer
+export default authReducer;

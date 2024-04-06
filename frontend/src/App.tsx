@@ -1,32 +1,22 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Login from './pages/auth/login/login';
+import Register from './pages/auth/register/register';
+import { ConnectedProps, connect } from 'react-redux';
 
-const App = (): JSX.Element => {
-  // const [data, setData] = useState<string | null>(null)
-  // const url: string = 'http://localhost:3001'
+type AppProps = {} & ConnectedProps<typeof connector>;
 
-  // useEffect(() => {
-  //   fetch(`${url}/api`)
-  //     .then(res => res.json())
-  //     .then((data: Message) => setData(data.message))
-  // }, [])
-
+const App: React.FC<AppProps> = (props): JSX.Element => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card"></div>
-    </>
-  )
-}
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
+  );
+};
 
-export default App
+const mapStateToProps = state => ({});
+
+const connector = connect(mapStateToProps, {});
+
+export default connector(App);

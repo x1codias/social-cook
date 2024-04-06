@@ -1,23 +1,23 @@
-import { Account } from '../../types/Account'
-import { LOGIN, LOGOUT, REGISTER } from '../auth.reducer'
+import { Account } from '../../types/Account';
+import { LOGIN, LOGOUT, REGISTER } from '../auth.reducer';
 
 export type LoginAction = {
-  type: typeof LOGIN
-  payload: Partial<Account>
-}
+  type: typeof LOGIN;
+  payload: Partial<Account>;
+};
 
 export type RegisterAction = {
-  type: typeof REGISTER
-  payload: Partial<Account>
-}
+  type: typeof REGISTER;
+  payload: Partial<Account>;
+};
 
 export type LogoutAction = {
-  type: typeof LOGOUT
-}
+  type: typeof LOGOUT;
+};
 
-export type AuthAction = LoginAction | RegisterAction | LogoutAction
+export type AuthAction = LoginAction | RegisterAction | LogoutAction;
 
 export type AuthReducerType = {
-  state: any
-  action: any
-}
+  type: any;
+  payload: any;
+};

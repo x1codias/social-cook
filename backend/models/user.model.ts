@@ -1,15 +1,15 @@
-import { DataTypes, Model } from 'sequelize'
-import { sequelize } from '../index'
+import { DataTypes, Model } from 'sequelize';
+import { sequelize } from '../app';
 
 export type UserType = {
-  id?: number
-  username: string
-  email: string
-  password: string
-  biography?: string
-  photo?: string
-  token?: string | null
-}
+  id?: number;
+  username: string;
+  email: string;
+  password: string;
+  biography?: string;
+  photo?: string;
+  token?: string | null;
+};
 
 const User = sequelize.define<Model<UserType>>('User', {
   id: {
@@ -43,6 +43,6 @@ const User = sequelize.define<Model<UserType>>('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-})
+});
 
-export default User
+export default User;
