@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../app';
+import sequelize from '../sequelize';
 
 export type UserType = {
   id?: number;

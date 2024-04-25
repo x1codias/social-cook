@@ -4,31 +4,18 @@ import express, {
   Response,
 } from 'express';
 import dotenv from 'dotenv';
-import { Sequelize } from 'sequelize';
 import authRoutes from './routes/auth.routes';
 import {
   Errors,
   errorHandler,
 } from './controllers/error.controller';
+import sequelize from './sequelize';
 
 dotenv.config();
 
 const app = express();
-const { PORT, DB_USERNAME, DB_NAME, DB_PASSWORD } =
+const { PORT } =
   process.env;
-
-// Connect to MySQL database from the server
-export const sequelize = new Sequelize(
-  DB_NAME,
-  DB_USERNAME,
-  DB_PASSWORD,
-  {
-    dialect: 'mysql',
-    host: 'localhost',
-  }
-);
-
-console.log(sequelize);
 
 // Sync the model with the database
 sequelize
@@ -40,19 +27,8 @@ sequelize
     console.error('Error while synchronizing tables', err);
   });
 
-// Check if Sequelize has been initialized middleware
-const sequelizeInitialized = (req, res, next) => {
-  if (sequelize) {
-    next(); // Proceed to the next middleware
-  } else {
-    // Handle the error or send an appropriate response
-    errorHandler(500, Errors.serverError, res); // For example
-  }
-};
-
 // Middleware
 app.use(express.json());
-app.use(sequelizeInitialized);
 
 const apiRouter = express.Router();
 apiRouter.use('/', authRoutes);
