@@ -6,9 +6,12 @@ import {
 } from '@mui/material';
 
 type NewPalleteOptions = {
-  default: Partial<PaletteColorOptions> | TypeText;
-  background: Partial<TypeBackground> | TypeText;
-  text: Partial<TypeText>;
+  default: Partial<PaletteColorOptions> & {
+    primary: string;
+    secondary: string;
+  };
+  customBackground: Partial<TypeBackground> & { input: string };
+  customText: { button: string } & Partial<TypeText>;
   season?: {
     summer: Partial<PaletteColorOptions> | TypeText;
     autumn: Partial<PaletteColorOptions> | TypeText;
@@ -36,20 +39,22 @@ declare module '@mui/material/styles' {
 const theme = createTheme({
   palette: {
     default: {
-      primary: '',
+      primary: '#FE8D51',
       secondary: '',
       light: '',
       dark: '',
       contrastText: '',
     },
-    background: {
+    customBackground: {
       default: '#faf3f0',
-      paper: '',
+      paper: '#E8E8E8',
+      input: '#E8E8E8',
     },
-    text: {
-      primary: '#4a4a4a',
-      secondary: '',
+    customText: {
+      primary: '#5B5C7C',
+      secondary: '#BFBFBF',
       disabled: '',
+      button: '#FFFFFF',
     },
     season: {
       summer: {

@@ -7,7 +7,7 @@ import { BsFacebook } from 'react-icons/bs';
 import { ConnectedProps, connect } from 'react-redux';
 import { login } from '../../../actions/auth.actions';
 
-type LoginProps = {} & ConnectedProps<typeof connector>;
+type LoginProps = ConnectedProps<typeof connector>;
 
 const Login: React.FC<LoginProps> = (props): JSX.Element => {
   const { login } = props;
@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
     <CardContainer>
       <div
         style={{
-          padding: '12px 36px',
+          padding: '22px 36px',
           maxWidth: '600px',
           display: 'flex',
           flexDirection: 'column',
@@ -56,18 +56,14 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
           style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
         >
           <InputField
-            variant={'outlined'}
-            label={'Username or Email'}
-            padding={'0 12px'}
+            placeholder={'Username or Email'}
             value={formData.identifier}
             onChange={e =>
               setFormData({ ...formData, identifier: e.target.value })
             }
           />
           <InputField
-            variant={'outlined'}
-            label={'Password'}
-            padding={'0 6px'}
+            placeholder={'Password'}
             type={'password'}
             value={formData.password}
             onChange={e =>
@@ -84,12 +80,17 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
             alignItems: 'center',
             gap: '5px',
             fontSize: '12px',
+            marginBottom: '20px',
           }}
         >
           <p>{"Don't have an account yet?"}</p>
           <ButtonText>{'Sign Up'}</ButtonText>
         </div>
-        <Divider style={{ width: '100%', fontSize: '16px' }}>{'or'}</Divider>
+        <Divider
+          style={{ width: '100%', fontSize: '16px', marginBottom: '20px' }}
+        >
+          {'Or'}
+        </Divider>
         <div
           style={{
             display: 'flex',
@@ -99,7 +100,9 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
             gap: '5px',
           }}
         >
-          <p style={{ fontSize: '12px' }}>{'Sign In with:'}</p>
+          <p style={{ fontSize: '12px', marginBottom: '10px' }}>
+            {'Sign In with:'}
+          </p>
           <div>
             <ButtonIcon>
               <FcGoogle
@@ -127,10 +130,7 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
           </div>
         </div>
       </div>
-      <img
-        src={foodImage}
-        style={{ display: 'block', maxWidth: '350px', height: '450px' }}
-      />
+      <img src={foodImage} style={{ display: 'block', maxWidth: '400px' }} />
     </CardContainer>
   );
 };

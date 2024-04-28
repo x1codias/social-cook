@@ -1,15 +1,6 @@
-import {
-  IconButton,
-  InputBaseProps,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { IconButton, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
-
-interface CustomTextFieldProps extends InputBaseProps {
-  padding?: string;
-}
 
 const styles = {
   CardContainer: styled('div')({
@@ -22,36 +13,40 @@ const styles = {
       '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
   }),
   CardTitle: styled(Typography)({
-    color: theme.palette.text?.primary,
+    color: theme.palette.customText?.primary,
     fontSize: '24px',
     fontFamily: 'Comfortaa',
+    marginBottom: '20px',
   }),
-  InputField: styled(TextField)(({ padding, value }: CustomTextFieldProps) => ({
-    width: '300px',
+  InputField: styled(TextField)({
     '& .MuiInputBase-root': {
-      padding: '4px 8px',
-      borderRadius: '30px',
+      fontWeight: 500,
+      width: '400px',
+      padding: '6px 10px',
+      borderRadius: '6px',
+      fontSize: '16px',
+      height: '50px',
+      backgroundColor: theme.palette.customBackground?.input,
     },
-    '& .MuiInputLabel-root': {
-      fontSize: '14px',
+    '& > input': {
+      color: theme.palette.customText?.secondary,
+      padding: 0,
     },
-    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline legend': {
-      padding: value && padding ? padding : 0,
-    },
-    '& .MuiOutlinedInput-root:focus-within .MuiOutlinedInput-notchedOutline legend':
-      {
-        padding: padding || 0,
+    '&.Mui-focused': {
+      '& .MuiOutlinedInput-notchedOutline': {
+        border: `2px solid ${theme.palette.default.primary}`,
       },
-  })),
+    },
+  }),
   ButtonContained: styled('div')({
-    background: 'transparent',
+    background: theme.palette.default.primary,
     cursor: 'pointer',
-    border: '1px solid',
-    padding: '8px 16px',
+    padding: '10px 24px',
     fontSize: '16px',
     borderRadius: '20px',
     width: 'fit-content',
     alignSelf: 'center',
+    color: theme.palette.customText?.button,
   }),
   ButtonText: styled('div')({
     cursor: 'pointer',
