@@ -9,6 +9,8 @@ type NewPalleteOptions = {
   default: Partial<PaletteColorOptions> & {
     primary: string;
     secondary: string;
+    light: string;
+    dark: string;
   };
   customBackground: Partial<TypeBackground> & { input: string };
   customText: { button: string } & Partial<TypeText>;
@@ -41,9 +43,8 @@ const theme = createTheme({
     default: {
       primary: '#FE8D51',
       secondary: '',
-      light: '',
-      dark: '',
-      contrastText: '',
+      light: '#FFE0D0',
+      dark: '#CE4801',
     },
     customBackground: {
       default: '#faf3f0',

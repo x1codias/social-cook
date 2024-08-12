@@ -33,7 +33,7 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
       | React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.preventDefault();
-    login(formData);
+    await login(formData);
   };
 
   return (
@@ -135,7 +135,7 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
   );
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = () => ({});
 
 const connector = connect(mapStateToProps, { login });
 

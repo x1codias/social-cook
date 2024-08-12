@@ -32,9 +32,12 @@ const styles = {
       color: theme.palette.customText?.secondary,
       padding: 0,
     },
-    '&.Mui-focused': {
-      '& .MuiOutlinedInput-notchedOutline': {
+    '& .MuiOutlinedInput-root': {
+      '&.Mui-focused fieldset': {
         border: `2px solid ${theme.palette.default.primary}`,
+      },
+      '&:hover fieldset': {
+        borderColor: `2px solid ${theme.palette.default.light}`,
       },
     },
   }),

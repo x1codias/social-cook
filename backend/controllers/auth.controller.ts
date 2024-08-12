@@ -1,9 +1,11 @@
 import { Secret, sign, verify } from 'jsonwebtoken';
 import { compare, hash, genSalt } from 'bcryptjs';
 import User, { UserType } from '../models/user.model';
+import Token from '../models/token.model';
 import { Model, Op } from 'sequelize';
 import { Response, Request, NextFunction } from 'express';
 import { Errors, errorHandler } from './error.controller';
+import moment from 'moment';
 
 const verifyToken = (
   req: Request,
@@ -20,14 +22,19 @@ const verifyToken = (
   });
 };
 
-const generateToken = (user: Model<UserType, UserType>) => {
+const generateToken = async (
+  user: Model<UserType, UserType>
+) => {
   const token = sign(
     { userId: user.get().id },
     process.env.JWT_KEY as Secret
   );
 
-  user.set('token', token);
-  return token;
+  const newToken = await Token.create({
+    userId: user.get().id,
+    experationDate: moment().add(7, 'days').toDate(),
+    token,
+  });
 };
 
 const register = async (req: Request, res: Response) => {
@@ -115,7 +122,11 @@ const logout = async (req: Request, res: Response) => {
     return errorHandler(401, Errors.userNotFound, res);
   }
 
-  user.set('token', null);
+  await Token.destroy({
+    where: {
+      userId: user.get().id,
+    },
+  });
   await user.save();
 
   res.json({
