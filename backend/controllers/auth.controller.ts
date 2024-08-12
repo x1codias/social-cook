@@ -12,12 +12,24 @@ const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-  if (!token) errorHandler(401, Errors.tokenMissing, res);
+  // Check if the Authorization header is present
+  if (!authHeader) {
+    return errorHandler(401, Errors.tokenMissing, res);
+  }
+
+  // Extract the token from the header (assuming Bearer <token> format)
+  const token = authHeader.startsWith('Bearer ')
+    ? authHeader.substring(8)
+    : authHeader;
 
   verify(token, process.env.JWT_KEY, err => {
-    if (err) errorHandler(401, Errors.tokenInvalid, res);
+    if (err) {
+      return errorHandler(401, Errors.tokenInvalid, res);
+    }
+
+    // Proceed to the next middleware or route handler
     next();
   });
 };
@@ -30,7 +42,9 @@ const generateToken = async (
     process.env.JWT_KEY as Secret
   );
 
-  const newToken = await Token.create({
+  console.log(token);
+
+  await Token.create({
     userId: user.get().id,
     experationDate: moment().add(7, 'days').toDate(),
     token,
@@ -110,12 +124,12 @@ const login = async (req: Request, res: Response) => {
 };
 
 const logout = async (req: Request, res: Response) => {
-  const { id } = req.body as {
-    id: number;
+  const { userId } = req.body as {
+    userId: number;
   };
 
   const user = await User.findOne({
-    where: { id },
+    where: { id: userId },
   });
 
   if (!user) {

@@ -1,5 +1,4 @@
 import { DataTypes, Model } from 'sequelize';
-import Token from './user.model';
 import sequelize from '../sequelize';
 
 export type UserType = {
@@ -9,7 +8,6 @@ export type UserType = {
   password: string;
   biography?: string;
   photo?: string;
-  token?: string | null;
 };
 
 const User = sequelize.define<Model<UserType>>(
@@ -42,18 +40,11 @@ const User = sequelize.define<Model<UserType>>(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    token: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
   },
   {
     tableName: 'users',
     timestamps: true,
   }
 );
-
-// User.hasOne(Token, { foreignKey: 'token' });
 
 export default User;
