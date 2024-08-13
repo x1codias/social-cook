@@ -13,7 +13,7 @@ export const register =
   async (dispatch: Dispatch) => {
     try {
       const response = await axios.post(
-        process.env.BACKEND_URL + '/api/register',
+        import.meta.env.VITE_BACKEND_URL + '/register',
         registerData
       );
       dispatch({ type: REGISTER, payload: response.data });
@@ -26,10 +26,12 @@ export const login =
   (loginData: { identifier: string; password: string }) =>
   async (dispatch: Dispatch) => {
     try {
+      console.log(import.meta.env.VITE_BACKEND_URL);
       const response = await axios.post(
-        process.env.BACKEND_URL + '/api/login',
+        import.meta.env.VITE_BACKEND_URL + '/login',
         loginData
       );
+      console.log(response);
       dispatch({ type: LOGIN, payload: response.data });
     } catch (error) {
       console.log(error);
@@ -38,7 +40,11 @@ export const login =
 
 export const logout = () => async (dispatch: Dispatch) => {
   try {
-    const response = await axios.post(process.env.BACKEND_URL + '/api/logout');
+    const userId = JSON.parse(localStorage.getItem('user') as string).id;
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_URL + '/logout',
+      userId
+    );
     dispatch({ type: LOGOUT, payload: response.data });
   } catch (error) {
     console.log(error);

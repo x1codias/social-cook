@@ -1,20 +1,32 @@
-import { LOGIN, LOGOUT } from '../actions/types';
+import { LOGIN, LOGOUT, REGISTER } from '../actions/types';
+import { AuthActionTypes, AuthState } from './types/reducer.types';
 
-const initialState = {
+const initialState: AuthState = {
   user: null,
+  token: localStorage.getItem('token') || null,
 };
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (
+  state = initialState,
+  action: AuthActionTypes
+): AuthState => {
   switch (action.type) {
+    case REGISTER:
     case LOGIN:
+      // eslint-disable-next-line no-case-declarations
+      const { token, user } = action.payload;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       return {
-        ...state,
-        user: action.payload,
+        user,
+        token,
       };
     case LOGOUT:
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       return {
-        ...state,
         user: null,
+        token: null,
       };
     default:
       return state;

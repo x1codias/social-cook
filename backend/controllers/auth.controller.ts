@@ -42,13 +42,13 @@ const generateToken = async (
     process.env.JWT_KEY as Secret
   );
 
-  console.log(token);
-
-  await Token.create({
+  const newToken = await Token.create({
     userId: user.get().id,
     experationDate: moment().add(7, 'days').toDate(),
     token,
   });
+
+  return newToken;
 };
 
 const register = async (req: Request, res: Response) => {
@@ -77,11 +77,12 @@ const register = async (req: Request, res: Response) => {
     photo,
   });
 
-  generateToken(newUser);
+  const token = generateToken(newUser);
   newUser.save();
 
   res.json({
     user: newUser,
+    token,
     severity: 'success',
     message: 'welcomeChef',
   });
@@ -113,11 +114,12 @@ const login = async (req: Request, res: Response) => {
   if (!isValidPassword)
     return errorHandler(401, Errors.emailPassword, res);
 
-  generateToken(user);
+  const token = generateToken(user);
   await user.save();
 
   res.json({
     user,
+    token,
     severity: 'success',
     message: 'welcomeBackChef',
   });

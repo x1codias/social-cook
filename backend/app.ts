@@ -10,12 +10,12 @@ import {
   errorHandler,
 } from './controllers/error.controller';
 import sequelize from './sequelize';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
-const { PORT } =
-  process.env;
+const { PORT } = process.env;
 
 // Sync the model with the database
 sequelize
@@ -29,6 +29,7 @@ sequelize
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 const apiRouter = express.Router();
 apiRouter.use('/', authRoutes);
