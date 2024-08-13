@@ -1,7 +1,7 @@
 import { Secret, sign, verify } from 'jsonwebtoken';
 import { compare, hash, genSalt } from 'bcryptjs';
 import User, { UserType } from '../models/user.model';
-import Token from '../models/token.model';
+import Token, { TokenType } from '../models/token.model';
 import { Model, Op } from 'sequelize';
 import { Response, Request, NextFunction } from 'express';
 import { Errors, errorHandler } from './error.controller';
@@ -21,7 +21,7 @@ const verifyToken = (
 
   // Extract the token from the header (assuming Bearer <token> format)
   const token = authHeader.startsWith('Bearer ')
-    ? authHeader.substring(8)
+    ? authHeader.trim().substring(7)
     : authHeader;
 
   verify(token, process.env.JWT_KEY, err => {
@@ -36,7 +36,7 @@ const verifyToken = (
 
 const generateToken = async (
   user: Model<UserType, UserType>
-) => {
+): Promise<Model<TokenType, TokenType>> => {
   const token = sign(
     { userId: user.get().id },
     process.env.JWT_KEY as Secret
@@ -77,12 +77,12 @@ const register = async (req: Request, res: Response) => {
     photo,
   });
 
-  const token = generateToken(newUser);
+  const token = await generateToken(newUser);
   newUser.save();
 
   res.json({
     user: newUser,
-    token,
+    token: token.get().token,
     severity: 'success',
     message: 'welcomeChef',
   });
@@ -114,12 +114,12 @@ const login = async (req: Request, res: Response) => {
   if (!isValidPassword)
     return errorHandler(401, Errors.emailPassword, res);
 
-  const token = generateToken(user);
+  const token = await generateToken(user);
   await user.save();
 
   res.json({
     user,
-    token,
+    token: token.get().token,
     severity: 'success',
     message: 'welcomeBackChef',
   });

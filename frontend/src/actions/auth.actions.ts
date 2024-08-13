@@ -26,7 +26,6 @@ export const login =
   (loginData: { identifier: string; password: string }) =>
   async (dispatch: Dispatch) => {
     try {
-      console.log(import.meta.env.VITE_BACKEND_URL);
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/login',
         loginData
@@ -38,12 +37,18 @@ export const login =
     }
   };
 
-export const logout = () => async (dispatch: Dispatch) => {
+export const logout = (userId: number) => async (dispatch: Dispatch) => {
   try {
-    const userId = JSON.parse(localStorage.getItem('user') as string).id;
+    const userToken = localStorage.getItem('token');
+    console.log(userToken, userId);
     const response = await axios.post(
       import.meta.env.VITE_BACKEND_URL + '/logout',
-      userId
+      { userId },
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
     );
     dispatch({ type: LOGOUT, payload: response.data });
   } catch (error) {

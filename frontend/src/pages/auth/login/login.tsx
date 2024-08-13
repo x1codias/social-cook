@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import styles from './styles';
 import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
 import { Divider } from '@mui/material';
@@ -6,6 +6,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
 import { ConnectedProps, connect } from 'react-redux';
 import { login } from '../../../actions/auth.actions';
+import { useNavigate } from 'react-router';
 
 type LoginProps = ConnectedProps<typeof connector>;
 
@@ -26,14 +27,23 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
     ButtonText,
     ButtonIcon,
   } = styles;
+  const navigate = useNavigate();
 
   const handleLogin = async (
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLDivElement, MouseEvent>
+      | KeyboardEvent<HTMLDivElement>
   ) => {
     e.preventDefault();
     await login(formData);
+    navigate('/');
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      handleLogin(event);
+    }
   };
 
   return (
@@ -52,12 +62,13 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
       >
         <CardTitle>{'Sign In'}</CardTitle>
         <form
-          onSubmit={e => handleLogin(e)}
+          onSubmit={handleLogin}
           style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
         >
           <InputField
             placeholder={'Username or Email'}
             value={formData.identifier}
+            onKeyDown={handleKeyDown}
             onChange={e =>
               setFormData({ ...formData, identifier: e.target.value })
             }
@@ -66,13 +77,12 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
             placeholder={'Password'}
             type={'password'}
             value={formData.password}
+            onKeyDown={handleKeyDown}
             onChange={e =>
               setFormData({ ...formData, password: e.target.value })
             }
           />
-          <ButtonContained onClick={e => handleLogin(e)}>
-            {'Sign In'}
-          </ButtonContained>
+          <ButtonContained type="submit">{'Sign In'}</ButtonContained>
         </form>
         <div
           style={{

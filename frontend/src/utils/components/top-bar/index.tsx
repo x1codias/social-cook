@@ -4,9 +4,29 @@ import { FaUser } from 'react-icons/fa';
 import theme from '../../../themes/global.theme';
 import { IconButton, Tooltip } from '@mui/material';
 import { IoStarSharp } from 'react-icons/io5';
+import { logout } from '../../../actions/auth.actions';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
+import { Account } from '../../../types/Account';
+import { useNavigate } from 'react-router';
 
-const TopBar = (): JSX.Element => {
+type TopBarProps = ConnectedProps<typeof connector>;
+
+const TopBar: React.FC<TopBarProps> = (props): JSX.Element => {
+  const { logout } = props;
   const { AppBar, AppTitle, Search } = styles;
+  const navigate = useNavigate();
+  const user = useSelector(
+    (state: { auth: { user: Account } }) => state.auth.user
+  );
+
+  console.log(user);
+
+  // TODO: dropdown on profile pic click (logout, profile & settings?)
+
+  const handleLogout = () => {
+    logout(user.id);
+    navigate('/');
+  };
 
   return (
     <AppBar position={'fixed'}>
@@ -29,7 +49,7 @@ const TopBar = (): JSX.Element => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Profile" placement="bottom">
-          <IconButton>
+          <IconButton onClick={handleLogout}>
             <FaUser size={26} fill={theme.palette.grey?.[600]} />
           </IconButton>
         </Tooltip>
@@ -38,4 +58,6 @@ const TopBar = (): JSX.Element => {
   );
 };
 
-export default TopBar;
+const connector = connect(() => ({}), { logout });
+
+export default connector(TopBar);

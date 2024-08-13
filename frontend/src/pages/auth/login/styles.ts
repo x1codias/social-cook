@@ -1,4 +1,4 @@
-import { IconButton, TextField, Typography } from '@mui/material';
+import { Button, IconButton, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 
@@ -41,7 +41,7 @@ const styles = {
       },
     },
   }),
-  ButtonContained: styled('div')({
+  ButtonContained: styled(Button)({
     background: theme.palette.default.primary,
     cursor: 'pointer',
     padding: '10px 24px',

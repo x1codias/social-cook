@@ -34,11 +34,9 @@ const User = sequelize.define<Model<UserType>>(
     },
     biography: {
       type: DataTypes.TEXT,
-      allowNull: true,
     },
     photo: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
   },
   {
