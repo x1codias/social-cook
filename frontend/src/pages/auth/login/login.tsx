@@ -1,12 +1,8 @@
 import React, { KeyboardEvent, useState } from 'react';
-import styles from './styles';
-import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
-import { Divider } from '@mui/material';
-import { FcGoogle } from 'react-icons/fc';
-import { BsFacebook } from 'react-icons/bs';
 import { ConnectedProps, connect } from 'react-redux';
 import { login } from '../../../actions/auth.actions';
 import { useNavigate } from 'react-router';
+import AuthCard from '../../../utils/components/auth-card';
 
 type LoginProps = ConnectedProps<typeof connector>;
 
@@ -19,15 +15,21 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
     identifier: '',
     password: '',
   });
-  const {
-    CardContainer,
-    CardTitle,
-    InputField,
-    ButtonContained,
-    ButtonText,
-    ButtonIcon,
-  } = styles;
   const navigate = useNavigate();
+  const loginInputs = [
+    {
+      placeholder: 'Username or Email',
+      type: 'text',
+      name: 'identifier',
+      value: formData.identifier,
+    },
+    {
+      placeholder: 'Password',
+      type: 'password',
+      name: 'password',
+      value: formData.password,
+    },
+  ];
 
   const handleLogin = async (
     e:
@@ -40,108 +42,13 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
     navigate('/');
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter') {
-      handleLogin(event);
-    }
-  };
-
   return (
-    <CardContainer>
-      <div
-        style={{
-          padding: '22px 36px',
-          maxWidth: '600px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'Comfortaa',
-        }}
-      >
-        <CardTitle>{'Sign In'}</CardTitle>
-        <form
-          onSubmit={handleLogin}
-          style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
-        >
-          <InputField
-            placeholder={'Username or Email'}
-            value={formData.identifier}
-            onKeyDown={handleKeyDown}
-            onChange={e =>
-              setFormData({ ...formData, identifier: e.target.value })
-            }
-          />
-          <InputField
-            placeholder={'Password'}
-            type={'password'}
-            value={formData.password}
-            onKeyDown={handleKeyDown}
-            onChange={e =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-          />
-          <ButtonContained type="submit">{'Sign In'}</ButtonContained>
-        </form>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            fontSize: '12px',
-            marginBottom: '20px',
-          }}
-        >
-          <p>{"Don't have an account yet?"}</p>
-          <ButtonText>{'Sign Up'}</ButtonText>
-        </div>
-        <Divider
-          style={{ width: '100%', fontSize: '16px', marginBottom: '20px' }}
-        >
-          {'Or'}
-        </Divider>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '5px',
-          }}
-        >
-          <p style={{ fontSize: '12px', marginBottom: '10px' }}>
-            {'Sign In with:'}
-          </p>
-          <div>
-            <ButtonIcon>
-              <FcGoogle
-                style={{
-                  background: 'white',
-                  borderRadius: '100%',
-                  padding: '4px',
-                  boxShadow:
-                    '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                }}
-                size={40}
-              />
-            </ButtonIcon>
-            <ButtonIcon>
-              <BsFacebook
-                size={40}
-                style={{
-                  fill: '#4267B2',
-                  borderRadius: '100%',
-                  boxShadow:
-                    '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                }}
-              />
-            </ButtonIcon>
-          </div>
-        </div>
-      </div>
-      <img src={foodImage} style={{ display: 'block', maxWidth: '400px' }} />
-    </CardContainer>
+    <AuthCard
+      inputs={loginInputs}
+      handleSubmit={handleLogin}
+      formData={formData}
+      setFormData={setFormData}
+    />
   );
 };
 
