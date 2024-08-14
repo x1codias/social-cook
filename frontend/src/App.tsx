@@ -9,8 +9,6 @@ const App: React.FC = (): JSX.Element => {
     (state: { auth: { token: string } }) => state.auth.token
   );
 
-  console.log(userToken);
-
   return (
     <>
       {userToken && <TopBar />}

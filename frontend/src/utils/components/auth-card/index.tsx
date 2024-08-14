@@ -1,7 +1,7 @@
-import React, { KeyboardEvent } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import styles from './styles';
 import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
-import { Divider } from '@mui/material';
+import { Button, Divider, IconButton, InputAdornment } from '@mui/material';
 import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
 import { useNavigate } from 'react-router';
@@ -38,8 +38,12 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
     ButtonContained,
     ButtonText,
     ButtonIcon,
+    PasswordButton,
   } = styles;
   const navigate = useNavigate();
+  const [passwordVisibility, setPasswordVisibility] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
@@ -52,6 +56,13 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const togglePasswordVisibility = (name: string) => {
+    setPasswordVisibility(prev => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
   };
 
   return (
@@ -75,16 +86,60 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
         >
           {inputs.map(input => (
             <InputField
+              width={420}
               key={input.name}
               name={input.name}
-              type={input.type}
+              type={
+                input.name.toLowerCase().includes('password') &&
+                passwordVisibility[input.name]
+                  ? 'text'
+                  : input.type
+              }
               placeholder={input.placeholder}
               value={input.value}
+              InputProps={{
+                endAdornment: input.name.toLowerCase().includes('password') && (
+                  <InputAdornment position="end">
+                    <PasswordButton
+                      variant={'text'}
+                      onClick={() => togglePasswordVisibility(input.name)}
+                    >
+                      {passwordVisibility[input.name] ? 'Hide' : 'Show'}
+                    </PasswordButton>
+                  </InputAdornment>
+                ),
+              }}
               onKeyDown={handleKeyDown}
               onChange={handleFormDataChange}
             />
           ))}
-          {inputs.length > 2 && <div></div>}
+          {inputs.length > 2 && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                minHeight: '100px',
+                justifyContent: 'space-between',
+              }}
+            >
+              <InputField
+                width={120}
+                type={'file'}
+                height={'100px'}
+                onKeyDown={handleKeyDown}
+                onChange={handleFormDataChange}
+              />
+              <InputField
+                width={290}
+                type={'text'}
+                multiline
+                height={'100px'}
+                placeholder={'Biography'}
+                onKeyDown={handleKeyDown}
+                onChange={handleFormDataChange}
+              />
+            </div>
+          )}
           <ButtonContained type="submit">{`Sign ${
             inputs.length > 2 ? 'Up' : 'In'
           }`}</ButtonContained>
