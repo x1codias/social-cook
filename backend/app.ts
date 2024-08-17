@@ -6,6 +6,8 @@ import express, {
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import recipeRoutes from './routes/recipe.routes';
+import ingredientRoutes from './routes/ingredient.routes';
+import unitRoutes from './routes/unit.routes';
 import {
   Errors,
   errorHandler,
@@ -37,6 +39,8 @@ app.use(cors());
 const apiRouter = express.Router();
 apiRouter.use('/', authRoutes);
 apiRouter.use('/', recipeRoutes);
+apiRouter.use('/', ingredientRoutes);
+apiRouter.use('/', unitRoutes);
 
 app.use('/api', apiRouter);
 
