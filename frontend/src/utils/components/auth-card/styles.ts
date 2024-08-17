@@ -32,7 +32,7 @@ const styles = {
     '& .MuiInputBase-input': {
       color: theme.palette.customText?.primary,
       padding: 0,
-      minHeight: height ? `${height}px !important` : 'auto',
+      minHeight: height ? `${height} !important` : 'auto',
     },
     '& .MuiOutlinedInput-root': {
       '&.Mui-focused fieldset': {

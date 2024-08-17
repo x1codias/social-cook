@@ -1,10 +1,11 @@
 import React, { KeyboardEvent, useState } from 'react';
 import styles from './styles';
 import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
-import { Button, Divider, IconButton, InputAdornment } from '@mui/material';
+import { Divider, InputAdornment } from '@mui/material';
 import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
 import { useNavigate } from 'react-router';
+import { useGoogleLogin } from '@react-oauth/google';
 
 type AuthCardProps = {
   handleSubmit: (
@@ -19,6 +20,8 @@ type AuthCardProps = {
     username?: string;
     email?: string;
     repeatPassword?: string;
+    photo?: string;
+    biography?: string;
   };
   setFormData: (formData: any) => void;
   inputs: {
@@ -44,6 +47,20 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
   const [passwordVisibility, setPasswordVisibility] = useState<{
     [key: string]: boolean;
   }>({});
+  const googleLogin = useGoogleLogin({
+    onSuccess: async tokenResponse => {
+      try {
+        console.log('User authenticated:', tokenResponse);
+
+        // Handle success, e.g., store the token or redirect the user
+      } catch (error) {
+        console.error('Google Login Error:', error);
+      }
+    },
+    onError: error => {
+      console.error('Login Failed:', error);
+    },
+  });
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
@@ -54,8 +71,17 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
   const handleFormDataChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, files } = e.target as
+      | HTMLInputElement
+      | HTMLTextAreaElement;
+    if (type === 'file' && files) {
+      const fileInput = e.target as HTMLInputElement;
+      if (fileInput.files && fileInput.files.length > 0) {
+        setFormData({ ...formData, [name]: fileInput.files[0] });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const togglePasswordVisibility = (name: string) => {
@@ -125,18 +151,27 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
               <InputField
                 width={120}
                 type={'file'}
+                name={'photo'}
                 height={'100px'}
                 onKeyDown={handleKeyDown}
                 onChange={handleFormDataChange}
+                value={formData.photo}
+                InputProps={{
+                  inputProps: {
+                    accept: 'image/*', // Optional: Limit to image files
+                  },
+                }}
               />
               <InputField
                 width={290}
                 type={'text'}
+                name={'biography'}
                 multiline
                 height={'100px'}
                 placeholder={'Biography'}
                 onKeyDown={handleKeyDown}
                 onChange={handleFormDataChange}
+                value={formData.biography}
               />
             </div>
           )}
@@ -180,7 +215,9 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
             {`Sign ${inputs.length > 2 ? 'Up' : 'In'} with:`}
           </p>
           <div>
-            <ButtonIcon>
+            <ButtonIcon
+              onClick={() => (inputs.length > 2 ? '' : googleLogin())}
+            >
               <FcGoogle
                 style={{
                   background: 'white',

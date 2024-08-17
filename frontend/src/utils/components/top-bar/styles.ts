@@ -1,4 +1,8 @@
-import { AppBar, TextField, Typography } from '@mui/material';
+import {
+  AppBar,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 
@@ -10,6 +14,8 @@ const styles = {
     background: theme.palette.background?.paper,
     padding: '4px 16px',
     gap: '16px',
+    boxShadow: 'none',
+    width: '100%',
   }),
   AppTitle: styled(Typography)({
     fontSize: '24px',

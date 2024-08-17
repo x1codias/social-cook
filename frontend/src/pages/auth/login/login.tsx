@@ -1,12 +1,22 @@
-import React, { KeyboardEvent, useState } from 'react';
-import { ConnectedProps, connect } from 'react-redux';
+import React, {
+  KeyboardEvent,
+  useState,
+} from 'react';
+import {
+  ConnectedProps,
+  connect,
+} from 'react-redux';
 import { login } from '../../../actions/auth.actions';
 import { useNavigate } from 'react-router';
 import AuthCard from '../../../utils/components/auth-card';
 
-type LoginProps = ConnectedProps<typeof connector>;
+type LoginProps = ConnectedProps<
+  typeof connector
+>;
 
-const Login: React.FC<LoginProps> = (props): JSX.Element => {
+const Login: React.FC<LoginProps> = (
+  props
+): JSX.Element => {
   const { login } = props;
   const [formData, setFormData] = useState<{
     identifier: string;
@@ -34,7 +44,10 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
   const handleLogin = async (
     e:
       | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLDivElement, MouseEvent>
+      | React.MouseEvent<
+          HTMLDivElement,
+          MouseEvent
+        >
       | KeyboardEvent<HTMLDivElement>
   ) => {
     e.preventDefault();
@@ -54,6 +67,8 @@ const Login: React.FC<LoginProps> = (props): JSX.Element => {
 
 const mapStateToProps = () => ({});
 
-const connector = connect(mapStateToProps, { login });
+const connector = connect(mapStateToProps, {
+  login,
+});
 
 export default connector(Login);
