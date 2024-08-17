@@ -4,7 +4,6 @@ import {
   deleteRecipe,
   recipe,
   recipes,
-  updateRecipe,
 } from '../controllers/recipe.controller';
 import { verifyToken } from '../controllers/auth.controller';
 
@@ -18,10 +17,5 @@ recipeRoutes.delete(
   deleteRecipe
 );
 recipeRoutes.get('/recipes/{id}', verifyToken, recipe);
-recipeRoutes.patch(
-  '/recipes/{id}',
-  verifyToken,
-  updateRecipe
-);
 
 export default recipeRoutes;

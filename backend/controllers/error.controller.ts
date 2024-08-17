@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Response } from 'express';
 
 export enum Errors {
   emailPassword = 'incorrectEmailPassword',
@@ -7,6 +7,7 @@ export enum Errors {
   serverError = 'serverError',
   tokenMissing = 'missingToken',
   tokenInvalid = 'invalidToken',
+  recipeExists = 'recipeAlreadyExists',
 }
 
 export const errorHandler = (
@@ -17,7 +18,7 @@ export const errorHandler = (
   const errorResponse = {
     severity: 'error',
     message: key,
-  }
+  };
 
-  return res.status(code).json(errorResponse)
-}
+  return res.status(code).json(errorResponse);
+};

@@ -12,9 +12,11 @@ Token.belongsTo(User, { foreignKey: 'userId' });
 // Recipe with Ingredients relations
 Recipe.belongsToMany(Ingredient, {
   through: RecipeIngredient,
+  foreignKey: 'recipeId',
 });
 Ingredient.belongsToMany(Recipe, {
   through: RecipeIngredient,
+  foreignKey: 'ingredientId',
 });
 
 // Unit with RecipeIngredient relations

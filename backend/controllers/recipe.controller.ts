@@ -1,6 +1,7 @@
 import Recipe from '../models/recipe.model';
 import { Response, Request, NextFunction } from 'express';
 import { Errors, errorHandler } from './error.controller';
+import RecipeIngredient from '../models/recipe-ingedient.model';
 
 const recipes = async (req: Request, res: Response) => {
   try {
@@ -37,7 +38,52 @@ const createRecipe = async (
   res: Response
 ) => {
   try {
-    res.status(200).json({});
+    const {
+      title,
+      ingredients,
+      preperation,
+      category,
+      userId,
+    } = req.body;
+
+    const [newRecipe, created] = await Recipe.findOrCreate({
+      where: {
+        title,
+        userId,
+      },
+      defaults: {
+        title,
+        preperation,
+        category,
+        userId,
+      },
+    });
+
+    if (!created) {
+      return errorHandler(409, Errors.recipeExists, res);
+    }
+
+    if (ingredients && ingredients.length) {
+      const recipeIngredients = ingredients.map(
+        (ingredient: {
+          id: number;
+          quantity: number;
+          unitId: number;
+        }) => ({
+          recipeId: newRecipe.get().id,
+          ingredientId: ingredient.id,
+          quantity: ingredient.quantity,
+          unitId: ingredient.unitId,
+        })
+      );
+
+      await RecipeIngredient.bulkCreate(recipeIngredients);
+    }
+
+    res.status(200).json({
+      message: 'recipeCreated',
+      recipe: newRecipe,
+    });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);
   }
@@ -48,27 +94,19 @@ const deleteRecipe = async (
   res: Response
 ) => {
   try {
-    res.status(200).json({});
+    const { id } = req.params;
+
+    await Recipe.destroy({ where: { id } });
+    await RecipeIngredient.destroy({
+      where: { recipeId: id },
+    });
+
+    res.status(200).json({
+      message: 'recipeDeleted',
+    });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);
   }
 };
 
-const updateRecipe = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    res.status(200).json({});
-  } catch (error) {
-    errorHandler(500, Errors.serverError, res);
-  }
-};
-
-export {
-  recipes,
-  recipe,
-  createRecipe,
-  updateRecipe,
-  deleteRecipe,
-};
+export { recipes, recipe, createRecipe, deleteRecipe };
