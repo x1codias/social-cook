@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
 
 export type UnitType = {
-  id: number;
+  id?: number;
   name: string;
   symbol: string;
 };

@@ -1,5 +1,5 @@
 import Recipe from '../models/recipe.model';
-import { Response, Request, NextFunction } from 'express';
+import { Response, Request } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import RecipeIngredient from '../models/recipe-ingedient.model';
 

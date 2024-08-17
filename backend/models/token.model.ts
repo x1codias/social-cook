@@ -3,7 +3,7 @@ import User from './user.model';
 import sequelize from '../sequelize';
 
 export type TokenType = {
-  id: number;
+  id?: number;
   userId: number;
   experationDate: Date;
   token: string;

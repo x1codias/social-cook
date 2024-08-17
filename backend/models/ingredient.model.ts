@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
 
 export type IngredientType = {
-  id: number;
+  id?: number;
   name: string;
 };
 

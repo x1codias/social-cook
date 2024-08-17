@@ -8,6 +8,7 @@ export enum Errors {
   tokenMissing = 'missingToken',
   tokenInvalid = 'invalidToken',
   recipeExists = 'recipeAlreadyExists',
+  ingredientExists = 'ingredientAlreadyExists',
 }
 
 export const errorHandler = (

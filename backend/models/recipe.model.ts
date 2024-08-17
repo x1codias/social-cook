@@ -14,7 +14,7 @@ export enum RecipeCategories {
 }
 
 export type RecipeType = {
-  id: number;
+  id?: number;
   title: string;
   preperation: string;
   category: RecipeCategories;
