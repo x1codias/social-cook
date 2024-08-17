@@ -52,103 +52,114 @@ const generateToken = async (
 };
 
 const register = async (req: Request, res: Response) => {
-  const { username, email, password, biography, photo } =
-    req.body as UserType;
+  try {
+    const { username, email, password, biography, photo } =
+      req.body as UserType;
 
-  const user = await User.findOne({
-    where: {
-      [Op.or]: [{ email: email }, { username: username }],
-    },
-  });
+    const salt = await genSalt();
 
-  if (user) {
-    return errorHandler(409, Errors.userExists, res);
+    const encryptedPassword = await hash(password, salt);
+
+    const [newUser, created] = await User.findOrCreate({
+      where: {
+        [Op.or]: [{ email: email }, { username: username }],
+      },
+      defaults: {
+        username,
+        email,
+        password: encryptedPassword,
+        biography,
+        photo,
+      },
+    });
+
+    if (!created) {
+      return errorHandler(409, Errors.userExists, res);
+    }
+
+    const token = await generateToken(newUser);
+    newUser.save();
+
+    res.status(200).json({
+      user: newUser,
+      token: token.get().token,
+      severity: 'success',
+      message: 'welcomeChef',
+    });
+  } catch (error) {
+    errorHandler(500, Errors.serverError, res);
   }
-
-  const salt = await genSalt();
-
-  const encryptedPassword = await hash(password, salt);
-
-  const newUser = await User.create({
-    username,
-    email,
-    password: encryptedPassword,
-    biography,
-    photo,
-  });
-
-  const token = await generateToken(newUser);
-  newUser.save();
-
-  res.json({
-    user: newUser,
-    token: token.get().token,
-    severity: 'success',
-    message: 'welcomeChef',
-  });
 };
 
 const login = async (req: Request, res: Response) => {
-  const { identifier, password } = req.body as {
-    identifier: string;
-    password: string;
-  };
+  try {
+    const { identifier, password } = req.body as {
+      identifier: string;
+      password: string;
+    };
 
-  const user = await User.findOne({
-    where: {
-      [Op.or]: [
-        { email: identifier },
-        { username: identifier },
-      ],
-    },
-  });
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [
+          { email: identifier },
+          { username: identifier },
+        ],
+      },
+    });
 
-  if (!user)
-    return errorHandler(401, Errors.emailPassword, res);
+    if (!user)
+      return errorHandler(401, Errors.emailPassword, res);
 
-  const isValidPassword = await compare(
-    password,
-    user.get().password
-  );
+    const isValidPassword = await compare(
+      password,
+      user.get().password
+    );
 
-  if (!isValidPassword)
-    return errorHandler(401, Errors.emailPassword, res);
+    if (!isValidPassword)
+      return errorHandler(401, Errors.emailPassword, res);
 
-  const token = await generateToken(user);
-  await user.save();
+    const token = await generateToken(user);
+    await user.save();
 
-  res.json({
-    user,
-    token: token.get().token,
-    severity: 'success',
-    message: 'welcomeBackChef',
-  });
+    res.status(200).json({
+      user,
+      token: token.get().token,
+      severity: 'success',
+      message: 'welcomeBackChef',
+    });
+  } catch (error) {
+    errorHandler(500, Errors.serverError, res);
+  }
 };
 
 const logout = async (req: Request, res: Response) => {
-  const { userId } = req.body as {
-    userId: number;
-  };
+  try {
+    const { userId } = req.body as {
+      userId: number;
+    };
 
-  const user = await User.findOne({
-    where: { id: userId },
-  });
+    const user = await User.findOne({
+      where: { id: userId },
+    });
 
-  if (!user) {
-    return errorHandler(401, Errors.userNotFound, res);
+    if (!user) {
+      return errorHandler(401, Errors.userNotFound, res);
+    }
+
+    await Token.destroy({
+      where: {
+        userId: user.get().id,
+      },
+    });
+    await user.save();
+
+    res.status(200).json({
+      severity: 'success',
+      message: 'hopeToSeeAgainChef',
+    });
+  } catch (error) {
+    errorHandler(500, Errors.serverError, res);
   }
-
-  await Token.destroy({
-    where: {
-      userId: user.get().id,
-    },
-  });
-  await user.save();
-
-  res.json({
-    severity: 'success',
-    message: 'hopeToSeeAgainChef',
-  });
 };
 
 export { verifyToken, register, login, logout };

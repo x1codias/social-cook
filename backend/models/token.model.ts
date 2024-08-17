@@ -20,15 +20,28 @@ const Token = sequelize.define<Model<TokenType>>(
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
       unique: true,
+      references: {
+        model: User, // 'Users' refers to the User model name
+        key: 'id', // 'id' refers to the column name in User model
+      },
     },
     experationDate: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     token: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
   },
   {
@@ -37,7 +50,6 @@ const Token = sequelize.define<Model<TokenType>>(
   }
 );
 
-// Setting up the association
 User.hasOne(Token, { foreignKey: 'userId' });
 Token.belongsTo(User, { foreignKey: 'userId' });
 

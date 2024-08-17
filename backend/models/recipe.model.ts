@@ -1,8 +1,24 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
 
+export enum RecipeCategories {
+  pastas = 'pastas',
+  fish = 'fish',
+  meat = 'meat',
+  vegan = 'vegan',
+  salads = 'salads',
+  breakfast = 'breakfast',
+  fingerFood = 'fingerFood',
+  desserts = 'desserts',
+}
+
 export type RecipeType = {
-  id?: number;
+  id: number;
+  title: string;
+  preperation: string;
+  category: RecipeCategories;
+  tags: string[];
+  photos?: string[];
 };
 
 const Recipe = sequelize.define<Model<RecipeType>>(
@@ -12,6 +28,37 @@ const Recipe = sequelize.define<Model<RecipeType>>(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true, // Enable auto-increment for the ID field
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    preperation: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    category: {
+      type: DataTypes.ENUM(
+        ...Object.values(RecipeCategories)
+      ),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    tags: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
+    photos: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
     },
   },
   {
