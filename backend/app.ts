@@ -5,12 +5,15 @@ import express, {
 } from 'express';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
+import recipeRoutes from './routes/recipe.routes';
 import {
   Errors,
   errorHandler,
 } from './controllers/error.controller';
 import sequelize from './sequelize';
 import cors from 'cors';
+
+import './models/associations';
 
 dotenv.config();
 
@@ -33,6 +36,7 @@ app.use(cors());
 
 const apiRouter = express.Router();
 apiRouter.use('/', authRoutes);
+apiRouter.use('/', recipeRoutes);
 
 app.use('/api', apiRouter);
 

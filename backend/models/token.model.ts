@@ -50,7 +50,4 @@ const Token = sequelize.define<Model<TokenType>>(
   }
 );
 
-User.hasOne(Token, { foreignKey: 'userId' });
-Token.belongsTo(User, { foreignKey: 'userId' });
-
 export default Token;

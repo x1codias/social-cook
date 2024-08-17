@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
+import User from './user.model';
 
 export enum RecipeCategories {
   pastas = 'pastas',
@@ -17,8 +18,9 @@ export type RecipeType = {
   title: string;
   preperation: string;
   category: RecipeCategories;
-  tags: string[];
+  tags?: string[];
   photos?: string[];
+  userId: number;
 };
 
 const Recipe = sequelize.define<Model<RecipeType>>(
@@ -53,12 +55,20 @@ const Recipe = sequelize.define<Model<RecipeType>>(
       },
     },
     tags: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSON,
       allowNull: true,
     },
     photos: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSON,
       allowNull: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+      allowNull: false,
     },
   },
   {

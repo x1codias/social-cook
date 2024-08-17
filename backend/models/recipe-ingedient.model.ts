@@ -1,11 +1,10 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
-import Recipe from './recipe.model';
-import Ingredient from './ingredient.model';
 import Unit from './unit.model';
 
 export type RecipeIngredientType = {
   quantity: number;
+  unitId: number;
 };
 
 const RecipeIngredient = sequelize.define<
@@ -20,21 +19,19 @@ const RecipeIngredient = sequelize.define<
         notEmpty: true,
       },
     },
+    unitId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Unit,
+        key: 'id',
+      },
+    },
   },
   {
-    tableName: 'recipeIngredients',
+    tableName: 'recipe_ingredients',
     timestamps: true,
   }
 );
-
-Recipe.belongsToMany(Ingredient, {
-  through: RecipeIngredient,
-});
-Ingredient.belongsToMany(Recipe, {
-  through: RecipeIngredient,
-});
-
-Unit.hasMany(RecipeIngredient);
-RecipeIngredient.belongsTo(Unit);
 
 export default RecipeIngredient;
