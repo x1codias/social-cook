@@ -4,7 +4,9 @@ import Ingredient from '../models/ingredient.model';
 
 const ingredients = async (req: Request, res: Response) => {
   try {
-    const { limit, offset } = req.body;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const offset =
+      parseInt(req.query.offset as string) || 10;
     const { count, rows } =
       await Ingredient.findAndCountAll({
         offset,

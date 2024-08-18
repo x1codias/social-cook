@@ -4,3 +4,7 @@ export const REGISTER = 'REGISTER';
 export const GET_UNITS = 'GET_UNITS';
 export const GET_INGREDIENTS = 'GET_INGREDIENTS';
 export const CREATE_INGREDIENT = 'CREATE_INGREDIENT';
+export const GET_RECIPE = 'GET_RECIPE';
+export const GET_RECIPES = 'GET_RECIPES';
+export const CREATE_RECIPE = 'CREATE_RECIPE';
+export const DELETE_RECIPE = 'DELETE_RECIPE';
