@@ -21,10 +21,8 @@ export const getUnits =
       );
       dispatch({
         type: GET_UNITS,
-        payload: response.data.units,
+        payload: response.data,
       });
-
-      return response.data;
     } catch (error) {
       console.log(error);
     }

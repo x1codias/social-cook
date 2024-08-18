@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Masonry, {
   ResponsiveMasonry,
 } from 'react-responsive-masonry';
@@ -6,10 +6,14 @@ import FoodCard from '../../utils/components/food-card';
 import { Typography } from '@mui/material';
 import theme from '../../themes/global.theme';
 import Footer from '../../utils/components/footer';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getRecipes } from '../../actions/recipe.actions';
+import { AppDispatch } from '../../store';
+import { useSelector } from 'react-redux';
+import { Recipe } from '../../types/Recipe';
 
 const Feed: React.FC = (): JSX.Element => {
-  //const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>();
   const getRandomHeight = () => {
     const minHeight = 300; // minimum height in pixels
     const maxHeight = 800; // maximum height in pixels
@@ -22,6 +26,20 @@ const Feed: React.FC = (): JSX.Element => {
   const heights = [...Array(12)].map(() =>
     getRandomHeight()
   );
+  const scrollData = useSelector(
+    (state: { recipe: { scrollData: Recipe[] } }) =>
+      state.recipe.scrollData
+  );
+
+  const getFeedData = useCallback(async () => {
+    await dispatch(getRecipes(10, 0));
+  }, [dispatch]);
+
+  useEffect(() => {
+    getFeedData();
+  }, [getFeedData]);
+
+  console.log(scrollData);
 
   return (
     <div

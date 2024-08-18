@@ -8,7 +8,13 @@ import {
 } from './types/ingredient.reducer.types';
 
 const initialState: IngredientState = {
-  ingredients: [],
+  scrollData: {
+    ingredients: [],
+    total: 0,
+    limit: 10,
+    offset: 0,
+    hasMore: true,
+  },
 };
 
 const ingredientReducer = (
@@ -17,17 +23,34 @@ const ingredientReducer = (
 ): IngredientState => {
   switch (action.type) {
     case GET_INGREDIENTS:
-      const { ingredients } = action.payload;
+      const { ingredients, total } = action.payload;
+
+      const newOffset =
+        state.scrollData.offset + ingredients.length;
+      const hasMore = newOffset < total;
 
       return {
-        ingredients,
+        ...state,
+        scrollData: {
+          ingredients: [
+            ...state.scrollData.ingredients,
+            ...ingredients,
+          ],
+          offset: newOffset,
+          limit: 10,
+          total,
+          hasMore,
+        },
       };
     case CREATE_INGREDIENT:
       return {
-        ingredients: [
-          ...state.ingredients,
-          action.payload.ingredient,
-        ],
+        scrollData: {
+          ...state.scrollData,
+          ingredients: [
+            ...state.scrollData.ingredients,
+            action.payload.ingredient,
+          ],
+        },
       };
     default:
       return state;

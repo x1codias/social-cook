@@ -7,17 +7,24 @@ import {
 import { Recipe } from '../../types/Recipe';
 
 export interface RecipeState {
-  recipes: Recipe[] | [];
+  scrollData: {
+    recipes: Recipe[] | [];
+    total: number;
+    limit: number;
+    offset: number;
+    hasMore: boolean;
+  };
   recipe: Recipe | null;
 }
 
 export interface RecipePayload {
-  recipes: Recipe[];
+  recipes: Recipe[] | [];
+  total: number;
 }
 
 interface GetRecipesAction {
   type: typeof GET_RECIPES;
-  payload: { recipes: Recipe[] };
+  payload: RecipePayload;
 }
 
 interface GetRecipeAction {

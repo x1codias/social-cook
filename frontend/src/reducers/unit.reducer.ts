@@ -5,7 +5,13 @@ import {
 } from './types/unit.reducer.types';
 
 const initialState: UnitState = {
-  units: [],
+  scrollData: {
+    units: [],
+    total: 0,
+    limit: 10,
+    offset: 0,
+    hasMore: true,
+  },
 };
 
 const unitReducer = (
@@ -14,11 +20,21 @@ const unitReducer = (
 ): UnitState => {
   switch (action.type) {
     case GET_UNITS:
-      // eslint-disable-next-line no-case-declarations
-      const { units } = action.payload;
+      const { units, total } = action.payload;
+
+      const newOffset =
+        state.scrollData.offset + units.length;
+      const hasMore = newOffset < total;
 
       return {
-        units,
+        ...state,
+        scrollData: {
+          units: [...state.scrollData.units, ...units],
+          offset: newOffset,
+          limit: 10,
+          total: total,
+          hasMore,
+        },
       };
     default:
       return state;

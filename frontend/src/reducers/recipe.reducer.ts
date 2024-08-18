@@ -10,7 +10,13 @@ import {
 } from './types/recipe.reducer.types';
 
 const initialState: RecipeState = {
-  recipes: [],
+  scrollData: {
+    recipes: [],
+    total: 0,
+    limit: 10,
+    offset: 0,
+    hasMore: true,
+  },
   recipe: null,
 };
 
@@ -18,6 +24,7 @@ const recipeReducer = (
   state = initialState,
   action: RecipeActionTypes
 ): RecipeState => {
+  console.log(action.payload);
   switch (action.type) {
     case GET_RECIPE:
       return {
@@ -25,23 +32,46 @@ const recipeReducer = (
         recipe: action.payload.recipe,
       };
     case GET_RECIPES:
-      const { recipes } = action.payload;
+      const { recipes, total } = action.payload;
+
+      const newOffset =
+        state.scrollData.offset + recipes.length;
+      const hasMore = newOffset < total;
 
       return {
         ...state,
-        recipes,
+        scrollData: {
+          recipes: [
+            ...state.scrollData.recipes,
+            ...recipes,
+          ],
+          offset: newOffset,
+          limit: 10,
+          total: total,
+          hasMore,
+        },
       };
     case CREATE_RECIPE:
       return {
-        recipes: [...state.recipes, action.payload.recipe],
+        scrollData: {
+          ...state.scrollData,
+          recipes: [
+            ...state.scrollData.recipes,
+            action.payload.recipe,
+          ],
+        },
         recipe: action.payload.recipe,
       };
     case DELETE_RECIPE:
-      const filteredRecipes = state.recipes.filter(
-        recipe => recipe.id !== action.payload.id
-      );
+      const filteredRecipes =
+        state.scrollData.recipes.filter(
+          recipe => recipe.id !== action.payload.id
+        );
       return {
-        recipes: filteredRecipes,
+        scrollData: {
+          ...state.scrollData,
+          recipes: filteredRecipes,
+        },
         recipe: null,
       };
     default:

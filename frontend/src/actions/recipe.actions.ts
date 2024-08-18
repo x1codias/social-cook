@@ -49,12 +49,11 @@ export const getRecipes =
           },
         }
       );
+      console.log(response.data);
       dispatch({
         type: GET_RECIPES,
-        payload: response.data.recipes,
+        payload: response.data,
       });
-
-      return response.data;
     } catch (error) {
       console.log(error);
     }

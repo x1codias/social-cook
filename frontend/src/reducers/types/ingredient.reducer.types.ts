@@ -4,11 +4,18 @@ import {
 } from '../../actions/types';
 
 export interface IngredientState {
-  ingredients: string[] | [];
+  scrollData: {
+    ingredients: string[] | [];
+    total: number;
+    limit: number;
+    offset: number;
+    hasMore: boolean;
+  };
 }
 
 export interface IngredientPayload {
-  ingredients: string[];
+  ingredients: string[] | [];
+  total: number;
 }
 
 interface GetIngredientsAction {

@@ -2,11 +2,18 @@ import { GET_UNITS } from '../../actions/types';
 import { Unit } from '../../types/Unit';
 
 export interface UnitState {
-  units: Unit[] | [];
+  scrollData: {
+    units: Unit[] | [];
+    total: number;
+    limit: number;
+    offset: number;
+    hasMore: boolean;
+  };
 }
 
 export interface UnitPayload {
-  units: Unit[];
+  units: Unit[] | [];
+  total: number;
 }
 
 interface GetUnitsAction {
