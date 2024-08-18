@@ -1,8 +1,9 @@
+import {
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+} from '../../actions/types';
 import { Account } from '../../types/Account';
-
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
-export const REGISTER = 'REGISTER';
 
 export interface AuthState {
   user: Account | null;
@@ -29,4 +30,7 @@ interface LogoutAction {
   payload: {};
 }
 
-export type AuthActionTypes = LoginAction | RegisterAction | LogoutAction;
+export type AuthActionTypes =
+  | LoginAction
+  | RegisterAction
+  | LogoutAction;

@@ -1,5 +1,8 @@
 import { LOGIN, LOGOUT, REGISTER } from '../actions/types';
-import { AuthActionTypes, AuthState } from './types/reducer.types';
+import {
+  AuthActionTypes,
+  AuthState,
+} from './types/auth.reducer.types';
 
 const initialState: AuthState = {
   user: null,
@@ -13,7 +16,6 @@ const authReducer = (
   switch (action.type) {
     case REGISTER:
     case LOGIN:
-      // eslint-disable-next-line no-case-declarations
       const { token, user } = action.payload;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));

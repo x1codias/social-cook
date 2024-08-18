@@ -1,23 +1,12 @@
-import React, {
-  KeyboardEvent,
-  useState,
-} from 'react';
-import {
-  ConnectedProps,
-  connect,
-} from 'react-redux';
+import React, { KeyboardEvent, useState } from 'react';
 import { login } from '../../../actions/auth.actions';
 import { useNavigate } from 'react-router';
 import AuthCard from '../../../utils/components/auth-card';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store';
 
-type LoginProps = ConnectedProps<
-  typeof connector
->;
-
-const Login: React.FC<LoginProps> = (
-  props
-): JSX.Element => {
-  const { login } = props;
+const Login: React.FC = (): JSX.Element => {
+  const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState<{
     identifier: string;
     password: string;
@@ -44,14 +33,11 @@ const Login: React.FC<LoginProps> = (
   const handleLogin = async (
     e:
       | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<
-          HTMLDivElement,
-          MouseEvent
-        >
+      | React.MouseEvent<HTMLDivElement, MouseEvent>
       | KeyboardEvent<HTMLDivElement>
   ) => {
     e.preventDefault();
-    await login(formData);
+    await dispatch(login(formData));
     navigate('/');
   };
 
@@ -65,10 +51,4 @@ const Login: React.FC<LoginProps> = (
   );
 };
 
-const mapStateToProps = () => ({});
-
-const connector = connect(mapStateToProps, {
-  login,
-});
-
-export default connector(Login);
+export default Login;

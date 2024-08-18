@@ -1,16 +1,15 @@
 import React from 'react';
-import { ConnectedProps, connect } from 'react-redux';
 import Masonry, {
   ResponsiveMasonry,
 } from 'react-responsive-masonry';
 import FoodCard from '../../utils/components/food-card';
-import { Divider, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import theme from '../../themes/global.theme';
 import Footer from '../../utils/components/footer';
+//import { useDispatch } from 'react-redux';
 
-type FeedProps = ConnectedProps<typeof connector>;
-
-const Feed: React.FC<FeedProps> = (props): JSX.Element => {
+const Feed: React.FC = (): JSX.Element => {
+  //const dispatch = useDispatch()
   const getRandomHeight = () => {
     const minHeight = 300; // minimum height in pixels
     const maxHeight = 800; // maximum height in pixels
@@ -68,8 +67,4 @@ const Feed: React.FC<FeedProps> = (props): JSX.Element => {
   );
 };
 
-const mapStateToProps = () => ({});
-
-const connector = connect(mapStateToProps, {});
-
-export default connector(Feed);
+export default Feed;

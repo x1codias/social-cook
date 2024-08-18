@@ -8,5 +8,5 @@ export type Account = {
   photo?: string;
   biography?: string;
   token?: string;
-  recipes?: Partial<Recipe>[];
+  recipes?: Recipe[];
 };

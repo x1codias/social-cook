@@ -1,3 +1,5 @@
+import { Ingredient } from './Ingredient';
+
 export enum RecipeCategories {
   pastas = 'pastas',
   fish = 'fish',
@@ -12,6 +14,7 @@ export enum RecipeCategories {
 export type Recipe = {
   id?: number;
   title: string;
+  ingredients: Ingredient[];
   preperation: string;
   category: RecipeCategories;
   tags?: string[];

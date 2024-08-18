@@ -1,13 +1,12 @@
 import React, { KeyboardEvent, useState } from 'react';
-import { ConnectedProps, connect } from 'react-redux';
 import { register } from '../../../actions/auth.actions';
 import { useNavigate } from 'react-router';
 import AuthCard from '../../../utils/components/auth-card';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store';
 
-type RegisterProps = ConnectedProps<typeof connector>;
-
-const Register: React.FC<RegisterProps> = (props): JSX.Element => {
-  const { register } = props;
+const Register: React.FC = (): JSX.Element => {
+  const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState<{
     username: string;
     email: string;
@@ -58,7 +57,7 @@ const Register: React.FC<RegisterProps> = (props): JSX.Element => {
     e.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { repeatPassword, ...registerData } = formData;
-    await register(registerData);
+    await dispatch(register(registerData));
     navigate('/');
   };
 
@@ -72,8 +71,4 @@ const Register: React.FC<RegisterProps> = (props): JSX.Element => {
   );
 };
 
-const mapStateToProps = () => ({});
-
-const connector = connect(mapStateToProps, { register });
-
-export default connector(Register);
+export default Register;
