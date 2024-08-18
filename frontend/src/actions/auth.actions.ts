@@ -3,13 +3,7 @@ import { LOGIN, LOGOUT, REGISTER } from './types';
 import { Dispatch } from 'redux';
 
 export const register =
-  (registerData: {
-    username: string;
-    email: string;
-    password: string;
-    photo?: string;
-    biography?: string;
-  }) =>
+  (registerData: FormData) =>
   async (dispatch: Dispatch) => {
     try {
       const response = await axios.post(
@@ -23,8 +17,7 @@ export const register =
   };
 
 export const login =
-  (loginData: { identifier: string; password: string }) =>
-  async (dispatch: Dispatch) => {
+  (loginData: FormData) => async (dispatch: Dispatch) => {
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/login',

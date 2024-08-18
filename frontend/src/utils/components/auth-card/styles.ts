@@ -1,4 +1,9 @@
-import { Button, IconButton, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 
@@ -26,7 +31,8 @@ const styles = {
       borderRadius: '6px',
       fontSize: '16px',
       height: height || '50px',
-      backgroundColor: theme.palette.customBackground?.input,
+      backgroundColor:
+        theme.palette.customBackground?.input,
       overflow: 'hidden',
     },
     '& .MuiInputBase-input': {

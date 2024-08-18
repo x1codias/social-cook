@@ -48,6 +48,9 @@ const createRecipe = async (
       userId,
     } = req.body;
 
+    const files = req.files as Express.Multer.File[];
+    const photoFileNames = files.map(file => file.filename);
+
     const [newRecipe, created] = await Recipe.findOrCreate({
       where: {
         title,
@@ -58,6 +61,7 @@ const createRecipe = async (
         preperation,
         category,
         userId,
+        photos: photoFileNames,
       },
     });
 

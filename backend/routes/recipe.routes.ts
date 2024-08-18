@@ -6,11 +6,17 @@ import {
   recipes,
 } from '../controllers/recipe.controller';
 import { verifyToken } from '../controllers/auth.controller';
+import { upload } from '../controllers/upload.controller';
 
 const recipeRoutes = Router();
 
 recipeRoutes.get('/recipes', verifyToken, recipes);
-recipeRoutes.post('/recipes', verifyToken, createRecipe);
+recipeRoutes.post(
+  '/recipes',
+  verifyToken,
+  upload.array('photos'),
+  createRecipe
+);
 recipeRoutes.delete(
   '/recipes/{id}',
   verifyToken,

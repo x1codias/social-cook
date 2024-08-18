@@ -37,7 +37,10 @@ const Login: React.FC = (): JSX.Element => {
       | KeyboardEvent<HTMLDivElement>
   ) => {
     e.preventDefault();
-    await dispatch(login(formData));
+    const data = new FormData();
+    data.append('identifier', formData.identifier);
+    data.append('password', formData.password);
+    await dispatch(login(data));
     navigate('/');
   };
 

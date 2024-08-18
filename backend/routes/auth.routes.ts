@@ -1,15 +1,20 @@
-import { Router } from 'express'
+import { Router } from 'express';
 import {
   login,
   logout,
   register,
   verifyToken,
-} from '../controllers/auth.controller'
+} from '../controllers/auth.controller';
+import { upload } from '../controllers/upload.controller';
 
-const authRoutes = Router()
+const authRoutes = Router();
 
-authRoutes.post('/register', register)
-authRoutes.post('/logout', verifyToken, logout)
-authRoutes.post('/login', login)
+authRoutes.post(
+  '/register',
+  upload.single('photo'),
+  register
+);
+authRoutes.post('/logout', verifyToken, logout);
+authRoutes.post('/login', login);
 
-export default authRoutes
+export default authRoutes;

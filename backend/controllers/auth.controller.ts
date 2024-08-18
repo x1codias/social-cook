@@ -53,8 +53,12 @@ const generateToken = async (
 
 const register = async (req: Request, res: Response) => {
   try {
-    const { username, email, password, biography, photo } =
+    const { username, email, password, biography } =
       req.body as UserType;
+
+    const photoFileName = req.file
+      ? req.file.filename
+      : null;
 
     const salt = await genSalt();
 
@@ -69,7 +73,7 @@ const register = async (req: Request, res: Response) => {
         email,
         password: encryptedPassword,
         biography,
-        photo,
+        photo: photoFileName,
       },
     });
 

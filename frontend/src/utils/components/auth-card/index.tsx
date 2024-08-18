@@ -20,7 +20,7 @@ type AuthCardProps = {
     username?: string;
     email?: string;
     repeatPassword?: string;
-    photo?: string;
+    photo?: File;
     biography?: string;
   };
   setFormData: (formData: any) => void;
@@ -32,8 +32,11 @@ type AuthCardProps = {
   }[];
 };
 
-const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
-  const { inputs, formData, setFormData, handleSubmit } = props;
+const AuthCard: React.FC<AuthCardProps> = (
+  props
+): JSX.Element => {
+  const { inputs, formData, setFormData, handleSubmit } =
+    props;
   const {
     CardContainer,
     CardTitle,
@@ -44,9 +47,10 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
     PasswordButton,
   } = styles;
   const navigate = useNavigate();
-  const [passwordVisibility, setPasswordVisibility] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const [passwordVisibility, setPasswordVisibility] =
+    useState<{
+      [key: string]: boolean;
+    }>({});
   const googleLogin = useGoogleLogin({
     onSuccess: async tokenResponse => {
       try {
@@ -62,23 +66,26 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
     },
   });
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLDivElement>
+  ) => {
     if (event.key === 'Enter') {
       handleSubmit(event);
     }
   };
 
   const handleFormDataChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
   ) => {
-    const { name, value, type, files } = e.target as
-      | HTMLInputElement
-      | HTMLTextAreaElement;
-    if (type === 'file' && files) {
-      const fileInput = e.target as HTMLInputElement;
-      if (fileInput.files && fileInput.files.length > 0) {
-        setFormData({ ...formData, [name]: fileInput.files[0] });
-      }
+    const { name, value, type, files } =
+      e.target as HTMLInputElement;
+    if (type === 'file' && files && files.length) {
+      setFormData({
+        ...formData,
+        [name]: files[0],
+      });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -105,10 +112,16 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
           fontFamily: 'Comfortaa',
         }}
       >
-        <CardTitle>{`Sign ${inputs.length > 2 ? 'Up' : 'In'}`}</CardTitle>
+        <CardTitle>{`Sign ${
+          inputs.length > 2 ? 'Up' : 'In'
+        }`}</CardTitle>
         <form
           onSubmit={handleSubmit}
-          style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
         >
           {inputs.map(input => (
             <InputField
@@ -116,7 +129,9 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
               key={input.name}
               name={input.name}
               type={
-                input.name.toLowerCase().includes('password') &&
+                input.name
+                  .toLowerCase()
+                  .includes('password') &&
                 passwordVisibility[input.name]
                   ? 'text'
                   : input.type
@@ -124,13 +139,19 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
               placeholder={input.placeholder}
               value={input.value}
               InputProps={{
-                endAdornment: input.name.toLowerCase().includes('password') && (
+                endAdornment: input.name
+                  .toLowerCase()
+                  .includes('password') && (
                   <InputAdornment position="end">
                     <PasswordButton
                       variant={'text'}
-                      onClick={() => togglePasswordVisibility(input.name)}
+                      onClick={() =>
+                        togglePasswordVisibility(input.name)
+                      }
                     >
-                      {passwordVisibility[input.name] ? 'Hide' : 'Show'}
+                      {passwordVisibility[input.name]
+                        ? 'Hide'
+                        : 'Show'}
                     </PasswordButton>
                   </InputAdornment>
                 ),
@@ -155,7 +176,7 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
                 height={'100px'}
                 onKeyDown={handleKeyDown}
                 onChange={handleFormDataChange}
-                value={formData.photo}
+                filename={formData.photo?.name}
                 InputProps={{
                   inputProps: {
                     accept: 'image/*', // Optional: Limit to image files
@@ -194,11 +215,21 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
               : "Don't have an account yet?"}
           </p>
           <ButtonText
-            onClick={() => navigate(inputs.length > 2 ? '/login' : '/register')}
-          >{`Sign ${inputs.length === 2 ? 'Up' : 'In'}`}</ButtonText>
+            onClick={() =>
+              navigate(
+                inputs.length > 2 ? '/login' : '/register'
+              )
+            }
+          >{`Sign ${
+            inputs.length === 2 ? 'Up' : 'In'
+          }`}</ButtonText>
         </div>
         <Divider
-          style={{ width: '100%', fontSize: '16px', marginBottom: '8px' }}
+          style={{
+            width: '100%',
+            fontSize: '16px',
+            marginBottom: '8px',
+          }}
         >
           {'Or'}
         </Divider>
@@ -211,12 +242,21 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
             gap: '5px',
           }}
         >
-          <p style={{ fontSize: '12px', marginBottom: '6px' }}>
-            {`Sign ${inputs.length > 2 ? 'Up' : 'In'} with:`}
+          <p
+            style={{
+              fontSize: '12px',
+              marginBottom: '6px',
+            }}
+          >
+            {`Sign ${
+              inputs.length > 2 ? 'Up' : 'In'
+            } with:`}
           </p>
           <div>
             <ButtonIcon
-              onClick={() => (inputs.length > 2 ? '' : googleLogin())}
+              onClick={() =>
+                inputs.length > 2 ? '' : googleLogin()
+              }
             >
               <FcGoogle
                 style={{
@@ -247,7 +287,7 @@ const AuthCard: React.FC<AuthCardProps> = (props): JSX.Element => {
         src={foodImage}
         style={{
           display: 'block',
-          maxWidth: inputs.length > 2 ? '480px' : '400px',
+          maxWidth: inputs.length > 2 ? '500px' : '400px',
         }}
       />
     </CardContainer>

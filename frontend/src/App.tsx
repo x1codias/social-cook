@@ -1,8 +1,4 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/auth/login/login';
 import Register from './pages/auth/register/register';
 import TopBar from './utils/components/top-bar';
@@ -11,8 +7,7 @@ import Feed from './pages/feed';
 
 const App: React.FC = (): JSX.Element => {
   const userToken = useSelector(
-    (state: { auth: { token: string } }) =>
-      state.auth.token
+    (state: { auth: { token: string } }) => state.auth.token
   );
 
   return (
@@ -23,6 +18,7 @@ const App: React.FC = (): JSX.Element => {
         width: '100vw',
         height: '100vh',
         alignItems: 'center',
+        justifyContent: 'center',
         overflow: 'auto',
       }}
     >
@@ -31,19 +27,12 @@ const App: React.FC = (): JSX.Element => {
         <Route
           path="/"
           element={
-            userToken ? (
-              <Feed />
-            ) : (
-              <Navigate to="/login" />
-            )
+            userToken ? <Feed /> : <Navigate to="/login" />
           }
         />
         {!userToken && (
           <>
-            <Route
-              path="/login"
-              element={<Login />}
-            />
+            <Route path="/login" element={<Login />} />
             <Route
               path="/register"
               element={<Register />}

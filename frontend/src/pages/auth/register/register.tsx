@@ -12,7 +12,7 @@ const Register: React.FC = (): JSX.Element => {
     email: string;
     password: string;
     repeatPassword: string;
-    photo?: string;
+    photo?: File;
     biography?: string;
   }>({
     username: '',
@@ -55,9 +55,15 @@ const Register: React.FC = (): JSX.Element => {
       | KeyboardEvent<HTMLDivElement>
   ) => {
     e.preventDefault();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { repeatPassword, ...registerData } = formData;
-    await dispatch(register(registerData));
+    const data = new FormData();
+    data.append('username', formData.username);
+    data.append('email', formData.email);
+    data.append('password', formData.password);
+    formData.biography &&
+      data.append('biography', formData.biography);
+    formData.photo && data.append('photo', formData.photo);
+
+    await dispatch(register(data));
     navigate('/');
   };
 
