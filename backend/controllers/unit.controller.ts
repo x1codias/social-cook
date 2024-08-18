@@ -4,7 +4,10 @@ import Unit from '../models/unit.model';
 
 const units = async (req: Request, res: Response) => {
   try {
-    const { limit, offset } = req.body;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const offset =
+      parseInt(req.query.offset as string) || 10;
+
     const { count, rows } = await Unit.findAndCountAll({
       offset,
       limit,

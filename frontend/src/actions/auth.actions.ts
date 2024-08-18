@@ -30,28 +30,27 @@ export const login =
         import.meta.env.VITE_BACKEND_URL + '/login',
         loginData
       );
-      console.log(response);
       dispatch({ type: LOGIN, payload: response.data });
     } catch (error) {
       console.log(error);
     }
   };
 
-export const logout = (userId: number) => async (dispatch: Dispatch) => {
-  try {
-    const userToken = localStorage.getItem('token');
-    console.log(userToken, userId);
-    const response = await axios.post(
-      import.meta.env.VITE_BACKEND_URL + '/logout',
-      { userId },
-      {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      }
-    );
-    dispatch({ type: LOGOUT, payload: response.data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const logout =
+  (userId: number) => async (dispatch: Dispatch) => {
+    try {
+      const userToken = localStorage.getItem('token');
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + '/logout',
+        { userId },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+      dispatch({ type: LOGOUT, payload: response.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
