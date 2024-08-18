@@ -19,7 +19,12 @@ export const getUnits =
           },
         }
       );
-      dispatch({ type: GET_UNITS, payload: response.data });
+      dispatch({
+        type: GET_UNITS,
+        payload: response.data.units,
+      });
+
+      return response.data;
     } catch (error) {
       console.log(error);
     }

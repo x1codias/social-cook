@@ -24,8 +24,10 @@ export const getIngredients =
       );
       dispatch({
         type: GET_INGREDIENTS,
-        payload: response.data,
+        payload: response.data.ingredients,
       });
+
+      return response.data;
     } catch (error) {
       console.log(error);
     }

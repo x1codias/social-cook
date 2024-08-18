@@ -15,7 +15,7 @@ const ingredients = async (req: Request, res: Response) => {
 
     res.status(200).json({
       total: count,
-      recipes: rows,
+      ingredients: rows,
     });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);

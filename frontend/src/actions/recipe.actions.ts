@@ -25,6 +25,8 @@ export const getRecipe =
         type: GET_RECIPE,
         payload: response.data,
       });
+
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -49,8 +51,10 @@ export const getRecipes =
       );
       dispatch({
         type: GET_RECIPES,
-        payload: response.data,
+        payload: response.data.recipes,
       });
+
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +86,7 @@ export const deleteRecipe =
   (recipeId: number) => async (dispatch: Dispatch) => {
     try {
       const userToken = localStorage.getItem('token');
-      const response = await axios.delete(
+      await axios.delete(
         import.meta.env.VITE_BACKEND_URL +
           `/recipes/${recipeId}`,
         {
@@ -93,7 +97,7 @@ export const deleteRecipe =
       );
       dispatch({
         type: DELETE_RECIPE,
-        payload: response.data,
+        payload: { id: recipeId },
       });
     } catch (error) {
       console.log(error);
