@@ -5,44 +5,34 @@ import {
 import styles from './styles';
 import { FaUser } from 'react-icons/fa';
 import theme from '../../../themes/global.theme';
-import {
-  IconButton,
-  Tooltip,
-} from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { IoStarSharp } from 'react-icons/io5';
 import { logout } from '../../../actions/auth.actions';
-import {
-  connect,
-  ConnectedProps,
-  useSelector,
-} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Account } from '../../../types/Account';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store';
 
-type TopBarProps = ConnectedProps<
-  typeof connector
->;
-
-const TopBar: React.FC<TopBarProps> = (
-  props
-): JSX.Element => {
-  const { logout } = props;
+const TopBar: React.FC = (): JSX.Element => {
+  const dispatch = useDispatch<AppDispatch>();
   const { AppBar, AppTitle, Search } = styles;
   const navigate = useNavigate();
-  const user = useSelector(
-    (state: { auth: { user: Account } }) =>
-      state.auth.user
-  );
+  const user =
+    useSelector(
+      (state: { auth: { user: Account } }) =>
+        state.auth.user
+    ) || localStorage.getItem('user');
 
   // TODO: dropdown on profile pic click (logout, profile & settings?)
 
-  const handleLogout = () => {
-    logout(user.id);
-    navigate('/');
+  const handleLogout = async () => {
+    await dispatch(logout(user.id));
+    navigate('/login');
   };
 
   return (
-    <AppBar position={'sticky'}>
+    <AppBar position={'fixed'}>
       <AppTitle>SocialCook</AppTitle>
       <Search
         placeholder={'Search...'}
@@ -62,10 +52,7 @@ const TopBar: React.FC<TopBarProps> = (
           gap: '16px',
         }}
       >
-        <Tooltip
-          title="Add Recipe"
-          placement="bottom"
-        >
+        <Tooltip title="Add Recipe" placement="bottom">
           <IconButton>
             <IoIosAddCircle
               size={30}
@@ -73,10 +60,7 @@ const TopBar: React.FC<TopBarProps> = (
             />
           </IconButton>
         </Tooltip>
-        <Tooltip
-          title="Favorites"
-          placement="bottom"
-        >
+        <Tooltip title="Favorites" placement="bottom">
           <IconButton>
             <IoStarSharp
               size={30}
@@ -84,10 +68,7 @@ const TopBar: React.FC<TopBarProps> = (
             />
           </IconButton>
         </Tooltip>
-        <Tooltip
-          title="Profile"
-          placement="bottom"
-        >
+        <Tooltip title="Profile" placement="bottom">
           <IconButton onClick={handleLogout}>
             <FaUser
               size={26}
@@ -100,6 +81,4 @@ const TopBar: React.FC<TopBarProps> = (
   );
 };
 
-const connector = connect(() => ({}), { logout });
-
-export default connector(TopBar);
+export default TopBar;

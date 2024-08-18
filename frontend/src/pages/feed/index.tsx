@@ -19,7 +19,7 @@ const Feed: React.FC = (): JSX.Element => {
       ) + minHeight
     );
   };
-  const heights = [...Array(21)].map(() =>
+  const heights = [...Array(12)].map(() =>
     getRandomHeight()
   );
 
@@ -30,7 +30,6 @@ const Feed: React.FC = (): JSX.Element => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: '12px',
       }}
     >
       <Typography

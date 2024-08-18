@@ -17,7 +17,8 @@ export const register =
   };
 
 export const login =
-  (loginData: FormData) => async (dispatch: Dispatch) => {
+  (loginData: { identifier: string; password: string }) =>
+  async (dispatch: Dispatch) => {
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/login',

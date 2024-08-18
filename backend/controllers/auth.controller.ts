@@ -102,6 +102,8 @@ const login = async (req: Request, res: Response) => {
       password: string;
     };
 
+    console.log(identifier, password, req);
+
     const user = await User.findOne({
       where: {
         [Op.or]: [
