@@ -5,7 +5,8 @@ export type UserType = {
   id?: number;
   username: string;
   email: string;
-  password: string;
+  password?: string;
+  googleId?: string;
   biography?: string;
   photo?: string;
 };
@@ -37,10 +38,12 @@ const User = sequelize.define<Model<UserType>>(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: true,
+    },
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
     },
     biography: {
       type: DataTypes.TEXT,

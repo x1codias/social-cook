@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  googleAuthentication,
   login,
   logout,
   register,
@@ -16,5 +17,6 @@ authRoutes.post(
 );
 authRoutes.post('/logout', verifyToken, logout);
 authRoutes.post('/login', login);
+authRoutes.post('/loginGoogle', googleAuthentication);
 
 export default authRoutes;

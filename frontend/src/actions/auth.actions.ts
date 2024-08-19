@@ -48,3 +48,26 @@ export const logout =
       console.log(error);
     }
   };
+
+export const googleAuthentication =
+  (accessToken: string) => async (dispatch: Dispatch) => {
+    console.log(accessToken);
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + '/loginGoogle',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log(response);
+      dispatch({
+        type: response.data.registered ? REGISTER : LOGIN,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };

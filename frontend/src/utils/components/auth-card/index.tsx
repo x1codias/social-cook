@@ -6,6 +6,10 @@ import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
 import { useNavigate } from 'react-router';
 import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { googleAuthentication } from '../../../actions/auth.actions';
+import { AppDispatch } from '../../../store';
 
 type AuthCardProps = {
   handleSubmit: (
@@ -46,6 +50,7 @@ const AuthCard: React.FC<AuthCardProps> = (
     ButtonIcon,
     PasswordButton,
   } = styles;
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [passwordVisibility, setPasswordVisibility] =
     useState<{
@@ -54,7 +59,10 @@ const AuthCard: React.FC<AuthCardProps> = (
   const googleLogin = useGoogleLogin({
     onSuccess: async tokenResponse => {
       try {
-        console.log('User authenticated:', tokenResponse);
+        await dispatch(
+          googleAuthentication(tokenResponse.access_token)
+        );
+        navigate('/');
 
         // Handle success, e.g., store the token or redirect the user
       } catch (error) {

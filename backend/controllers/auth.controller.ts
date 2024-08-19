@@ -163,7 +163,7 @@ const logout = async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      return errorHandler(401, Errors.userNotFound, res);
+      return errorHandler(404, Errors.userNotFound, res);
     }
 
     await Token.destroy({
@@ -182,4 +182,73 @@ const logout = async (req: Request, res: Response) => {
   }
 };
 
-export { verifyToken, register, login, logout };
+const googleAuthentication = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const authorizationHeader =
+      req.headers['authorization'];
+    if (!authorizationHeader) {
+      errorHandler(401, Errors.tokenMissing, res);
+    }
+
+    const accessToken = authorizationHeader.split(' ')[1];
+    if (!accessToken) {
+      errorHandler(401, Errors.tokenInvalid, res);
+    }
+
+    const response = await fetch(
+      'https://www.googleapis.com/oauth2/v3/userinfo',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    const [newUser, created] = await User.findOrCreate({
+      where: {
+        [Op.or]: [{ email: data.email }],
+      },
+      defaults: {
+        username: data.name
+          ? data.name.replace(/\s/g, '_')
+          : 'user_' + Date.now(),
+        email: data.email,
+        googleId: data.sub,
+        photo: data.picture,
+      },
+    });
+
+    const token = await generateToken(newUser);
+    newUser.save();
+
+    res.status(200).json({
+      severity: 'success',
+      message: created ? 'welcomeChef' : 'welcomeBackChef',
+      user: {
+        id: newUser.dataValues.id,
+        username: newUser.dataValues.username,
+        email: newUser.dataValues.email,
+        biography: newUser.dataValues.biography,
+        photo: newUser.dataValues.photo,
+      },
+      token: token.dataValues.token,
+      registered: created,
+    });
+  } catch (error) {
+    console.error('Google Authentication Error:', error);
+    errorHandler(500, Errors.serverError, res);
+  }
+};
+
+export {
+  verifyToken,
+  register,
+  login,
+  logout,
+  googleAuthentication,
+};
