@@ -24,7 +24,6 @@ const recipeReducer = (
   state = initialState,
   action: RecipeActionTypes
 ): RecipeState => {
-  console.log(action.payload);
   switch (action.type) {
     case GET_RECIPE:
       return {

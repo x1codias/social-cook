@@ -5,7 +5,7 @@ import {
   register,
   verifyToken,
 } from '../controllers/auth.controller';
-import { upload } from '../controllers/upload.controller';
+import { upload } from '../controllers/file.controller';
 
 const authRoutes = Router();
 

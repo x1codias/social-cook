@@ -85,8 +85,14 @@ const register = async (req: Request, res: Response) => {
     newUser.save();
 
     res.status(200).json({
-      user: newUser,
-      token: token.get().token,
+      user: {
+        id: newUser.dataValues.id,
+        username: newUser.dataValues.username,
+        email: newUser.dataValues.email,
+        biography: newUser.dataValues.biography,
+        photo: `http://localhost:3001/uploads/users/${newUser.dataValues.photo}`,
+      },
+      token: token.dataValues.token,
       severity: 'success',
       message: 'welcomeChef',
     });
@@ -95,14 +101,16 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-const login = async (req: Request, res: Response) => {
+const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { identifier, password } = req.body as {
       identifier: string;
       password: string;
     };
-
-    console.log(identifier, password, req);
 
     const user = await User.findOne({
       where: {
@@ -128,7 +136,13 @@ const login = async (req: Request, res: Response) => {
     await user.save();
 
     res.status(200).json({
-      user,
+      user: {
+        id: user.dataValues.id,
+        username: user.dataValues.username,
+        email: user.dataValues.email,
+        biography: user.dataValues.biography,
+        photo: `http://localhost:3001/uploads/users/${user.dataValues.photo}`,
+      },
       token: token.get().token,
       severity: 'success',
       message: 'welcomeBackChef',

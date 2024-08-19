@@ -49,7 +49,6 @@ export const getRecipes =
           },
         }
       );
-      console.log(response.data);
       dispatch({
         type: GET_RECIPES,
         payload: response.data,

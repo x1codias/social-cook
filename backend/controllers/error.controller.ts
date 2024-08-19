@@ -9,6 +9,8 @@ export enum Errors {
   tokenInvalid = 'invalidToken',
   recipeExists = 'recipeAlreadyExists',
   ingredientExists = 'ingredientAlreadyExists',
+  directoryReading = 'directoryReading',
+  imageNotFound = 'imageNotFound',
 }
 
 export const errorHandler = (

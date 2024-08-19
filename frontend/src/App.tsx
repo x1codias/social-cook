@@ -18,39 +18,27 @@ const App: React.FC = (): JSX.Element => {
         width: '100vw',
         height: '100vh',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: userToken ? 'flex-start' : 'center',
       }}
     >
       {userToken && <TopBar />}
-      <div
-        style={{
-          flexGrow: 1,
-          width: '100%',
-          paddingTop: userToken ? `54px` : 0, // Adjust for TopBar and additional padding
-        }}
-      >
-        <Routes>
-          <Route
-            path="/"
-            element={
-              userToken ? (
-                <Feed />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          {!userToken && (
-            <>
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/register"
-                element={<Register />}
-              />
-            </>
-          )}
-        </Routes>
-      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            userToken ? <Feed /> : <Navigate to="/login" />
+          }
+        />
+        {!userToken && (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/register"
+              element={<Register />}
+            />
+          </>
+        )}
+      </Routes>
     </div>
   );
 };

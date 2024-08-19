@@ -35,6 +35,7 @@ sequelize
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(express.static('public'));
 
 const apiRouter = express.Router();
 apiRouter.use('/', authRoutes);

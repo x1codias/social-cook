@@ -1,5 +1,8 @@
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readdir } from 'fs';
 import multer from 'multer';
+import path from 'path';
+import { errorHandler, Errors } from './error.controller';
+import { Request, Response } from 'express';
 
 // Map MIME types to file extensions
 const mimeTypes = {

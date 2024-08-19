@@ -39,8 +39,6 @@ const Feed: React.FC = (): JSX.Element => {
     getFeedData();
   }, [getFeedData]);
 
-  console.log(scrollData);
-
   return (
     <div
       style={{
@@ -48,6 +46,8 @@ const Feed: React.FC = (): JSX.Element => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        flexGrow: 1,
+        paddingTop: '54px',
       }}
     >
       <Typography

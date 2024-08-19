@@ -5,7 +5,7 @@ import {
 import styles from './styles';
 import { FaUser } from 'react-icons/fa';
 import theme from '../../../themes/global.theme';
-import { IconButton, Tooltip } from '@mui/material';
+import { Avatar, IconButton, Tooltip } from '@mui/material';
 import { IoStarSharp } from 'react-icons/io5';
 import { logout } from '../../../actions/auth.actions';
 import { useSelector } from 'react-redux';
@@ -22,9 +22,11 @@ const TopBar: React.FC = (): JSX.Element => {
     useSelector(
       (state: { auth: { user: Account } }) =>
         state.auth.user
-    ) || localStorage.getItem('user');
+    ) || JSON.parse(localStorage.getItem('user') as string);
 
   // TODO: dropdown on profile pic click (logout, profile & settings?)
+
+  console.log(user.photo);
 
   const handleLogout = async () => {
     await dispatch(logout(user.id));
@@ -70,9 +72,9 @@ const TopBar: React.FC = (): JSX.Element => {
         </Tooltip>
         <Tooltip title="Profile" placement="bottom">
           <IconButton onClick={handleLogout}>
-            <FaUser
-              size={26}
-              fill={theme.palette.grey?.[500]}
+            <Avatar
+              src={user.photo}
+              sx={{ width: 34, height: 34 }}
             />
           </IconButton>
         </Tooltip>
