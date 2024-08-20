@@ -1,4 +1,8 @@
-import React, { KeyboardEvent, useState } from 'react';
+import React, {
+  KeyboardEvent,
+  useEffect,
+  useState,
+} from 'react';
 import styles from './styles';
 import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
 import { Divider, InputAdornment } from '@mui/material';
@@ -6,10 +10,15 @@ import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
 import { useNavigate } from 'react-router';
 import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { googleAuthentication } from '../../../actions/auth.actions';
+import {
+  facebookAuthentication,
+  googleAuthentication,
+} from '../../../actions/auth.actions';
 import { AppDispatch } from '../../../store';
+import FacebookLogin, {
+  FacebookLoginClient,
+} from '@greatsumini/react-facebook-login';
 
 type AuthCardProps = {
   handleSubmit: (
@@ -56,7 +65,7 @@ const AuthCard: React.FC<AuthCardProps> = (
     useState<{
       [key: string]: boolean;
     }>({});
-  const googleLogin = useGoogleLogin({
+  const googleAuth = useGoogleLogin({
     onSuccess: async tokenResponse => {
       try {
         await dispatch(
@@ -73,6 +82,33 @@ const AuthCard: React.FC<AuthCardProps> = (
       console.error('Login Failed:', error);
     },
   });
+
+  const dispatchFBAuth = async (accessToken: string) => {
+    await dispatch(facebookAuthentication(accessToken));
+    navigate('/');
+  };
+
+  const facebookAuth = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    await FacebookLoginClient.loadSdk('en_US');
+    FacebookLoginClient.init({
+      appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+      version: 'v16.0',
+    });
+    FacebookLoginClient.login(
+      res => {
+        console.log(res);
+        if (res.authResponse?.accessToken) {
+          dispatchFBAuth(res.authResponse?.accessToken);
+        }
+      },
+      {
+        scope: 'public_profile, email',
+      }
+    );
+  };
 
   const handleKeyDown = (
     event: KeyboardEvent<HTMLDivElement>
@@ -261,11 +297,7 @@ const AuthCard: React.FC<AuthCardProps> = (
             } with:`}
           </p>
           <div>
-            <ButtonIcon
-              onClick={() =>
-                inputs.length > 2 ? '' : googleLogin()
-              }
-            >
+            <ButtonIcon onClick={() => googleAuth()}>
               <FcGoogle
                 style={{
                   background: 'white',
@@ -277,7 +309,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                 size={40}
               />
             </ButtonIcon>
-            <ButtonIcon>
+            <ButtonIcon onClick={e => facebookAuth(e)}>
               <BsFacebook
                 size={40}
                 style={{

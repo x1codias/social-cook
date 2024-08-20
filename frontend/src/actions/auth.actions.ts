@@ -51,10 +51,9 @@ export const logout =
 
 export const googleAuthentication =
   (accessToken: string) => async (dispatch: Dispatch) => {
-    console.log(accessToken);
     try {
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + '/loginGoogle',
+        import.meta.env.VITE_BACKEND_URL + '/authGoogle',
         {},
         {
           headers: {
@@ -62,7 +61,30 @@ export const googleAuthentication =
           },
         }
       );
+      dispatch({
+        type: response.data.registered ? REGISTER : LOGIN,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const facebookAuthentication =
+  (accessToken: string) => async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + '/authFacebook',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
       console.log(response);
+
       dispatch({
         type: response.data.registered ? REGISTER : LOGIN,
         payload: response.data,

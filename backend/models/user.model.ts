@@ -7,6 +7,7 @@ export type UserType = {
   email: string;
   password?: string;
   googleId?: string;
+  facebookId?: string;
   biography?: string;
   photo?: string;
 };
@@ -41,6 +42,11 @@ const User = sequelize.define<Model<UserType>>(
       allowNull: true,
     },
     googleId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+    },
+    facebookId: {
       type: DataTypes.STRING,
       allowNull: true,
       unique: true,

@@ -214,9 +214,7 @@ const googleAuthentication = async (
         [Op.or]: [{ email: data.email }],
       },
       defaults: {
-        username: data.name
-          ? data.name.replace(/\s/g, '_')
-          : 'user_' + Date.now(),
+        username: data.email.split('@')[0],
         email: data.email,
         googleId: data.sub,
         photo: data.picture,
@@ -240,7 +238,61 @@ const googleAuthentication = async (
       registered: created,
     });
   } catch (error) {
-    console.error('Google Authentication Error:', error);
+    errorHandler(500, Errors.serverError, res);
+  }
+};
+
+const facebookAuthentication = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const authorizationHeader =
+      req.headers['authorization'];
+    if (!authorizationHeader) {
+      errorHandler(401, Errors.tokenMissing, res);
+    }
+
+    const accessToken = authorizationHeader.split(' ')[1];
+    if (!accessToken) {
+      errorHandler(401, Errors.tokenInvalid, res);
+    }
+
+    const response = await fetch(
+      `https://graph.facebook.com/v20.0/me?fields=id%2Cname%2Cpicture%2Cemail&access_token=${accessToken}`
+    );
+
+    const data = await response.json();
+
+    const [newUser, created] = await User.findOrCreate({
+      where: {
+        [Op.or]: [{ email: data.email }],
+      },
+      defaults: {
+        username: data.email.split('@')[0],
+        email: data.email,
+        facebookId: data.id,
+        photo: data.picture.data.url,
+      },
+    });
+
+    const token = await generateToken(newUser);
+    newUser.save();
+
+    res.status(200).json({
+      severity: 'success',
+      message: created ? 'welcomeChef' : 'welcomeBackChef',
+      user: {
+        id: newUser.dataValues.id,
+        username: newUser.dataValues.username,
+        email: newUser.dataValues.email,
+        biography: newUser.dataValues.biography,
+        photo: newUser.dataValues.photo,
+      },
+      token: token.dataValues.token,
+      registered: created,
+    });
+  } catch (error) {
     errorHandler(500, Errors.serverError, res);
   }
 };
@@ -251,4 +303,5 @@ export {
   login,
   logout,
   googleAuthentication,
+  facebookAuthentication,
 };
