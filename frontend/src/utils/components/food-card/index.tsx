@@ -1,4 +1,8 @@
-import { Avatar, Typography } from '@mui/material';
+import {
+  Avatar,
+  //Skeleton,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import foodImage from '../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import theme from '../../../themes/global.theme';
@@ -13,6 +17,18 @@ const FoodCard: React.FC<FoodCardProps> = (
   const { height } = props;
 
   return (
+    // <Skeleton
+    //   variant="rectangular"
+    //   height={height}
+    //   style={{
+    //     borderRadius: '8px',
+    //     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     overflow: 'hidden',
+    //   }}
+    // />
     <div
       style={{
         height: `${height}px`, // Random height

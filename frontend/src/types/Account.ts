@@ -1,5 +1,3 @@
-import { Recipe } from './Recipe';
-
 export type Account = {
   id: number;
   email: string;
@@ -7,6 +5,4 @@ export type Account = {
   password: string;
   photo?: string;
   biography?: string;
-  token?: string;
-  recipes?: Recipe[];
 };

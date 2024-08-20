@@ -3,35 +3,26 @@ import {
   IoIosSearch,
 } from 'react-icons/io';
 import styles from './styles';
-import { FaUser } from 'react-icons/fa';
 import theme from '../../../themes/global.theme';
 import { Avatar, IconButton, Tooltip } from '@mui/material';
 import { IoStarSharp } from 'react-icons/io5';
-import { logout } from '../../../actions/auth.actions';
 import { useSelector } from 'react-redux';
 import { Account } from '../../../types/Account';
-import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
+import ProfileDropdown from './components/profile-dropdown';
+import { useRef, useState } from 'react';
 
 const TopBar: React.FC = (): JSX.Element => {
-  const dispatch = useDispatch<AppDispatch>();
   const { AppBar, AppTitle, Search } = styles;
-  const navigate = useNavigate();
   const user =
     useSelector(
       (state: { auth: { user: Account } }) =>
         state.auth.user
     ) || JSON.parse(localStorage.getItem('user') as string);
+  const [openMenu, setOpenMenu] =
+    useState<HTMLButtonElement | null>(null);
+  const menuRef = useRef<HTMLButtonElement>(null);
 
   // TODO: dropdown on profile pic click (logout, profile & settings?)
-
-  console.log(user.photo);
-
-  const handleLogout = async () => {
-    await dispatch(logout(user.id));
-    navigate('/login');
-  };
 
   return (
     <AppBar position={'fixed'}>
@@ -71,14 +62,24 @@ const TopBar: React.FC = (): JSX.Element => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Profile" placement="bottom">
-          <IconButton onClick={handleLogout}>
+          <IconButton
+            ref={menuRef}
+            onClick={e => setOpenMenu(e.currentTarget)}
+          >
             <Avatar
               src={user.photo}
               sx={{ width: 34, height: 34 }}
-            />
+            >
+              {user.username}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </div>
+      <ProfileDropdown
+        open={openMenu}
+        setOpen={setOpenMenu}
+        user={user}
+      />
     </AppBar>
   );
 };

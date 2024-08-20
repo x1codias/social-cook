@@ -99,7 +99,6 @@ const AuthCard: React.FC<AuthCardProps> = (
     });
     FacebookLoginClient.login(
       res => {
-        console.log(res);
         if (res.authResponse?.accessToken) {
           dispatchFBAuth(res.authResponse?.accessToken);
         }

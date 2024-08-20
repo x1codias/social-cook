@@ -83,8 +83,6 @@ export const facebookAuthentication =
         }
       );
 
-      console.log(response);
-
       dispatch({
         type: response.data.registered ? REGISTER : LOGIN,
         payload: response.data,
