@@ -2,6 +2,7 @@ import Recipe from '../models/recipe.model';
 import { Response, Request } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import RecipeIngredient from '../models/recipe-ingedient.model';
+import Preperation from '../models/preperation.model';
 
 const recipes = async (req: Request, res: Response) => {
   try {
@@ -44,6 +45,7 @@ const createRecipe = async (
       title,
       ingredients,
       preperation,
+      description,
       category,
       userId,
     } = req.body;
@@ -58,8 +60,8 @@ const createRecipe = async (
       },
       defaults: {
         title,
-        preperation,
         category,
+        description,
         userId,
         photos: photoFileNames,
       },
@@ -69,6 +71,14 @@ const createRecipe = async (
       return errorHandler(409, Errors.recipeExists, res);
     }
 
+    if (preperation) {
+      await Preperation.create({
+        recipeId: newRecipe.dataValues.id,
+        steps: preperation.steps,
+        prepVideo: preperation.video,
+      });
+    }
+
     if (ingredients && ingredients.length) {
       const recipeIngredients = ingredients.map(
         (ingredient: {
@@ -76,7 +86,7 @@ const createRecipe = async (
           quantity: number;
           unitId: number;
         }) => ({
-          recipeId: newRecipe.get().id,
+          recipeId: newRecipe.dataValues.id,
           ingredientId: ingredient.id,
           quantity: ingredient.quantity,
           unitId: ingredient.unitId,
@@ -88,7 +98,7 @@ const createRecipe = async (
 
     res.status(200).json({
       message: 'recipeCreated',
-      recipe: newRecipe,
+      recipe: newRecipe.dataValues,
     });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);
@@ -103,9 +113,6 @@ const deleteRecipe = async (
     const { id } = req.params;
 
     await Recipe.destroy({ where: { id } });
-    await RecipeIngredient.destroy({
-      where: { recipeId: id },
-    });
 
     res.status(200).json({
       message: 'recipeDeleted',

@@ -1,11 +1,17 @@
 import {
   IoIosAddCircle,
   IoIosSearch,
+  IoIosNotifications,
+  IoIosChatboxes,
 } from 'react-icons/io';
 import styles from './styles';
 import theme from '../../../themes/global.theme';
-import { Avatar, IconButton, Tooltip } from '@mui/material';
-import { IoStarSharp } from 'react-icons/io5';
+import {
+  Avatar,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Account } from '../../../types/Account';
 import ProfileDropdown from './components/profile-dropdown';
@@ -42,10 +48,17 @@ const TopBar: React.FC = (): JSX.Element => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
+          gap: '12px',
         }}
       >
-        <Tooltip title="Add Recipe" placement="bottom">
+        <Tooltip
+          title={
+            <Typography fontSize={10}>
+              {'Add Recipe'}
+            </Typography>
+          }
+          placement="bottom"
+        >
           <IconButton>
             <IoIosAddCircle
               size={30}
@@ -53,15 +66,42 @@ const TopBar: React.FC = (): JSX.Element => {
             />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Favorites" placement="bottom">
+        <Tooltip
+          title={
+            <Typography fontSize={10}>
+              {'Notifications'}
+            </Typography>
+          }
+          placement="bottom"
+        >
           <IconButton>
-            <IoStarSharp
+            <IoIosNotifications
               size={30}
               fill={theme.palette.grey?.[500]}
             />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Profile" placement="bottom">
+        <Tooltip
+          title={
+            <Typography fontSize={10}>{'Chat'}</Typography>
+          }
+          placement="bottom"
+        >
+          <IconButton>
+            <IoIosChatboxes
+              size={30}
+              fill={theme.palette.grey?.[500]}
+            />
+          </IconButton>
+        </Tooltip>
+        <Tooltip
+          title={
+            <Typography fontSize={10}>
+              {'Profile'}
+            </Typography>
+          }
+          placement="bottom"
+        >
           <IconButton
             ref={menuRef}
             onClick={e => setOpenMenu(e.currentTarget)}

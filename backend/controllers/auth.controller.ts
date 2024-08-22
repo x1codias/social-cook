@@ -211,7 +211,10 @@ const googleAuthentication = async (
 
     const [newUser, created] = await User.findOrCreate({
       where: {
-        [Op.or]: [{ email: data.email }],
+        [Op.or]: [
+          { email: data.email },
+          { googleId: data.sub },
+        ],
       },
       defaults: {
         username: data.email.split('@')[0],
@@ -266,7 +269,10 @@ const facebookAuthentication = async (
 
     const [newUser, created] = await User.findOrCreate({
       where: {
-        [Op.or]: [{ email: data.email }],
+        [Op.or]: [
+          { email: data.email },
+          { facebookId: data.id },
+        ],
       },
       defaults: {
         username: data.email.split('@')[0],

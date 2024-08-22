@@ -16,7 +16,7 @@ export enum RecipeCategories {
 export type RecipeType = {
   id?: number;
   title: string;
-  preperation: string;
+  description?: string;
   category: RecipeCategories;
   tags?: string[];
   photos?: string[];
@@ -38,9 +38,9 @@ const Recipe = sequelize.define<Model<RecipeType>>(
         notEmpty: true,
       },
     },
-    preperation: {
+    description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notEmpty: true,
       },
