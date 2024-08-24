@@ -5,6 +5,7 @@ import Ingredient from './ingredient.model';
 import Unit from './unit.model';
 import RecipeIngredient from './recipe-ingedient.model';
 import Preperation from './preperation.model';
+import Duration from './duration.model';
 
 // User with tokens relations
 User.hasOne(Token, {
@@ -45,3 +46,12 @@ Recipe.hasOne(Preperation, {
   onDelete: 'CASCADE',
 });
 Preperation.belongsTo(Recipe, { foreignKey: 'recipeId' });
+
+// Recipe with Duration relations
+Recipe.hasOne(Duration, {
+  foreignKey: 'recipeId',
+  onDelete: 'CASCADE',
+});
+Duration.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+});

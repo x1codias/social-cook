@@ -3,7 +3,7 @@ import {
   LOGOUT,
   REGISTER,
 } from '../../actions/types';
-import { Account } from '../../types/Account';
+import { Account } from '../../utils/types/Account';
 
 export interface AuthState {
   user: Account | null;

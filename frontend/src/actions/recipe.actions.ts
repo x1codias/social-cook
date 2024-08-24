@@ -6,7 +6,7 @@ import {
   GET_RECIPE,
   GET_RECIPES,
 } from './types';
-import { Recipe } from '../types/Recipe';
+import { Recipe } from '../utils/types/Recipe';
 
 export const getRecipe =
   (recipeId: number) => async (dispatch: Dispatch) => {

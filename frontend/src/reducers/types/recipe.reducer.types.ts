@@ -4,7 +4,7 @@ import {
   CREATE_RECIPE,
   DELETE_RECIPE,
 } from '../../actions/types';
-import { Recipe } from '../../types/Recipe';
+import { Recipe } from '../../utils/types/Recipe';
 
 export interface RecipeState {
   scrollData: {

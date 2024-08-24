@@ -27,7 +27,8 @@ const ingredientReducer = (
 
       const newOffset =
         state.scrollData.offset + ingredients.length;
-      const hasMore = newOffset < total;
+      const hasMore =
+        state.scrollData.ingredients.length < total;
 
       return {
         ...state,

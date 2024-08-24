@@ -11,6 +11,12 @@ export enum RecipeCategories {
   desserts = 'desserts',
 }
 
+export enum Difficulties {
+  easy = 'easy',
+  medium = 'medium',
+  hard = 'hard',
+}
+
 export type Recipe = {
   id?: number;
   title: string;

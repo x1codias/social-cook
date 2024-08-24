@@ -4,7 +4,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
-import { Account } from '../../../../../types/Account';
+import { Account } from '../../../../types/Account';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../../../store';

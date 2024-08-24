@@ -4,6 +4,7 @@ import Register from './pages/auth/register/register';
 import TopBar from './utils/components/top-bar';
 import { useSelector } from 'react-redux';
 import Feed from './pages/feed';
+import CreateRecipe from './pages/recipe/create';
 
 const App: React.FC = (): JSX.Element => {
   const userToken = useSelector(
@@ -28,6 +29,10 @@ const App: React.FC = (): JSX.Element => {
           element={
             userToken ? <Feed /> : <Navigate to="/login" />
           }
+        />
+        <Route
+          path="/recipes/create"
+          element={<CreateRecipe />}
         />
         {!userToken && (
           <>

@@ -35,7 +35,8 @@ const recipeReducer = (
 
       const newOffset =
         state.scrollData.offset + recipes.length;
-      const hasMore = newOffset < total;
+      const hasMore =
+        state.scrollData.recipes.length < total;
 
       return {
         ...state,

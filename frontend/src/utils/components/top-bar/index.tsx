@@ -13,9 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { Account } from '../../../types/Account';
+import { Account } from '../../types/Account';
 import ProfileDropdown from './components/profile-dropdown';
 import { useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 const TopBar: React.FC = (): JSX.Element => {
   const { AppBar, AppTitle, Search } = styles;
@@ -27,12 +28,16 @@ const TopBar: React.FC = (): JSX.Element => {
   const [openMenu, setOpenMenu] =
     useState<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // TODO: dropdown on profile pic click (logout, profile & settings?)
 
   return (
     <AppBar position={'fixed'}>
-      <AppTitle>SocialCook</AppTitle>
+      <AppTitle onClick={() => navigate('/')}>
+        SocialCook
+      </AppTitle>
       <Search
         placeholder={'Search...'}
         InputProps={{
@@ -59,10 +64,18 @@ const TopBar: React.FC = (): JSX.Element => {
           }
           placement="bottom"
         >
-          <IconButton>
+          <IconButton
+            onClick={() => navigate('/recipes/create')}
+          >
             <IoIosAddCircle
               size={30}
-              fill={theme.palette.grey?.[500]}
+              fill={
+                location.pathname.includes(
+                  '/recipes/create'
+                )
+                  ? theme.palette.default.primary
+                  : theme.palette.grey?.[500]
+              }
             />
           </IconButton>
         </Tooltip>

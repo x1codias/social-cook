@@ -24,7 +24,7 @@ const unitReducer = (
 
       const newOffset =
         state.scrollData.offset + units.length;
-      const hasMore = newOffset < total;
+      const hasMore = state.scrollData.units.length < total;
 
       return {
         ...state,

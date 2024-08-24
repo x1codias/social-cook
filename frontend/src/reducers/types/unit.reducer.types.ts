@@ -1,5 +1,5 @@
 import { GET_UNITS } from '../../actions/types';
-import { Unit } from '../../types/Unit';
+import { Unit } from '../../utils/types/Unit';
 
 export interface UnitState {
   scrollData: {

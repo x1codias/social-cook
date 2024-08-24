@@ -18,6 +18,7 @@ const Unit = sequelize.define<Model<UnitType>>(
     name: {
       type: DataTypes.STRING(50),
       allowNull: false,
+      unique: true,
       validate: {
         notEmpty: true,
       },
@@ -35,5 +36,57 @@ const Unit = sequelize.define<Model<UnitType>>(
     timestamps: true,
   }
 );
+
+const insertDefaultUnits = async () => {
+  const defaultUnits = [
+    {
+      name: 'Unit',
+      symbol: 'uni',
+    },
+    {
+      name: 'Kilogram',
+      symbol: 'kg',
+    },
+    {
+      name: 'Gram',
+      symbol: 'g',
+    },
+    {
+      name: 'Miligram',
+      symbol: 'mg',
+    },
+    {
+      name: 'Kilogram',
+      symbol: 'kg',
+    },
+    {
+      name: 'Litre',
+      symbol: 'l',
+    },
+    {
+      name: 'Mililitre',
+      symbol: 'ml',
+    },
+    {
+      name: 'Table Spoon',
+      symbol: 'table sp.',
+    },
+    {
+      name: 'Tea Spoon',
+      symbol: 'tea sp.',
+    },
+  ];
+
+  for (const unit of defaultUnits) {
+    await Unit.findOrCreate({
+      where: { name: unit.name },
+      defaults: unit,
+    });
+  }
+};
+
+Unit.sync().then(() => {
+  insertDefaultUnits();
+});
 
 export default Unit;

@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { getRecipes } from '../../actions/recipe.actions';
 import { AppDispatch } from '../../store';
 import { useSelector } from 'react-redux';
-import { Recipe } from '../../types/Recipe';
+import { Recipe } from '../../utils/types/Recipe';
 
 const Feed: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();

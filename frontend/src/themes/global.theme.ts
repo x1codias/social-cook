@@ -9,17 +9,12 @@ type NewPalleteOptions = {
   default: Partial<PaletteColorOptions> & {
     primary: string;
     secondary: string;
-    light: string;
-    dark: string;
   };
-  customBackground: Partial<TypeBackground> & { input: string };
+  customBackground: Partial<TypeBackground> & {
+    input: string;
+  };
   customText: { button: string } & Partial<TypeText>;
-  season?: {
-    summer: Partial<PaletteColorOptions> | TypeText;
-    autumn: Partial<PaletteColorOptions> | TypeText;
-    winter: Partial<PaletteColorOptions> | TypeText;
-    spring: Partial<PaletteColorOptions> | TypeText;
-  };
+  error: Partial<PaletteColorOptions>;
 };
 
 // Merge the new palette options with the existing PaletteOptions
@@ -57,35 +52,8 @@ const theme = createTheme({
       disabled: '',
       button: '#FFFFFF',
     },
-    season: {
-      summer: {
-        primary: '',
-        secondary: '',
-        light: '',
-        dark: '',
-        contrastText: '',
-      },
-      autumn: {
-        primary: '',
-        secondary: '',
-        light: '',
-        dark: '',
-        contrastText: '',
-      },
-      winter: {
-        primary: '',
-        secondary: '',
-        light: '',
-        dark: '',
-        contrastText: '',
-      },
-      spring: {
-        primary: '',
-        secondary: '',
-        light: '',
-        dark: '',
-        contrastText: '',
-      },
+    error: {
+      main: '#FF0000',
     },
   },
 });

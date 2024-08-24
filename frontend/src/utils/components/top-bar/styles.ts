@@ -23,7 +23,7 @@ const styles = {
     color: theme.palette.default.primary,
     boxShadow: 'none',
     fontFamily: 'Comfortaa',
-    '& MuiPaper-root MuiAppBar-root': {},
+    cursor: 'pointer',
   }),
   Search: styled(TextField)({
     flexGrow: 1,

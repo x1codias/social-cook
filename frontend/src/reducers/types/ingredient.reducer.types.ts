@@ -2,10 +2,11 @@ import {
   CREATE_INGREDIENT,
   GET_INGREDIENTS,
 } from '../../actions/types';
+import { Ingredient } from '../../utils/types/Ingredient';
 
 export interface IngredientState {
   scrollData: {
-    ingredients: string[] | [];
+    ingredients: Ingredient[] | [];
     total: number;
     limit: number;
     offset: number;
@@ -14,7 +15,7 @@ export interface IngredientState {
 }
 
 export interface IngredientPayload {
-  ingredients: string[] | [];
+  ingredients: Ingredient[] | [];
   total: number;
 }
 
@@ -25,7 +26,7 @@ interface GetIngredientsAction {
 
 interface CreateIngredientAction {
   type: typeof CREATE_INGREDIENT;
-  payload: { ingredient: string };
+  payload: { ingredient: Ingredient };
 }
 
 export type IngredientActionTypes =

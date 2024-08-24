@@ -13,10 +13,17 @@ export enum RecipeCategories {
   desserts = 'desserts',
 }
 
+export enum Difficulties {
+  easy = 'easy',
+  medium = 'medium',
+  hard = 'hard',
+}
+
 export type RecipeType = {
   id?: number;
   title: string;
   description?: string;
+  difficulty: Difficulties;
   category: RecipeCategories;
   tags?: string[];
   photos?: string[];
@@ -41,6 +48,15 @@ const Recipe = sequelize.define<Model<RecipeType>>(
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    difficulty: {
+      type: DataTypes.ENUM(
+        ...Object.values(RecipeCategories)
+      ),
+      allowNull: false,
       validate: {
         notEmpty: true,
       },
