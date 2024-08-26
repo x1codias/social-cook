@@ -1,12 +1,12 @@
 import { Button, TextField } from '@mui/material';
 import { styled } from '@mui/system';
-import theme from '../../../themes/global.theme';
+import theme from '../../../../../themes/global.theme';
 
 const styles = {
-  InputField: styled(TextField)(({ maxWidth, height }) => ({
+  InputField: styled(TextField)(({ minWidth, height }) => ({
     '& .MuiInputBase-root': {
       fontWeight: 500,
-      maxWidth: `${maxWidth}px`,
+      minWidth: minWidth || '450px',
       padding: '6px 10px',
       borderRadius: '6px',
       fontSize: '16px',
@@ -29,8 +29,11 @@ const styles = {
       },
     },
   })),
-  DefaultButton: styled(Button)({
-    backgroundColor: theme.palette.default.primary,
+  DefaultButton: styled(Button)(({ variant }) => ({
+    backgroundColor:
+      variant === 'outlined'
+        ? theme.palette.background?.paper
+        : theme.palette.default.primary,
     cursor: 'pointer',
     padding: '8px 14px',
     fontSize: '16px',
@@ -38,13 +41,22 @@ const styles = {
     width: 'fit-content',
     display: 'flex',
     alignItems: 'center',
-    color: theme.palette.customText?.button,
+    color:
+      variant === 'outlined'
+        ? theme.palette.default.primary
+        : theme.palette.customText?.button,
     textTransform: 'none',
     boxShadow: 'none',
+    border: `1px solid ${theme.palette.default.primary}`,
     '&:hover': {
-      backgroundColor: theme.palette.default.dark,
+      color: theme.palette.customText?.button,
+      border: `1px solid ${theme.palette.default.primary}`,
+      backgroundColor:
+        variant === 'outlined'
+          ? theme.palette.default.primary
+          : theme.palette.default.dark,
     },
-  }),
+  })),
 };
 
 export default styles;

@@ -18,6 +18,7 @@ import { IngredientItem } from '../../../utils/types/Ingredient';
 import IngredientsContainer from './components/ingredients-container';
 import PreparationContainer from './components/preparation-container';
 import DefaultSelect from '../../../utils/components/select';
+import { Preparation } from '../../../utils/types/Preparation';
 
 const CreateRecipe: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +34,7 @@ const CreateRecipe: React.FC = (): JSX.Element => {
   const [ingredientsData, setIngredientsData] =
     React.useState<IngredientItem[]>([]);
   const [preparationData, setPreparationData] =
-    React.useState(null);
+    React.useState<Preparation>({ video: '', steps: [] });
 
   const handleRecipeDataChange = (
     valueToChange: string,
@@ -52,7 +53,7 @@ const CreateRecipe: React.FC = (): JSX.Element => {
     setRecipeData(updatedRecipeData);
   };
 
-  const { InputField, SelectField } = styles;
+  const { InputField } = styles;
 
   const categories = Object.values(RecipeCategories);
   const difficulties = Object.values(Difficulties);
