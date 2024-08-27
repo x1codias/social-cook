@@ -9,6 +9,7 @@ import styles from './styles';
 import foodImage from '../../../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import { useState } from 'react';
 import { PreparationStep } from '../../../../../utils/types/Preparation';
+import ImageInput from '../../../../../utils/components/image-input';
 
 type PreparationStepDialogProps = {
   edit?: boolean;
@@ -91,19 +92,7 @@ const PreparationStepDialog: React.FC<
             paddingBottom: 0,
           }}
         >
-          <div
-            style={{
-              flexGrow: 1,
-              width: '400px',
-              height: '370px',
-              backgroundImage: `url(${foodImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-            }}
-          />
+          <ImageInput onImageChanged={file => {}} />
           <InputField
             multiline
             placeholder={'Description'}

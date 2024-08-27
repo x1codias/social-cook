@@ -3,10 +3,9 @@ import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 
 const styles = {
-  InputField: styled(TextField)(({ maxWidth, height }) => ({
+  InputField: styled(TextField)(({ height }) => ({
     '& .MuiInputBase-root': {
       fontWeight: 500,
-      maxWidth: `${maxWidth}px`,
       padding: '6px 10px',
       borderRadius: '6px',
       fontSize: '16px',

@@ -13,24 +13,27 @@ import {
 import Masonry, {
   ResponsiveMasonry,
 } from 'react-responsive-masonry';
-import foodImage from '../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import { IngredientItem } from '../../../utils/types/Ingredient';
 import IngredientsContainer from './components/ingredients-container';
 import PreparationContainer from './components/preparation-container';
 import DefaultSelect from '../../../utils/components/select';
 import { Preparation } from '../../../utils/types/Preparation';
+import { times } from 'lodash';
+import { RecipeInput } from './types';
+import ImageInput from '../../../utils/components/image-input';
 
 const CreateRecipe: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
-  const [recipeData, setRecipeData] = React.useState({
-    title: '',
-    hours: undefined,
-    minutes: undefined,
-    category: '',
-    difficulty: '',
-    description: '',
-    images: [],
-  });
+  const [recipeData, setRecipeData] =
+    React.useState<RecipeInput>({
+      title: '',
+      hours: undefined,
+      minutes: undefined,
+      category: '',
+      difficulty: '',
+      description: '',
+      images: [],
+    });
   const [ingredientsData, setIngredientsData] =
     React.useState<IngredientItem[]>([]);
   const [preparationData, setPreparationData] =
@@ -50,6 +53,7 @@ const CreateRecipe: React.FC = (): JSX.Element => {
       ...copyRecipeData,
       [valueToChange]: event ? event.target.value : val,
     };
+
     setRecipeData(updatedRecipeData);
   };
 
@@ -57,9 +61,10 @@ const CreateRecipe: React.FC = (): JSX.Element => {
 
   const categories = Object.values(RecipeCategories);
   const difficulties = Object.values(Difficulties);
-  const imageCards = [...Array(6)].map(() => ({
-    url: 'url',
-  }));
+  const imageCards = times(
+    6,
+    index => recipeData.images[index] || ''
+  );
 
   return (
     <div
@@ -80,7 +85,7 @@ const CreateRecipe: React.FC = (): JSX.Element => {
         placeholder={'Title'}
         style={{ minWidth: '240px' }}
         value={recipeData.title}
-        onChange={e => handleRecipeDataChange(e, 'title')}
+        onChange={e => handleRecipeDataChange('title', e)}
       />
       <div
         style={{
@@ -149,6 +154,15 @@ const CreateRecipe: React.FC = (): JSX.Element => {
           minWidth={170}
         />
       </div>
+      <InputField
+        placeholder={'Description'}
+        type={'text'}
+        multiline
+        style={{ width: '100%' }}
+        height={'100px'}
+        value={recipeData.hours}
+        onChange={e => handleRecipeDataChange('hours', e)}
+      />
       <ResponsiveMasonry
         style={{
           width: '100%',
@@ -161,21 +175,8 @@ const CreateRecipe: React.FC = (): JSX.Element => {
         }}
       >
         <Masonry gutter="14px">
-          {imageCards.map((imageCard, index) => (
-            <div
-              key={index}
-              style={{
-                flexGrow: 1,
-                width: '100%',
-                height: '370px',
-                backgroundImage: `url(${foodImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '8px',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-              }}
-            ></div>
+          {imageCards.map(_stepImage => (
+            <ImageInput onImageChanged={file => file} />
           ))}
         </Masonry>
       </ResponsiveMasonry>
