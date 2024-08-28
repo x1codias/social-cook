@@ -1,19 +1,36 @@
-// import { createSelector } from 'reselect';
+import { createSelector } from 'reselect';
 import { RootState } from '../store';
 
-export const selectUnitScrollData = (state: RootState) =>
+const selectUnitScrollData = (state: RootState) =>
   state.unit.scrollData;
-export const selectIngredientScrollData = (
-  state: RootState
-) => state.ingredient.scrollData;
+const selectIngredientScrollData = (state: RootState) =>
+  state.ingredient.scrollData;
 
 // do these for example when it comes to searches
-// export const getUnitScrollData = createSelector(
-//   [selectUnitScrollData],
-//   scrollData => scrollData
-// );
+export const filteredUnitScrollData = (
+  searchTerm: string
+) =>
+  createSelector([selectUnitScrollData], scrollData => ({
+    ...scrollData,
+    units: scrollData.units.filter(unit =>
+      unit.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    ),
+  }));
 
-// export const getIngredientScrollData = createSelector(
-//   [selectIngredientScrollData],
-//   scrollData => scrollData
-// );
+export const filteredIngredientScrollData = (
+  searchTerm: string
+) =>
+  createSelector(
+    [selectIngredientScrollData],
+    scrollData => ({
+      ...scrollData,
+      ingredients: scrollData.ingredients.filter(
+        ingredient =>
+          ingredient.name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+      ),
+    })
+  );

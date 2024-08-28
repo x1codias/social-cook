@@ -59,6 +59,7 @@ const IngredientsContainer: React.FC<
       </Typography>
       {ingredientsData.map((ingredient, index) => (
         <IngredientsItem
+          key={index}
           ingredient={ingredient}
           ingIndex={index}
           ingredientsData={ingredientsData}

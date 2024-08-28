@@ -14,8 +14,8 @@ import { useCallback, useEffect, useState } from 'react';
 import DefaultSelect from '../../../../../utils/components/select';
 import { Unit } from '../../../../../utils/types/Unit';
 import {
-  selectIngredientScrollData,
-  selectUnitScrollData,
+  filteredIngredientScrollData,
+  filteredUnitScrollData,
 } from '../../../../../utils/memoized-selectors';
 
 type IngredientsItemProps = {
@@ -41,9 +41,14 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
     setIngredientsData,
   } = props;
   const { InputField } = styles;
-  const unitScrollData = useSelector(selectUnitScrollData);
+  const [searchValUnit, setSearchValUnit] = useState('');
+  const [searchValIngredient, setSearchValIngredient] =
+    useState('');
+  const unitScrollData = useSelector(
+    filteredUnitScrollData(searchValUnit)
+  );
   const ingredientScrollData = useSelector(
-    selectIngredientScrollData
+    filteredIngredientScrollData(searchValIngredient)
   );
 
   const handleDeleteIngredient = () => {
@@ -122,13 +127,16 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
       <DefaultSelect<Ingredient>
         value={ingredient.name}
         options={ingredientScrollData.ingredients}
-        onChange={val =>
-          handleOnDataChange(val, 'ingredient')
+        onChange={(val, valToChange) =>
+          valToChange === 'value'
+            ? handleOnDataChange(val, 'ingredient')
+            : setSearchValIngredient(val)
         }
         label={'Choose an ingredient'}
         minWidth={170}
         onOpen={() => setSelectOpened('ingredient')}
         onClose={() => setSelectOpened('')}
+        search
       />
       <InputField
         placeholder={'Quantity'}
@@ -142,11 +150,16 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
       <DefaultSelect<Unit>
         value={ingredient.unit}
         options={unitScrollData.units}
-        onChange={val => handleOnDataChange(val, 'unit')}
+        onChange={(val, valToChange) =>
+          valToChange === 'value'
+            ? handleOnDataChange(val, 'unit')
+            : setSearchValUnit(val)
+        }
         label={'Choose an unit'}
         minWidth={170}
         onOpen={() => setSelectOpened('unit')}
         onClose={() => setSelectOpened('')}
+        search
       />
       <Delete
         style={{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store';
 import styles from './styles';
@@ -24,8 +24,8 @@ import ImageInput from '../../../utils/components/image-input';
 
 const CreateRecipe: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
-  const [recipeData, setRecipeData] =
-    React.useState<RecipeInput>({
+  const [recipeData, setRecipeData] = useState<RecipeInput>(
+    {
       title: '',
       hours: undefined,
       minutes: undefined,
@@ -33,11 +33,14 @@ const CreateRecipe: React.FC = (): JSX.Element => {
       difficulty: '',
       description: '',
       images: [],
-    });
-  const [ingredientsData, setIngredientsData] =
-    React.useState<IngredientItem[]>([]);
+    }
+  );
+  const [ingredientsData, setIngredientsData] = useState<
+    IngredientItem[]
+  >([]);
   const [preparationData, setPreparationData] =
-    React.useState<Preparation>({ video: '', steps: [] });
+    useState<Preparation>({ video: '', steps: [] });
+  const [searchVal, setSearchVal] = useState('');
 
   const handleRecipeDataChange = (
     valueToChange: string,
@@ -65,6 +68,14 @@ const CreateRecipe: React.FC = (): JSX.Element => {
     6,
     index => recipeData.images[index] || ''
   );
+
+  const filteredCategories = (searchVal: string = '') => {
+    return categories.filter(category =>
+      category
+        .toLowerCase()
+        .includes(searchVal.toLowerCase())
+    );
+  };
 
   return (
     <div
@@ -129,16 +140,19 @@ const CreateRecipe: React.FC = (): JSX.Element => {
         </div>
         <DefaultSelect<string>
           value={recipeData.category}
-          options={categories}
-          onChange={val =>
-            handleRecipeDataChange(
-              'category',
-              undefined,
-              val
-            )
+          options={filteredCategories(searchVal)}
+          onChange={(val, valToChange) =>
+            valToChange === 'value'
+              ? handleRecipeDataChange(
+                  'category',
+                  undefined,
+                  val
+                )
+              : setSearchVal(val)
           }
           label={'Choose a category'}
           minWidth={170}
+          search
         />
         <DefaultSelect<string>
           value={recipeData.difficulty}
@@ -158,8 +172,8 @@ const CreateRecipe: React.FC = (): JSX.Element => {
         placeholder={'Description'}
         type={'text'}
         multiline
-        style={{ width: '100%' }}
         height={'100px'}
+        minWidth={'1200px'}
         value={recipeData.hours}
         onChange={e => handleRecipeDataChange('hours', e)}
       />
@@ -175,8 +189,11 @@ const CreateRecipe: React.FC = (): JSX.Element => {
         }}
       >
         <Masonry gutter="14px">
-          {imageCards.map(_stepImage => (
-            <ImageInput onImageChanged={file => file} />
+          {imageCards.map((_stepImage, index) => (
+            <ImageInput
+              key={index}
+              onImageChanged={file => file}
+            />
           ))}
         </Masonry>
       </ResponsiveMasonry>

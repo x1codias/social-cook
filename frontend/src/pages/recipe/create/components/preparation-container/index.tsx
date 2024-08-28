@@ -99,6 +99,7 @@ const PreparationContainer: React.FC<
             <Masonry gutter="14px">
               {preparationData.steps.map((step, index) => (
                 <PreparationCard
+                  key={index}
                   stepIndex={index}
                   step={step}
                   onDelete={() => handleDeleteStep(index)}
