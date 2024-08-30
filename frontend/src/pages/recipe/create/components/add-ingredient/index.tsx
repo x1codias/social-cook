@@ -5,12 +5,13 @@ import {
   DialogTitle,
   Typography,
 } from '@mui/material';
-import styles from '../../styles';
 import theme from '../../../../../themes/global.theme';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../../../store';
 import { useState } from 'react';
 import { createIngredient } from '../../../../../actions/ingredient.actions';
+import DefaultButton from '../../../../../utils/components/button/button';
+import DefaultInput from '../../../../../utils/components/input/input';
 
 type AddIngredientProps = {
   openAddModal: boolean;
@@ -22,7 +23,6 @@ const AddIngredient: React.FC<AddIngredientProps> = ({
   setOpenAddModal,
 }): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
-  const { InputField, DefaultButton } = styles;
   const [newIngredientName, setNewIngredientName] =
     useState('');
 
@@ -54,7 +54,8 @@ const AddIngredient: React.FC<AddIngredientProps> = ({
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <InputField
+        <DefaultInput
+          type={'text'}
           value={newIngredientName}
           placeholder={'Name'}
           minWidth={'340px'}
@@ -68,9 +69,8 @@ const AddIngredient: React.FC<AddIngredientProps> = ({
       >
         <DefaultButton
           onClick={() => onCLickAddIngredient()}
-        >
-          {'Add'}
-        </DefaultButton>
+          label={'Add'}
+        />
       </DialogActions>
     </Dialog>
   );

@@ -4,7 +4,6 @@ import {
   IngredientItem,
 } from '../../../../../utils/types/Ingredient';
 import { Delete } from '@mui/icons-material';
-import styles from './styles';
 import { useSelector } from 'react-redux';
 import { AppDispatch } from '../../../../../store';
 import { useDispatch } from 'react-redux';
@@ -18,6 +17,7 @@ import {
   filteredUnitScrollData,
 } from '../../../../../utils/memoized-selectors';
 import AddIngredient from '../add-ingredient';
+import DefaultInput from '../../../../../utils/components/input/input';
 
 type IngredientsItemProps = {
   ingredientsData: IngredientItem[];
@@ -41,7 +41,6 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
     ingIndex,
     setIngredientsData,
   } = props;
-  const { InputField, DefaultButton } = styles;
   const [openAddModal, setOpenAddModal] = useState(false);
   const [searchValUnit, setSearchValUnit] = useState('');
   const [searchValIngredient, setSearchValIngredient] =
@@ -143,15 +142,21 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
           addBtnLbl={'Add Ingredient'}
           onAddClick={() => setOpenAddModal(true)}
         />
-        <InputField
+        <DefaultInput
           placeholder={'Quantity'}
           type={'number'}
           InputProps={{
             inputProps: { min: 1 },
           }}
-          maxWidth={110}
+          maxWidth={'110px'}
           minWidth={'80px'}
           value={ingredient.quantity}
+          onChange={e =>
+            handleOnDataChange(
+              parseInt(e.target.value),
+              'quantity'
+            )
+          }
         />
         <DefaultSelect<Unit>
           value={ingredient.unit}
@@ -169,7 +174,7 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
         />
         <Delete
           style={{
-            fill: theme.palette.error?.main,
+            fill: theme.palette.customError.main,
             alignSelf: 'center',
             cursor: 'pointer',
             fontSize: '24px',

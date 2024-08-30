@@ -1,8 +1,4 @@
-import React, {
-  KeyboardEvent,
-  useEffect,
-  useState,
-} from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import styles from './styles';
 import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
 import { Divider, InputAdornment } from '@mui/material';
@@ -16,9 +12,9 @@ import {
   googleAuthentication,
 } from '../../../actions/auth.actions';
 import { AppDispatch } from '../../../store';
-import FacebookLogin, {
-  FacebookLoginClient,
-} from '@greatsumini/react-facebook-login';
+import { FacebookLoginClient } from '@greatsumini/react-facebook-login';
+import DefaultButton from '../button/button';
+import DefaultInput from '../input/input';
 
 type AuthCardProps = {
   handleSubmit: (
@@ -39,7 +35,7 @@ type AuthCardProps = {
   setFormData: (formData: any) => void;
   inputs: {
     placeholder: string;
-    type: string;
+    type: 'text' | 'password' | 'email';
     value: string;
     name: string;
   }[];
@@ -53,8 +49,6 @@ const AuthCard: React.FC<AuthCardProps> = (
   const {
     CardContainer,
     CardTitle,
-    InputField,
-    ButtonContained,
     ButtonText,
     ButtonIcon,
     PasswordButton,
@@ -167,8 +161,8 @@ const AuthCard: React.FC<AuthCardProps> = (
           }}
         >
           {inputs.map(input => (
-            <InputField
-              width={420}
+            <DefaultInput
+              minWidth={'420px'}
               key={input.name}
               name={input.name}
               type={
@@ -184,7 +178,7 @@ const AuthCard: React.FC<AuthCardProps> = (
               InputProps={{
                 endAdornment: input.name
                   .toLowerCase()
-                  .includes('password') && (
+                  .includes('password') ? (
                   <InputAdornment position="end">
                     <PasswordButton
                       variant={'text'}
@@ -197,7 +191,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                         : 'Show'}
                     </PasswordButton>
                   </InputAdornment>
-                ),
+                ) : undefined,
               }}
               onKeyDown={handleKeyDown}
               onChange={handleFormDataChange}
@@ -212,7 +206,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                 justifyContent: 'space-between',
               }}
             >
-              <InputField
+              {/* <DefaultInput
                 width={120}
                 type={'file'}
                 name={'photo'}
@@ -225,9 +219,9 @@ const AuthCard: React.FC<AuthCardProps> = (
                     accept: 'image/*', // Optional: Limit to image files
                   },
                 }}
-              />
-              <InputField
-                width={290}
+              /> */}
+              <DefaultInput
+                minWidth={'290px'}
                 type={'text'}
                 name={'biography'}
                 multiline
@@ -239,9 +233,12 @@ const AuthCard: React.FC<AuthCardProps> = (
               />
             </div>
           )}
-          <ButtonContained type="submit">{`Sign ${
-            inputs.length > 2 ? 'Up' : 'In'
-          }`}</ButtonContained>
+          <DefaultButton
+            type={'submit'}
+            label={`Sign ${
+              inputs.length > 2 ? 'Up' : 'In'
+            }`}
+          />
         </form>
         <div
           style={{

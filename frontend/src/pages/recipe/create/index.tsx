@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
-import styles from './styles';
 import {
   SelectChangeEvent,
   Typography,
@@ -9,7 +8,6 @@ import {
 import {
   Difficulties,
   RecipeCategories,
-  RecipeInput,
 } from '../../../utils/types/Recipe';
 import Masonry, {
   ResponsiveMasonry,
@@ -23,6 +21,8 @@ import { times } from 'lodash';
 import ImageInput from '../../../utils/components/image-input';
 import { createRecipe } from '../../../actions/recipe.actions';
 import { useSelector } from 'react-redux';
+import DefaultButton from '../../../utils/components/button/button';
+import DefaultInput from '../../../utils/components/input/input';
 
 const CreateRecipe: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
@@ -91,8 +91,6 @@ const CreateRecipe: React.FC = (): JSX.Element => {
     setRecipeData(updatedRecipeData);
   };
 
-  const { InputField, DefaultButton } = styles;
-
   const categories = Object.values(RecipeCategories);
   const difficulties = Object.values(Difficulties);
   const imageCards = times(
@@ -153,9 +151,10 @@ const CreateRecipe: React.FC = (): JSX.Element => {
       }}
       onSubmit={e => handleCreateRecipe(e)}
     >
-      <InputField
+      <DefaultInput
+        type={'text'}
         placeholder={'Title'}
-        style={{ minWidth: '240px' }}
+        minWidth={'240px'}
         value={recipeData.title}
         onChange={e => handleRecipeDataChange('title', e)}
       />
@@ -176,10 +175,10 @@ const CreateRecipe: React.FC = (): JSX.Element => {
             width: 'fit-content',
           }}
         >
-          <InputField
+          <DefaultInput
             placeholder={'Hours'}
             type={'number'}
-            style={{ minWidth: '80px' }}
+            minWidth={'80px'}
             InputProps={{ inputProps: { min: 0, max: 99 } }}
             value={recipeData.hours}
             onChange={e =>
@@ -187,10 +186,10 @@ const CreateRecipe: React.FC = (): JSX.Element => {
             }
           />
           <Typography fontSize={16}>{'H'}</Typography>
-          <InputField
+          <DefaultInput
             placeholder={'Minutes'}
             type={'number'}
-            style={{ minWidth: '100px' }}
+            minWidth={'100px'}
             InputProps={{ inputProps: { min: 0, max: 60 } }}
             value={recipeData.minutes}
             onChange={e =>
@@ -229,7 +228,7 @@ const CreateRecipe: React.FC = (): JSX.Element => {
           minWidth={170}
         />
       </div>
-      <InputField
+      <DefaultInput
         placeholder={'Description'}
         type={'text'}
         multiline
@@ -301,26 +300,24 @@ const CreateRecipe: React.FC = (): JSX.Element => {
         }}
       >
         <DefaultButton
-          onClick={() => {
-            setRecipeData({
-              title: '',
-              hours: undefined,
-              minutes: undefined,
-              category: '',
-              difficulty: '',
-              description: '',
-              images: [],
-            });
-            setIngredientsData([]);
-            setPreparationData({ video: '', steps: [] });
-          }}
+          // onClick={() => {
+          //   setRecipeData({
+          //     title: '',
+          //     hours: undefined,
+          //     minutes: undefined,
+          //     category: '',
+          //     difficulty: '',
+          //     description: '',
+          //     images: [],
+          //   });
+          //   setIngredientsData([]);
+          //   setPreparationData({ video: '', steps: [] });
+          // }}
           variant={'outlined'}
-        >
-          {'Cancel'}
-        </DefaultButton>
-        <DefaultButton type={'submit'}>
-          {'Save'}
-        </DefaultButton>
+          label={'Cancel'}
+          type={'reset'}
+        />
+        <DefaultButton type={'submit'} label={'Save'} />
       </div>
     </form>
   );

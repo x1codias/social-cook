@@ -117,7 +117,7 @@ const PreparationCard: React.FC<PreparationCardProps> = (
               <IconButton onClick={onDelete}>
                 <Delete
                   style={{
-                    fill: theme.palette.error?.main,
+                    fill: theme.palette.customError.main,
                   }}
                   fontSize={'large'}
                 />

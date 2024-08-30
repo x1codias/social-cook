@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Select } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 

@@ -9,12 +9,16 @@ type NewPalleteOptions = {
   default: Partial<PaletteColorOptions> & {
     primary: string;
     secondary: string;
+    light: string;
+    dark: string;
   };
   customBackground: Partial<TypeBackground> & {
     input: string;
   };
   customText: { button: string } & Partial<TypeText>;
-  error: Partial<PaletteColorOptions>;
+  customError: Partial<PaletteColorOptions> & {
+    main: string;
+  };
 };
 
 // Merge the new palette options with the existing PaletteOptions
@@ -52,7 +56,7 @@ const theme = createTheme({
       disabled: '',
       button: '#FFFFFF',
     },
-    error: {
+    customError: {
       main: '#FF0000',
     },
   },

@@ -2,8 +2,8 @@ import { Typography } from '@mui/material';
 import theme from '../../../../../themes/global.theme';
 import { IngredientItem } from '../../../../../utils/types/Ingredient';
 import { Add } from '@mui/icons-material';
-import styles from './styles';
 import IngredientsItem from '../ingredient-item';
+import DefaultButton from '../../../../../utils/components/button/button';
 
 type IngredientsContainerProps = {
   ingredientsData: IngredientItem[];
@@ -16,7 +16,6 @@ const IngredientsContainer: React.FC<
   IngredientsContainerProps
 > = (props): JSX.Element => {
   const { ingredientsData, setIngredientsData } = props;
-  const { DefaultButton } = styles;
 
   const handleAddIngredient = () => {
     const ingredientsDataCopy = [...ingredientsData];
@@ -69,18 +68,9 @@ const IngredientsContainer: React.FC<
       <DefaultButton
         variant={'contained'}
         onClick={handleAddIngredient}
-      >
-        <Add fontSize={'large'} />
-        <Typography
-          style={{
-            fontFamily: 'Fredoka',
-            fontSize: '16px',
-            textAlign: 'center',
-          }}
-        >
-          {'Add Ingredient'}
-        </Typography>
-      </DefaultButton>
+        icon={<Add fontSize={'large'} />}
+        label={'Add Ingredient'}
+      />
     </div>
   );
 };

@@ -1,8 +1,4 @@
-import {
-  Divider,
-  MenuItem,
-  Typography,
-} from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { Account } from '../../../../types/Account';
 import { useNavigate } from 'react-router';

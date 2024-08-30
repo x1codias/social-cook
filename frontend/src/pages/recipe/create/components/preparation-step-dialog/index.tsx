@@ -5,10 +5,11 @@ import {
   DialogTitle,
 } from '@mui/material';
 import theme from '../../../../../themes/global.theme';
-import styles from './styles';
 import { useState } from 'react';
 import { PreparationStep } from '../../../../../utils/types/Preparation';
 import ImageInput from '../../../../../utils/components/image-input';
+import DefaultButton from '../../../../../utils/components/button/button';
+import DefaultInput from '../../../../../utils/components/input/input';
 
 type PreparationStepDialogProps = {
   edit?: boolean;
@@ -22,7 +23,6 @@ type PreparationStepDialogProps = {
 const PreparationStepDialog: React.FC<
   PreparationStepDialogProps
 > = (props): JSX.Element => {
-  const { InputField, DefaultButton } = styles;
   const {
     edit,
     step,
@@ -91,12 +91,16 @@ const PreparationStepDialog: React.FC<
             paddingBottom: 0,
           }}
         >
-          <ImageInput onImageChanged={file => {}} />
-          <InputField
+          <ImageInput
+            onImageChanged={file => {}}
+            onDeleteImage={() => {}}
+          />
+          <DefaultInput
+            type={'text'}
             multiline
             placeholder={'Description'}
             height={'100px'}
-            minWidth={450}
+            minWidth={'450px'}
             value={stepData.description}
             onChange={e =>
               handleStepDataChange(
@@ -114,9 +118,8 @@ const PreparationStepDialog: React.FC<
               setOpenPrepModal(false);
             }}
             variant={'outlined'}
-          >
-            {'Cancel'}
-          </DefaultButton>
+            label={'Cancel'}
+          />
           <DefaultButton
             onClick={() => {
               onSaveStep(stepData);
@@ -124,9 +127,8 @@ const PreparationStepDialog: React.FC<
                 setStepData({ description: '', photo: '' });
               setOpenPrepModal(false);
             }}
-          >
-            {'Save'}
-          </DefaultButton>
+            label={'Save'}
+          />
         </DialogActions>
       </div>
     </Dialog>

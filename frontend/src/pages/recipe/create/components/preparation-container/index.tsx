@@ -1,6 +1,5 @@
 import { Typography } from '@mui/material';
 import theme from '../../../../../themes/global.theme';
-import styles from './styles';
 import { Add } from '@mui/icons-material';
 import { useState } from 'react';
 import {
@@ -12,6 +11,7 @@ import Masonry, {
   ResponsiveMasonry,
 } from 'react-responsive-masonry';
 import PreparationCard from '../preparation-card';
+import DefaultButton from '../../../../../utils/components/button/button';
 
 type PreparationContainerProps = {
   preparationData: Preparation;
@@ -22,7 +22,6 @@ const PreparationContainer: React.FC<
   PreparationContainerProps
 > = (props): JSX.Element => {
   const { preparationData, setPreparationData } = props;
-  const { DefaultButton } = styles;
   const [openPrepModal, setOpenPrepModal] = useState(false);
 
   const handleAddPreparationStep = (
@@ -114,18 +113,9 @@ const PreparationContainer: React.FC<
         <DefaultButton
           variant={'contained'}
           onClick={() => setOpenPrepModal(true)}
-        >
-          <Add fontSize={'large'} />
-          <Typography
-            style={{
-              fontFamily: 'Fredoka',
-              fontSize: '16px',
-              textAlign: 'center',
-            }}
-          >
-            {'Add Step'}
-          </Typography>
-        </DefaultButton>
+          icon={<Add fontSize={'large'} />}
+          label={'Add Step'}
+        />
       </div>
       <PreparationStepDialog
         newStepIndex={preparationData.steps.length + 1}
