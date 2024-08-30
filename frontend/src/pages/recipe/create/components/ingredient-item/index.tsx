@@ -17,6 +17,7 @@ import {
   filteredIngredientScrollData,
   filteredUnitScrollData,
 } from '../../../../../utils/memoized-selectors';
+import AddIngredient from '../add-ingredient';
 
 type IngredientsItemProps = {
   ingredientsData: IngredientItem[];
@@ -40,7 +41,8 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
     ingIndex,
     setIngredientsData,
   } = props;
-  const { InputField } = styles;
+  const { InputField, DefaultButton } = styles;
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [searchValUnit, setSearchValUnit] = useState('');
   const [searchValIngredient, setSearchValIngredient] =
     useState('');
@@ -108,70 +110,79 @@ const IngredientsItem: React.FC<IngredientsItemProps> = (
   ]);
 
   const handleOnDataChange = (
-    value: string,
+    value: number,
     valueToChange: string
   ) => {
     const ingredientsDataCopy = [...ingredientsData];
     ingredientsDataCopy[ingIndex] = {
       ...ingredientsDataCopy[ingIndex],
-      [valueToChange]: parseInt(value),
+      [valueToChange]: value,
     };
     setIngredientsData(ingredientsDataCopy);
   };
 
   return (
-    <div
-      key={ingredient.name}
-      style={{ display: 'flex', gap: '8px' }}
-    >
-      <DefaultSelect<Ingredient>
-        value={ingredient.name}
-        options={ingredientScrollData.ingredients}
-        onChange={(val, valToChange) =>
-          valToChange === 'value'
-            ? handleOnDataChange(val, 'ingredient')
-            : setSearchValIngredient(val)
-        }
-        label={'Choose an ingredient'}
-        minWidth={170}
-        onOpen={() => setSelectOpened('ingredient')}
-        onClose={() => setSelectOpened('')}
-        search
+    <>
+      <div
+        key={ingredient.name}
+        style={{ display: 'flex', gap: '8px' }}
+      >
+        <DefaultSelect<Ingredient>
+          value={ingredient.name}
+          options={ingredientScrollData.ingredients}
+          onChange={(val, valToChange) =>
+            valToChange === 'value'
+              ? handleOnDataChange(val as number, 'name')
+              : setSearchValIngredient(val as string)
+          }
+          label={'Choose an ingredient'}
+          minWidth={170}
+          onOpen={() => setSelectOpened('ingredient')}
+          onClose={() => setSelectOpened('')}
+          search
+          addBtnLbl={'Add Ingredient'}
+          onAddClick={() => setOpenAddModal(true)}
+        />
+        <InputField
+          placeholder={'Quantity'}
+          type={'number'}
+          InputProps={{
+            inputProps: { min: 1 },
+          }}
+          maxWidth={110}
+          minWidth={'80px'}
+          value={ingredient.quantity}
+        />
+        <DefaultSelect<Unit>
+          value={ingredient.unit}
+          options={unitScrollData.units}
+          onChange={(val, valToChange) =>
+            valToChange === 'value'
+              ? handleOnDataChange(val as number, 'unit')
+              : setSearchValUnit(val as string)
+          }
+          label={'Choose an unit'}
+          minWidth={170}
+          onOpen={() => setSelectOpened('unit')}
+          onClose={() => setSelectOpened('')}
+          search
+        />
+        <Delete
+          style={{
+            fill: theme.palette.error?.main,
+            alignSelf: 'center',
+            cursor: 'pointer',
+            fontSize: '24px',
+          }}
+          fontSize={'large'}
+          onClick={() => handleDeleteIngredient()}
+        />
+      </div>
+      <AddIngredient
+        openAddModal={openAddModal}
+        setOpenAddModal={setOpenAddModal}
       />
-      <InputField
-        placeholder={'Quantity'}
-        type={'number'}
-        InputProps={{
-          inputProps: { min: 1 },
-        }}
-        maxWidth={110}
-        value={ingredient.quantity}
-      />
-      <DefaultSelect<Unit>
-        value={ingredient.unit}
-        options={unitScrollData.units}
-        onChange={(val, valToChange) =>
-          valToChange === 'value'
-            ? handleOnDataChange(val, 'unit')
-            : setSearchValUnit(val)
-        }
-        label={'Choose an unit'}
-        minWidth={170}
-        onOpen={() => setSelectOpened('unit')}
-        onClose={() => setSelectOpened('')}
-        search
-      />
-      <Delete
-        style={{
-          fill: theme.palette.error?.main,
-          alignSelf: 'center',
-          cursor: 'pointer',
-          fontSize: '24px',
-        }}
-        fontSize={'large'}
-        onClick={() => handleDeleteIngredient()}
-      />
-    </div>
+    </>
   );
 };
 

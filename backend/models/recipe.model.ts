@@ -22,6 +22,7 @@ export enum Difficulties {
 export type RecipeType = {
   id?: number;
   title: string;
+  duration?: { hours: number; minutes: number };
   description?: string;
   difficulty: Difficulties;
   category: RecipeCategories;
@@ -45,6 +46,10 @@ const Recipe = sequelize.define<Model<RecipeType>>(
         notEmpty: true,
       },
     },
+    duration: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
@@ -53,9 +58,7 @@ const Recipe = sequelize.define<Model<RecipeType>>(
       },
     },
     difficulty: {
-      type: DataTypes.ENUM(
-        ...Object.values(RecipeCategories)
-      ),
+      type: DataTypes.ENUM(...Object.values(Difficulties)),
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -70,10 +73,10 @@ const Recipe = sequelize.define<Model<RecipeType>>(
         notEmpty: true,
       },
     },
-    tags: {
-      type: DataTypes.JSON,
-      allowNull: true,
-    },
+    // tags: {
+    //   type: DataTypes.JSON,
+    //   allowNull: true,
+    // },
     photos: {
       type: DataTypes.JSON,
       allowNull: true,

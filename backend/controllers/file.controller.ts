@@ -1,11 +1,8 @@
-import { existsSync, mkdirSync, readdir } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import multer from 'multer';
-import path from 'path';
-import { errorHandler, Errors } from './error.controller';
-import { Request, Response } from 'express';
 
 // Map MIME types to file extensions
-const mimeTypes = {
+export const mimeTypes = {
   'image/jpeg': '.jpg',
   'image/jpg': '.jpg',
   'image/png': '.png',
@@ -14,8 +11,13 @@ const mimeTypes = {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    const subFoodFolder =
+      file.fieldname === 'images' ? '/' : '/preparation';
+
     const uploadDir = `public/uploads/${
-      req.body.username ? 'users' : 'food'
+      req.body.username
+        ? 'users'
+        : 'food/' + req.body.userId + subFoodFolder
     }`;
 
     if (!existsSync(uploadDir)) {
@@ -27,9 +29,9 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(
       null,
-      Date.now() +
+      (req.body.username || req.body.title) +
         '_' +
-        (req.body.username || req.body.title) +
+        req.files.length +
         mimeTypes[file.mimetype]
     );
   },

@@ -1,4 +1,4 @@
-import { alpha, height, styled, width } from '@mui/system';
+import { alpha, styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 
 const styles = {

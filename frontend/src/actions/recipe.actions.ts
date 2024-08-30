@@ -6,7 +6,7 @@ import {
   GET_RECIPE,
   GET_RECIPES,
 } from './types';
-import { Recipe } from '../utils/types/Recipe';
+import { RecipeInput } from '../utils/types/Recipe';
 
 export const getRecipe =
   (recipeId: number) => async (dispatch: Dispatch) => {
@@ -59,12 +59,12 @@ export const getRecipes =
   };
 
 export const createRecipe =
-  (recipeData: Recipe) => async (dispatch: Dispatch) => {
+  (recipeData: FormData) => async (dispatch: Dispatch) => {
     try {
       const userToken = localStorage.getItem('token');
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/recipes',
-        { ...recipeData },
+        recipeData,
         {
           headers: {
             Authorization: `Bearer ${userToken}`,

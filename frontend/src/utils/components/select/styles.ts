@@ -14,9 +14,10 @@ const styles = {
         borderRadius: '6px',
         fontSize: '16px',
         overflow: 'hidden',
-        color: defaultValue?.length
-          ? theme.palette.customText.primary
-          : theme.palette.customText.secondary,
+        color:
+          defaultValue?.length || defaultValue > 0
+            ? theme.palette.customText.primary
+            : theme.palette.customText.secondary,
       },
       '& .MuiSelect-select': {
         padding: 0,
@@ -31,7 +32,6 @@ const styles = {
       },
     })
   ),
-  SelectMenu: styled(Menu)({}),
   SelectItem: styled(MenuItem)({
     '&.MuiMenuItem-root': {
       textAlign: 'center',
@@ -43,6 +43,18 @@ const styles = {
     '&.MuiMenuItem-root:hover': {
       backgroundColor:
         theme.palette.customBackground.default,
+    },
+    '& .MuiTouchRipple-child': {
+      backgroundColor: theme.palette.default.dark,
+    },
+  }),
+  AddBtn: styled(MenuItem)({
+    '&.MuiMenuItem-root': {
+      padding: '8px',
+      backgroundColor: theme.palette.default.primary,
+    },
+    '&.MuiMenuItem-root:hover': {
+      backgroundColor: theme.palette.default.dark,
     },
     '& .MuiTouchRipple-child': {
       backgroundColor: theme.palette.default.dark,

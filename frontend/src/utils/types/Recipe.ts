@@ -1,4 +1,5 @@
 import { Ingredient } from './Ingredient';
+import { Preparation } from './Preparation';
 
 export enum RecipeCategories {
   pastas = 'pastas',
@@ -26,4 +27,22 @@ export type Recipe = {
   tags?: string[];
   photos?: string[];
   userId: number;
+};
+
+export type RecipeInput = {
+  title: string;
+  duration: {
+    hours: number | undefined;
+    minutes: number | undefined;
+  };
+  category: RecipeCategories | '';
+  difficulty: Difficulties | '';
+  description: string;
+  images: File[];
+  ingredients: {
+    name: number;
+    quantity: number;
+    unit: number;
+  }[];
+  preparation: Preparation;
 };

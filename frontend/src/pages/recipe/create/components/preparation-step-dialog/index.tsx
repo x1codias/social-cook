@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import theme from '../../../../../themes/global.theme';
 import styles from './styles';
-import foodImage from '../../../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import { useState } from 'react';
 import { PreparationStep } from '../../../../../utils/types/Preparation';
 import ImageInput from '../../../../../utils/components/image-input';

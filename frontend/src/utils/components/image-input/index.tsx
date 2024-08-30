@@ -10,16 +10,19 @@ import styles from './styles';
 
 type ImageInputProps = {
   onImageChanged: (file: File) => void;
+  onDeleteImage: (fileName: string) => void;
 };
 
 const ImageInput: React.FC<ImageInputProps> = ({
   onImageChanged,
+  onDeleteImage,
 }): JSX.Element => {
   const { ImageContainer } = styles;
   const [imagePreview, setImagePreview] = useState<
     string | ArrayBuffer | null
   >('');
   const [showEditBtn, setShowEditBtn] = useState(false);
+  const [filename, setFilename] = useState('');
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -32,20 +35,20 @@ const ImageInput: React.FC<ImageInputProps> = ({
         };
 
         reader.readAsDataURL(file);
+        setFilename(file.name);
         onImageChanged(file);
       }
     },
     [onImageChanged]
   );
 
-  const { getRootProps, getInputProps, isDragActive } =
-    useDropzone({
-      onDrop,
-      accept: {
-        'image/*': ['.jpeg', '.jpg', '.png'],
-      },
-      maxFiles: 1,
-    });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png'],
+    },
+    maxFiles: 1,
+  });
 
   return (
     <ImageContainer
@@ -112,6 +115,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           }}
           onClick={e => {
             e.stopPropagation();
+            onDeleteImage(filename);
             setImagePreview('');
             setShowEditBtn(false);
           }}

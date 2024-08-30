@@ -14,7 +14,7 @@ recipeRoutes.get('/recipes', verifyToken, recipes);
 recipeRoutes.post(
   '/recipes',
   verifyToken,
-  upload.array('photos'),
+  upload.array('images'),
   createRecipe
 );
 recipeRoutes.delete(
