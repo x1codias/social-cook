@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import Masonry, {
   ResponsiveMasonry,
 } from 'react-responsive-masonry';
-import FoodCard from '../../utils/components/food-card';
+import FoodCard from './food-card';
 import { Typography } from '@mui/material';
 import theme from '../../themes/global.theme';
 import Footer from '../../utils/components/footer';
@@ -47,7 +47,7 @@ const Feed: React.FC = (): JSX.Element => {
         flexDirection: 'column',
         alignItems: 'center',
         flexGrow: 1,
-        paddingTop: '54px',
+        paddingTop: '64px',
       }}
     >
       <Typography

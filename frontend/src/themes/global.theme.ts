@@ -19,6 +19,21 @@ type NewPalleteOptions = {
   customError: Partial<PaletteColorOptions> & {
     main: string;
   };
+  difficulty: {
+    easy: string;
+    medium: string;
+    hard: string;
+  };
+  categories: {
+    pastas: string;
+    fish: string;
+    meat: string;
+    vegan: string;
+    salads: string;
+    breakfast: string;
+    fingerFood: string;
+    desserts: string;
+  };
 };
 
 // Merge the new palette options with the existing PaletteOptions
@@ -58,6 +73,21 @@ const theme = createTheme({
     },
     customError: {
       main: '#FF0000',
+    },
+    difficulty: {
+      easy: '#508D4E',
+      medium: '#FFAF00',
+      hard: '#EF4040',
+    },
+    categories: {
+      pastas: '#EED2A6',
+      fish: '#9ACFFF',
+      meat: '#F2BFFB',
+      vegan: '#E5F679',
+      salads: '#B4FF9A',
+      breakfast: '#FFCA8C',
+      fingerFood: '#EEC8AF',
+      desserts: '#EEC8AF',
     },
   },
 });

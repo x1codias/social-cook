@@ -8,7 +8,7 @@ type DefaultInputProps = {
   height?: string;
   minWidth?: string;
   maxWidth?: string;
-  onKeyDown: (e: KeyboardEvent<HTMLDivElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLDivElement>) => void;
   onChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;

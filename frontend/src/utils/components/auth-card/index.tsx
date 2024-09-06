@@ -1,7 +1,12 @@
 import React, { KeyboardEvent, useState } from 'react';
 import styles from './styles';
 import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
-import { Divider, InputAdornment } from '@mui/material';
+import {
+  Button,
+  Divider,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
 import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
 import { useNavigate } from 'react-router';
@@ -50,7 +55,6 @@ const AuthCard: React.FC<AuthCardProps> = (
     CardContainer,
     CardTitle,
     ButtonText,
-    ButtonIcon,
     PasswordButton,
   } = styles;
   const dispatch = useDispatch<AppDispatch>();
@@ -234,6 +238,7 @@ const AuthCard: React.FC<AuthCardProps> = (
             </div>
           )}
           <DefaultButton
+            customStyles={{ alignSelf: 'center' }}
             type={'submit'}
             label={`Sign ${
               inputs.length > 2 ? 'Up' : 'In'
@@ -293,7 +298,7 @@ const AuthCard: React.FC<AuthCardProps> = (
             } with:`}
           </p>
           <div>
-            <ButtonIcon onClick={() => googleAuth()}>
+            <IconButton onClick={() => googleAuth()}>
               <FcGoogle
                 style={{
                   background: 'white',
@@ -304,8 +309,8 @@ const AuthCard: React.FC<AuthCardProps> = (
                 }}
                 size={40}
               />
-            </ButtonIcon>
-            <ButtonIcon onClick={e => facebookAuth(e)}>
+            </IconButton>
+            <IconButton onClick={e => facebookAuth(e)}>
               <BsFacebook
                 size={40}
                 style={{
@@ -315,7 +320,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                     '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
                 }}
               />
-            </ButtonIcon>
+            </IconButton>
           </div>
         </div>
       </div>

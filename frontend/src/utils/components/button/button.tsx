@@ -1,7 +1,8 @@
-import { Typography } from '@mui/material';
+import { SxProps, Theme, Typography } from '@mui/material';
 import styles from './styles';
 
 type DefaultButtonProps = {
+  customStyles?: SxProps<Theme> | undefined;
   variant?: 'outlined' | 'contained' | 'text' | undefined;
   type?: 'submit' | 'button' | 'reset' | undefined;
   label?: string;
@@ -12,7 +13,14 @@ type DefaultButtonProps = {
 const DefaultButton: React.FC<DefaultButtonProps> = (
   props
 ): JSX.Element => {
-  const { variant, type, label, icon, onClick } = props;
+  const {
+    variant,
+    type,
+    label,
+    icon,
+    onClick,
+    customStyles,
+  } = props;
   const { DefaultButton } = styles;
 
   return (
@@ -20,6 +28,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
       onClick={onClick}
       variant={variant}
       type={type}
+      sx={customStyles}
     >
       {icon && icon}
       <Typography fontSize={16}>{label}</Typography>
