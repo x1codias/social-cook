@@ -14,14 +14,19 @@ import PreparationCard from '../preparation-card';
 import DefaultButton from '../../../../../utils/components/button/button';
 
 type PreparationContainerProps = {
-  preparationData: Preparation;
-  setPreparationData: (val: Preparation) => void;
+  editCreate?: boolean;
+  preparationData?: Preparation;
+  setPreparationData?: (val: Preparation) => void;
 };
 
 const PreparationContainer: React.FC<
   PreparationContainerProps
 > = (props): JSX.Element => {
-  const { preparationData, setPreparationData } = props;
+  const {
+    editCreate,
+    preparationData,
+    setPreparationData,
+  } = props;
   const [openPrepModal, setOpenPrepModal] = useState(false);
 
   const handleAddPreparationStep = (
@@ -83,46 +88,61 @@ const PreparationContainer: React.FC<
         >
           {'Preparation'}
         </Typography>
-        {preparationData.steps.length > 0 && (
-          <ResponsiveMasonry
-            style={{
-              width: '100%',
-            }}
-            columnsCountBreakPoints={{
-              350: 1, // Single column on very small screens
-              1380: 2, // Two columns on small screens
-              1810: 3, // Three columns on medium screens
-              2105: 4,
-            }}
-          >
-            <Masonry gutter="14px">
-              {preparationData.steps.map((step, index) => (
-                <PreparationCard
-                  key={index}
-                  stepIndex={index}
-                  step={step}
-                  onDelete={() => handleDeleteStep(index)}
-                  onEditStep={(step: PreparationStep) =>
-                    handleEditPreparationStep(step, index)
-                  }
-                />
-              ))}
-            </Masonry>
-          </ResponsiveMasonry>
+        {preparationData &&
+          preparationData.steps.length > 0 && (
+            <ResponsiveMasonry
+              style={{
+                width: '100%',
+              }}
+              columnsCountBreakPoints={{
+                350: 1, // Single column on very small screens
+                1380: 2, // Two columns on small screens
+                1810: 3, // Three columns on medium screens
+                2105: 4,
+              }}
+            >
+              <Masonry gutter="14px">
+                {preparationData.steps.map(
+                  (step, index) => (
+                    <PreparationCard
+                      editCreate={editCreate}
+                      key={index}
+                      stepIndex={index}
+                      step={step}
+                      onDelete={() =>
+                        handleDeleteStep(index)
+                      }
+                      onEditStep={(step: PreparationStep) =>
+                        handleEditPreparationStep(
+                          step,
+                          index
+                        )
+                      }
+                    />
+                  )
+                )}
+              </Masonry>
+            </ResponsiveMasonry>
+          )}
+        {editCreate && (
+          <DefaultButton
+            variant={'contained'}
+            onClick={() => setOpenPrepModal(true)}
+            icon={<Add fontSize={'large'} />}
+            label={'Add Step'}
+          />
         )}
-        <DefaultButton
-          variant={'contained'}
-          onClick={() => setOpenPrepModal(true)}
-          icon={<Add fontSize={'large'} />}
-          label={'Add Step'}
-        />
       </div>
-      <PreparationStepDialog
-        newStepIndex={preparationData.steps.length + 1}
-        openPrepModal={openPrepModal}
-        setOpenPrepModal={setOpenPrepModal}
-        onSaveStep={step => handleAddPreparationStep(step)}
-      />
+      {editCreate && (
+        <PreparationStepDialog
+          newStepIndex={preparationData.steps.length + 1}
+          openPrepModal={openPrepModal}
+          setOpenPrepModal={setOpenPrepModal}
+          onSaveStep={step =>
+            handleAddPreparationStep(step)
+          }
+        />
+      )}
     </>
   );
 };

@@ -12,6 +12,7 @@ import {
 } from '@mui/icons-material';
 import { LuChefHat } from 'react-icons/lu';
 import DefaultButton from '../../../utils/components/button/button';
+import { useNavigate } from 'react-router';
 
 type FoodCardExpandedProps = {
   recipeId: boolean;
@@ -22,6 +23,7 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
   props
 ): JSX.Element => {
   const { recipeId, onClose } = props;
+  const navigate = useNavigate();
 
   return (
     <Dialog
@@ -211,6 +213,7 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                 style={{
                   borderWidth: '2px',
                   borderRadius: '10px',
+                  borderColor: theme.palette.default.dark,
                 }}
               />
               <Typography
@@ -228,6 +231,7 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
             <DefaultButton
               variant={'text'}
               label={'Full Recipe'}
+              onClick={() => navigate('/recipes/1')}
             />
           </div>
         </div>

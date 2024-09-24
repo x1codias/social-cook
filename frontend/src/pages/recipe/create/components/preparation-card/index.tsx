@@ -10,6 +10,7 @@ import PreparationStepDialog from '../preparation-step-dialog';
 import { useState } from 'react';
 
 type PreparationCardProps = {
+  editCreate: boolean;
   stepIndex: number;
   step: PreparationStep;
   onDelete: () => void;
@@ -19,7 +20,13 @@ type PreparationCardProps = {
 const PreparationCard: React.FC<PreparationCardProps> = (
   props
 ): JSX.Element => {
-  const { stepIndex, step, onDelete, onEditStep } = props;
+  const {
+    editCreate,
+    stepIndex,
+    step,
+    onDelete,
+    onEditStep,
+  } = props;
   const [openStepModal, setOpenStepModal] = useState(false);
 
   return (
@@ -87,43 +94,45 @@ const PreparationCard: React.FC<PreparationCardProps> = (
               {'Step'}
             </Typography>
           </div>
-          <div>
-            <Tooltip
-              title={
-                <Typography fontSize={12}>
-                  {'Edit'}
-                </Typography>
-              }
-              placement={'top'}
-            >
-              <IconButton>
-                <Edit
-                  style={{
-                    fill: theme.palette.default.dark,
-                  }}
-                  fontSize={'large'}
-                  onClick={() => setOpenStepModal(true)}
-                />
-              </IconButton>
-            </Tooltip>
-            <Tooltip
-              title={
-                <Typography fontSize={12}>
-                  {'Delete'}
-                </Typography>
-              }
-              placement={'top'}
-            >
-              <IconButton onClick={onDelete}>
-                <Delete
-                  style={{
-                    fill: theme.palette.customError.main,
-                  }}
-                  fontSize={'large'}
-                />
-              </IconButton>
-            </Tooltip>
-          </div>
+          {editCreate && (
+            <div>
+              <Tooltip
+                title={
+                  <Typography fontSize={12}>
+                    {'Edit'}
+                  </Typography>
+                }
+                placement={'top'}
+              >
+                <IconButton>
+                  <Edit
+                    style={{
+                      fill: theme.palette.default.dark,
+                    }}
+                    fontSize={'large'}
+                    onClick={() => setOpenStepModal(true)}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title={
+                  <Typography fontSize={12}>
+                    {'Delete'}
+                  </Typography>
+                }
+                placement={'top'}
+              >
+                <IconButton onClick={onDelete}>
+                  <Delete
+                    style={{
+                      fill: theme.palette.customError.main,
+                    }}
+                    fontSize={'large'}
+                  />
+                </IconButton>
+              </Tooltip>
+            </div>
+          )}
         </div>
         <div
           style={{

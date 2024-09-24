@@ -9,6 +9,7 @@ import theme from '../../../themes/global.theme';
 import {
   Avatar,
   IconButton,
+  Popover,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -17,6 +18,7 @@ import { Account } from '../../types/Account';
 import ProfileDropdown from './components/profile-dropdown';
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { IoClose, IoStar } from 'react-icons/io5';
 
 const TopBar: React.FC = (): JSX.Element => {
   const { AppBar, AppTitle, Search } = styles;
@@ -30,8 +32,29 @@ const TopBar: React.FC = (): JSX.Element => {
   const menuRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isFocused, setIsFocused] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
-  // TODO: dropdown on profile pic click (logout, profile & settings?)
+  const handleFocus = () => {
+    setIsFocused(true); // Open the popover when input is focused
+  };
+
+  const handleBlur = (
+    event: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => {
+    // Check if focus moved outside the input and the popover
+    if (
+      searchRef.current &&
+      popoverRef.current &&
+      !searchRef.current.contains(event.relatedTarget) &&
+      !popoverRef.current.contains(event.relatedTarget)
+    ) {
+      setIsFocused(false); // Close popover only if focus moves outside
+    }
+  };
 
   return (
     <AppBar position={'fixed'}>
@@ -39,12 +62,22 @@ const TopBar: React.FC = (): JSX.Element => {
         SocialCook
       </AppTitle>
       <Search
+        ref={searchRef}
         placeholder={'Search...'}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
         InputProps={{
           startAdornment: (
             <IoIosSearch
               size={20}
               fill={theme.palette.grey?.[700]}
+            />
+          ),
+          endAdornment: isFocused && (
+            <IoClose
+              size={20}
+              fill={theme.palette.grey?.[700]}
+              cursor={'pointer'}
             />
           ),
         }}
@@ -68,6 +101,29 @@ const TopBar: React.FC = (): JSX.Element => {
             onClick={() => navigate('/recipes/create')}
           >
             <IoIosAddCircle
+              size={30}
+              fill={
+                location.pathname.includes(
+                  '/recipes/create'
+                )
+                  ? theme.palette.default.primary
+                  : theme.palette.grey?.[500]
+              }
+            />
+          </IconButton>
+        </Tooltip>
+        <Tooltip
+          title={
+            <Typography fontSize={10}>
+              {'Add Recipe'}
+            </Typography>
+          }
+          placement="bottom"
+        >
+          <IconButton
+            onClick={() => navigate('/recipes/create')}
+          >
+            <IoStar
               size={30}
               fill={
                 location.pathname.includes(
@@ -128,6 +184,59 @@ const TopBar: React.FC = (): JSX.Element => {
           </IconButton>
         </Tooltip>
       </div>
+      <Popover
+        open={isFocused}
+        anchorEl={searchRef.current}
+        ref={popoverRef}
+        onClose={() => setIsFocused(false)}
+        disableAutoFocus
+        disableEnforceFocus
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <div
+          ref={popoverRef}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: 'white',
+            width: searchRef.current?.clientWidth + 'px',
+          }}
+        >
+          <div>
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontFamily: 'Fredoka',
+                fontWeight: 500,
+                color: theme.palette.grey?.[600],
+              }}
+            >
+              {'Recent Searches'}
+            </Typography>
+            <div></div>
+          </div>
+          <div>
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontFamily: 'Fredoka',
+                fontWeight: 500,
+                color: theme.palette.grey?.[600],
+              }}
+            >
+              {'Popular Publications'}
+            </Typography>
+            <div></div>
+          </div>
+        </div>
+      </Popover>
       <ProfileDropdown
         open={openMenu}
         setOpen={setOpenMenu}

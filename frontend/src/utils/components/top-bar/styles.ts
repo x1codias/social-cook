@@ -13,7 +13,7 @@ const styles = {
     alignItems: 'center',
     background: theme.palette.background?.paper,
     padding: '4px 16px',
-    gap: '16px',
+    gap: '36px',
     boxShadow: 'none',
     width: '100%',
   }),

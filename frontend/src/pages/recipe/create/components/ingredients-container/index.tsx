@@ -6,8 +6,9 @@ import IngredientsItem from '../ingredient-item';
 import DefaultButton from '../../../../../utils/components/button/button';
 
 type IngredientsContainerProps = {
-  ingredientsData: IngredientItem[];
-  setIngredientsData: (
+  editCreate?: boolean;
+  ingredientsData?: IngredientItem[];
+  setIngredientsData?: (
     ingredients: IngredientItem[]
   ) => void;
 };
@@ -15,19 +16,25 @@ type IngredientsContainerProps = {
 const IngredientsContainer: React.FC<
   IngredientsContainerProps
 > = (props): JSX.Element => {
-  const { ingredientsData, setIngredientsData } = props;
+  const {
+    editCreate,
+    ingredientsData,
+    setIngredientsData,
+  } = props;
 
   const handleAddIngredient = () => {
-    const ingredientsDataCopy = [...ingredientsData];
-    const updatedIngredientsData = [
-      ...ingredientsDataCopy,
-      {
-        name: '',
-        quantity: undefined,
-        unit: '',
-      },
-    ];
-    setIngredientsData(updatedIngredientsData);
+    if (ingredientsData && setIngredientsData) {
+      const ingredientsDataCopy = [...ingredientsData];
+      const updatedIngredientsData = [
+        ...ingredientsDataCopy,
+        {
+          name: '',
+          quantity: undefined,
+          unit: '',
+        },
+      ];
+      setIngredientsData(updatedIngredientsData);
+    }
   };
 
   return (
@@ -56,21 +63,29 @@ const IngredientsContainer: React.FC<
       >
         {'Ingredients'}
       </Typography>
-      {ingredientsData.map((ingredient, index) => (
-        <IngredientsItem
-          key={index}
-          ingredient={ingredient}
-          ingIndex={index}
-          ingredientsData={ingredientsData}
-          setIngredientsData={setIngredientsData}
+      {editCreate &&
+      ingredientsData &&
+      setIngredientsData ? (
+        ingredientsData.map((ingredient, index) => (
+          <IngredientsItem
+            key={index}
+            ingredient={ingredient}
+            ingIndex={index}
+            ingredientsData={ingredientsData}
+            setIngredientsData={setIngredientsData}
+          />
+        ))
+      ) : (
+        <></>
+      )}
+      {editCreate && (
+        <DefaultButton
+          variant={'contained'}
+          onClick={handleAddIngredient}
+          icon={<Add fontSize={'large'} />}
+          label={'Add Ingredient'}
         />
-      ))}
-      <DefaultButton
-        variant={'contained'}
-        onClick={handleAddIngredient}
-        icon={<Add fontSize={'large'} />}
-        label={'Add Ingredient'}
-      />
+      )}
     </div>
   );
 };
