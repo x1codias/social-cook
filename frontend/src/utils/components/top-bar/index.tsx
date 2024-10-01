@@ -81,6 +81,7 @@ const TopBar: React.FC = (): JSX.Element => {
             />
           ),
         }}
+        autoComplete={''}
       />
       <div
         style={{

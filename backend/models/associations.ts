@@ -6,6 +6,7 @@ import Unit from './unit.model';
 import RecipeIngredient from './recipe-ingedient.model';
 import Preperation from './preperation.model';
 import SearchHistory from './search-history.model';
+import Favorite from './favorite.model';
 
 // User with tokens relations
 User.hasOne(Token, {
@@ -53,3 +54,15 @@ User.hasMany(SearchHistory, {
   onDelete: 'CASCADE',
 });
 SearchHistory.belongsTo(User, { foreignKey: 'userId' });
+
+// User and Recipe with favorites
+User.belongsToMany(Recipe, {
+  through: Favorite,
+  as: 'favorites',
+  foreignKey: 'userId',
+});
+Recipe.belongsToMany(User, {
+  through: Favorite,
+  as: 'favoritedBy',
+  foreignKey: 'recipeId',
+});
