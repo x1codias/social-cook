@@ -21,7 +21,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { IoClose, IoStar } from 'react-icons/io5';
 
 const TopBar: React.FC = (): JSX.Element => {
-  const { AppBar, AppTitle, Search } = styles;
+  const { AppBar, AppTitle, Search, SearchChip } = styles;
   const user =
     useSelector(
       (state: { auth: { user: Account } }) =>
@@ -81,7 +81,7 @@ const TopBar: React.FC = (): JSX.Element => {
             />
           ),
         }}
-        autoComplete={''}
+        autoComplete={'off'}
       />
       <div
         style={{
@@ -208,9 +208,17 @@ const TopBar: React.FC = (): JSX.Element => {
             flexDirection: 'column',
             backgroundColor: 'white',
             width: searchRef.current?.clientWidth + 'px',
+            padding: '24px 36px',
+            gap: '12px',
           }}
         >
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+            }}
+          >
             <Typography
               sx={{
                 fontSize: '16px',
@@ -221,9 +229,57 @@ const TopBar: React.FC = (): JSX.Element => {
             >
               {'Recent Searches'}
             </Typography>
-            <div></div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+                onDelete={() => {}}
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+                onDelete={() => {}}
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+                onDelete={() => {}}
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+                onDelete={() => {}}
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+                onDelete={() => {}}
+              />
+            </div>
           </div>
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+            }}
+          >
             <Typography
               sx={{
                 fontSize: '16px',
@@ -234,7 +290,62 @@ const TopBar: React.FC = (): JSX.Element => {
             >
               {'Popular Publications'}
             </Typography>
-            <div></div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+              <SearchChip
+                label={'Ceaser Salad'}
+                backgroundColor={
+                  theme.palette.categories.salads
+                }
+              />
+            </div>
           </div>
         </div>
       </Popover>

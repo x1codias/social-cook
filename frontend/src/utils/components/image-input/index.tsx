@@ -53,7 +53,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
   return (
     <ImageContainer
       {...getRootProps()}
-      imgUrl={imagePreview}
+      imgUrl={imagePreview as string}
       onMouseEnter={() =>
         (imagePreview as string).trim().length > 0 &&
         setShowEditBtn(true)

@@ -1,10 +1,16 @@
 import {
   AppBar,
+  Chip,
+  ChipProps,
   TextField,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
+
+type CustomChipProps = ChipProps & {
+  backgroundColor: string;
+};
 
 const styles = {
   AppBar: styled(AppBar)({
@@ -39,6 +45,13 @@ const styles = {
       fontSize: '16px',
     },
   }),
+  SearchChip: styled(Chip)<CustomChipProps>(
+    ({ backgroundColor }) => ({
+      fontSize: '18px',
+      color: theme.palette.customText.primary,
+      backgroundColor,
+    })
+  ),
 };
 
 export default styles;

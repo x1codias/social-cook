@@ -1,9 +1,18 @@
-import { MenuItem, Select } from '@mui/material';
+import {
+  MenuItem,
+  Select,
+  SelectProps,
+} from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 
+type CustomSelectFieldProps = SelectProps & {
+  minWidth: number;
+  defaultValue: number | string;
+};
+
 const styles = {
-  SelectField: styled(Select)(
+  SelectField: styled(Select)<CustomSelectFieldProps>(
     ({ defaultValue, minWidth }) => ({
       '&.MuiInputBase-root': {
         minWidth: `${minWidth}px`,
@@ -15,7 +24,8 @@ const styles = {
         fontSize: '16px',
         overflow: 'hidden',
         color:
-          defaultValue?.length || defaultValue > 0
+          (defaultValue as string)?.length ||
+          (defaultValue as number) > 0
             ? theme.palette.customText.primary
             : theme.palette.customText.secondary,
       },
