@@ -8,6 +8,7 @@ import Preperation from './preperation.model';
 import SearchHistory from './search-history.model';
 import Favorite from './favorite.model';
 import Rating from './rating.model';
+import Followage from './followage.model';
 
 // User with tokens relations
 User.hasOne(Token, {
@@ -76,4 +77,18 @@ User.hasMany(Rating, {
 Recipe.hasMany(Rating, {
   foreignKey: 'recipeId',
   as: 'ratings',
+});
+
+// User with User regarding Followage
+User.belongsToMany(User, {
+  through: Followage,
+  as: 'followers',
+  foreignKey: 'userId',
+  otherKey: 'followerId',
+});
+User.belongsToMany(User, {
+  through: Favorite,
+  as: 'following',
+  foreignKey: 'followerId',
+  otherKey: 'userId',
 });
