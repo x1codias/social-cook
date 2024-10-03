@@ -31,7 +31,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
       sx={customStyles}
     >
       {icon && icon}
-      <Typography fontSize={16}>{label}</Typography>
+      <Typography fontSize={18}>{label}</Typography>
     </DefaultButton>
   );
 };

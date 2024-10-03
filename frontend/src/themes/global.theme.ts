@@ -87,7 +87,7 @@ const theme = createTheme({
       salads: '#B4FF9A',
       breakfast: '#FFCA8C',
       fingerFood: '#EEC8AF',
-      desserts: '#EEC8AF',
+      desserts: '#FF938B',
     },
   },
 });

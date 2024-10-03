@@ -19,9 +19,11 @@ import ProfileDropdown from './components/profile-dropdown';
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { IoClose, IoStar } from 'react-icons/io5';
+import SearchHistory from './components/search-history';
+import SearchHints from './components/search-hints';
 
 const TopBar: React.FC = (): JSX.Element => {
-  const { AppBar, AppTitle, Search, SearchChip } = styles;
+  const { AppBar, AppTitle, Search } = styles;
   const user =
     useSelector(
       (state: { auth: { user: Account } }) =>
@@ -35,6 +37,7 @@ const TopBar: React.FC = (): JSX.Element => {
   const [isFocused, setIsFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const [searchValue, setSearchValue] = useState('');
 
   const handleFocus = () => {
     setIsFocused(true); // Open the popover when input is focused
@@ -64,6 +67,8 @@ const TopBar: React.FC = (): JSX.Element => {
       <Search
         ref={searchRef}
         placeholder={'Search...'}
+        value={searchValue}
+        onChange={e => setSearchValue(e.target.value)}
         onBlur={handleBlur}
         onFocus={handleFocus}
         InputProps={{
@@ -73,13 +78,17 @@ const TopBar: React.FC = (): JSX.Element => {
               fill={theme.palette.grey?.[700]}
             />
           ),
-          endAdornment: isFocused && (
-            <IoClose
-              size={20}
-              fill={theme.palette.grey?.[700]}
-              cursor={'pointer'}
-            />
-          ),
+          endAdornment:
+            isFocused || searchValue.length ? (
+              <IoClose
+                size={20}
+                fill={theme.palette.grey?.[700]}
+                cursor={'pointer'}
+                onClick={() => setSearchValue('')}
+              />
+            ) : (
+              <></>
+            ),
         }}
         autoComplete={'off'}
       />
@@ -87,7 +96,7 @@ const TopBar: React.FC = (): JSX.Element => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '12px',
+          gap: '20px',
         }}
       >
         <Tooltip
@@ -116,7 +125,7 @@ const TopBar: React.FC = (): JSX.Element => {
         <Tooltip
           title={
             <Typography fontSize={10}>
-              {'Add Recipe'}
+              {'Favorites'}
             </Typography>
           }
           placement="bottom"
@@ -126,13 +135,7 @@ const TopBar: React.FC = (): JSX.Element => {
           >
             <IoStar
               size={30}
-              fill={
-                location.pathname.includes(
-                  '/recipes/create'
-                )
-                  ? theme.palette.default.primary
-                  : theme.palette.grey?.[500]
-              }
+              fill={theme.palette.grey?.[500]}
             />
           </IconButton>
         </Tooltip>
@@ -204,149 +207,15 @@ const TopBar: React.FC = (): JSX.Element => {
         <div
           ref={popoverRef}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
             backgroundColor: 'white',
             width: searchRef.current?.clientWidth + 'px',
-            padding: '24px 36px',
-            gap: '12px',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontFamily: 'Fredoka',
-                fontWeight: 500,
-                color: theme.palette.grey?.[600],
-              }}
-            >
-              {'Recent Searches'}
-            </Typography>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-              }}
-            >
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-                onDelete={() => {}}
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-                onDelete={() => {}}
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-                onDelete={() => {}}
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-                onDelete={() => {}}
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-                onDelete={() => {}}
-              />
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontFamily: 'Fredoka',
-                fontWeight: 500,
-                color: theme.palette.grey?.[600],
-              }}
-            >
-              {'Popular Publications'}
-            </Typography>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-              }}
-            >
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-              <SearchChip
-                label={'Ceaser Salad'}
-                backgroundColor={
-                  theme.palette.categories.salads
-                }
-              />
-            </div>
-          </div>
+          {!searchValue.length ? (
+            <SearchHistory />
+          ) : (
+            <SearchHints />
+          )}
         </div>
       </Popover>
       <ProfileDropdown

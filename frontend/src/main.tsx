@@ -8,9 +8,14 @@ import theme from './themes/global.theme.ts';
 import { Provider } from 'react-redux';
 import store from './store.ts';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import './translations/i18n.ts';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+ReactDOM.createRoot(
+  document.getElementById('root')!
+).render(
+  <GoogleOAuthProvider
+    clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+  >
     <React.StrictMode>
       <BrowserRouter>
         <Provider store={store}>

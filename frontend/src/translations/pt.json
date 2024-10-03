@@ -1,0 +1,13 @@
+{
+  "category": "Categoria",
+  "user": "Utilizador",
+  "recipe": "Receita",
+  "pastas": "Massas",
+  "fish": "Peixe",
+  "meat": "Carne",
+  "vegan": "Vegetariano",
+  "salads": "Saladas",
+  "breakfast": "Pequeno Almoço",
+  "fingerFood": "Petisco",
+  "desserts": "Sobremesa"
+}

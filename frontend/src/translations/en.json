@@ -1,0 +1,13 @@
+{
+  "category": "Category",
+  "user": "User",
+  "recipe": "Recipe",
+  "pastas": "Pastas",
+  "fish": "Fish",
+  "meat": "Meat",
+  "vegan": "Vegan",
+  "salads": "Salads",
+  "breakfast": "Breakfast",
+  "fingerFood": "Finger Food",
+  "desserts": "Desserts"
+}
