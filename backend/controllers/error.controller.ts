@@ -23,5 +23,5 @@ export const errorHandler = (
     message: key,
   };
 
-  return res.status(code).json(errorResponse);
+  res.status(code).json(errorResponse);
 };

@@ -39,9 +39,9 @@ app.use(express.static('public'));
 
 const apiRouter = express.Router();
 apiRouter.use('/', authRoutes);
-apiRouter.use('/', recipeRoutes);
-apiRouter.use('/', ingredientRoutes);
-apiRouter.use('/', unitRoutes);
+apiRouter.use('/recipes', recipeRoutes);
+apiRouter.use('/ingredients', ingredientRoutes);
+apiRouter.use('/units', unitRoutes);
 
 app.use('/api', apiRouter);
 

@@ -4,7 +4,8 @@ import User from './user.model';
 
 export type FollowageType = {
   userId: number;
-  followerId: number[];
+  followerId: number;
+  count?: number;
 };
 
 const Followage = sequelize.define<Model<FollowageType>>(
@@ -19,7 +20,7 @@ const Followage = sequelize.define<Model<FollowageType>>(
       },
     },
     followerId: {
-      type: DataTypes.ARRAY(),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User,

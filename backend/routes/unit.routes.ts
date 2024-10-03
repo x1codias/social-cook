@@ -4,6 +4,6 @@ import { verifyToken } from '../controllers/auth.controller';
 
 const unitRoutes = Router();
 
-unitRoutes.get('/units', verifyToken, units);
+unitRoutes.get('/', verifyToken, units);
 
 export default unitRoutes;

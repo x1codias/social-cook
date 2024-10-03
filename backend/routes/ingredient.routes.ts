@@ -7,15 +7,7 @@ import { verifyToken } from '../controllers/auth.controller';
 
 const ingredientRoutes = Router();
 
-ingredientRoutes.get(
-  '/ingredients',
-  verifyToken,
-  ingredients
-);
-ingredientRoutes.post(
-  '/ingredients',
-  verifyToken,
-  createIngredient
-);
+ingredientRoutes.get('/', verifyToken, ingredients);
+ingredientRoutes.post('/', verifyToken, createIngredient);
 
 export default ingredientRoutes;

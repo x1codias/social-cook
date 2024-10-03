@@ -29,7 +29,7 @@ const recipe = async (req: Request, res: Response) => {
     const recipe = await Recipe.findOne({ where: { id } });
 
     res.status(200).json({
-      recipe,
+      recipe: recipe.dataValues,
     });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);

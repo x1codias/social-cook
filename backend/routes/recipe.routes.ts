@@ -10,18 +10,18 @@ import { upload } from '../controllers/file.controller';
 
 const recipeRoutes = Router();
 
-recipeRoutes.get('/recipes', verifyToken, recipes);
+recipeRoutes.get(
+  '?title={title}&offset={offset}&limit={limit}',
+  verifyToken,
+  recipes
+);
 recipeRoutes.post(
-  '/recipes',
+  '/',
   verifyToken,
   upload.array('images'),
   createRecipe
 );
-recipeRoutes.delete(
-  '/recipes/{id}',
-  verifyToken,
-  deleteRecipe
-);
-recipeRoutes.get('/recipes/{id}', verifyToken, recipe);
+recipeRoutes.delete('/{id}', verifyToken, deleteRecipe);
+recipeRoutes.get('/{id}', verifyToken, recipe);
 
 export default recipeRoutes;
