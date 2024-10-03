@@ -99,4 +99,4 @@ const editUser = async (req: Request, res: Response) => {
   }
 };
 
-export { users, user };
+export { users, user, editUser };
