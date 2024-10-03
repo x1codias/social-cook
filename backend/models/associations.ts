@@ -7,6 +7,7 @@ import RecipeIngredient from './recipe-ingedient.model';
 import Preperation from './preperation.model';
 import SearchHistory from './search-history.model';
 import Favorite from './favorite.model';
+import Rating from './rating.model';
 
 // User with tokens relations
 User.hasOne(Token, {
@@ -65,4 +66,14 @@ Recipe.belongsToMany(User, {
   through: Favorite,
   as: 'favoritedBy',
   foreignKey: 'recipeId',
+});
+
+// User and Recipe with Rating relations
+User.hasMany(Rating, {
+  foreignKey: 'userId',
+  as: 'ratings',
+});
+Recipe.hasMany(Rating, {
+  foreignKey: 'recipeId',
+  as: 'ratings',
 });
