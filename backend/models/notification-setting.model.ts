@@ -8,6 +8,7 @@ export type NotificationSettingType = {
   comment: boolean;
   rating: boolean;
   likeComment: boolean;
+  mention: boolean;
 };
 
 const NotificationSetting = sequelize.define<
@@ -45,6 +46,13 @@ const NotificationSetting = sequelize.define<
       },
     },
     likeComment: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    mention: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       validate: {

@@ -2,9 +2,14 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
 import User from './user.model';
 
+export enum SettingLangs {
+  en = 'en',
+  pt = 'pt',
+}
+
 export type SettingType = {
   userId: number;
-  lang: string;
+  lang: SettingLangs;
   private: boolean;
 };
 
@@ -20,7 +25,7 @@ const Setting = sequelize.define<Model<SettingType>>(
       },
     },
     lang: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM(...Object.values(SettingLangs)),
       allowNull: false,
       validate: {
         notEmpty: true,

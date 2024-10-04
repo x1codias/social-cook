@@ -6,6 +6,10 @@ import { Model, Op } from 'sequelize';
 import { Response, Request, NextFunction } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import moment from 'moment';
+import Setting, {
+  SettingLangs,
+} from '../models/setting.model';
+import NotificationSetting from '../models/notification-setting.model';
 
 const verifyToken = (
   req: Request,
@@ -81,8 +85,23 @@ const register = async (req: Request, res: Response) => {
       return errorHandler(409, Errors.userExists, res);
     }
 
+    const newUserSettings = await Setting.create({
+      userId: newUser.get().id,
+      lang: SettingLangs.en,
+      private: true,
+    });
+
+    const newUserNotificationSettings =
+      await NotificationSetting.create({
+        userId: newUser.get().id,
+        follow: true,
+        comment: true,
+        rating: true,
+        likeComment: true,
+        mention: true,
+      });
+
     const token = await generateToken(newUser);
-    newUser.save();
 
     res.status(200).json({
       user: {
@@ -91,6 +110,23 @@ const register = async (req: Request, res: Response) => {
         email: newUser.dataValues.email,
         biography: newUser.dataValues.biography,
         photo: `http://localhost:3001/uploads/users/${newUser.dataValues.photo}`,
+        settings: {
+          lang: newUserSettings.dataValues.lang,
+          private: newUserSettings.dataValues.private,
+        },
+        notificationSettings: {
+          follow:
+            newUserNotificationSettings.dataValues.follow,
+          comment:
+            newUserNotificationSettings.dataValues.comment,
+          rating:
+            newUserNotificationSettings.dataValues.rating,
+          likeComment:
+            newUserNotificationSettings.dataValues
+              .likeComment,
+          mention:
+            newUserNotificationSettings.dataValues.mention,
+        },
       },
       token: token.dataValues.token,
       severity: 'success',

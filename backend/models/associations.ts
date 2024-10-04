@@ -9,6 +9,14 @@ import SearchHistory from './search-history.model';
 import Favorite from './favorite.model';
 import Rating from './rating.model';
 import Followage from './followage.model';
+import Blockage from './blockage.model';
+import Comment from './comment.model';
+import ChatRoom from './chat/chat-room.model';
+import ChatParticipant from './chat/chat-participant.model';
+import Message from './chat/message.model';
+import Notification from './notification.model';
+import NotificationSetting from './notification-setting.model';
+import Setting from './setting.model';
 
 // User with tokens relations
 User.hasOne(Token, {
@@ -85,10 +93,129 @@ User.belongsToMany(User, {
   as: 'followers',
   foreignKey: 'userId',
   otherKey: 'followerId',
+  onDelete: 'CASCADE',
 });
 User.belongsToMany(User, {
   through: Favorite,
   as: 'following',
   foreignKey: 'followerId',
   otherKey: 'userId',
+  onDelete: 'CASCADE',
+});
+
+// User with User regarding Blockage
+User.belongsToMany(User, {
+  through: Blockage,
+  as: 'blockedUsers',
+  foreignKey: 'userId',
+  otherKey: 'blockedUserId',
+  onDelete: 'CASCADE',
+});
+User.belongsToMany(User, {
+  through: Blockage,
+  as: 'blockedBy',
+  foreignKey: 'blockedUserId',
+  otherKey: 'userId',
+  onDelete: 'CASCADE',
+});
+
+// User with Comment relation
+User.hasMany(Comment, {
+  foreignKey: 'userId',
+  as: 'comments',
+  onDelete: 'CASCADE',
+});
+Comment.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
+// Recipe with Comment relation
+Recipe.hasMany(Comment, {
+  foreignKey: 'recipeId',
+  as: 'comments',
+  onDelete: 'CASCADE',
+});
+Comment.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+  onDelete: 'CASCADE',
+});
+
+// User with Chatroom relation
+User.hasMany(ChatRoom, {
+  foreignKey: 'userId',
+  as: 'comments',
+  onDelete: 'CASCADE',
+});
+ChatRoom.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
+// User with Notification relation
+User.hasMany(Notification, {
+  foreignKey: 'userId',
+  as: 'notifications',
+  onDelete: 'CASCADE',
+});
+Notification.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
+// User with Setting relation
+User.hasOne(Setting, {
+  foreignKey: 'userId',
+  as: 'settings',
+  onDelete: 'CASCADE',
+});
+Setting.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
+// User with NotificationSetting relation
+User.hasOne(NotificationSetting, {
+  foreignKey: 'userId',
+  as: 'notificationSettings',
+  onDelete: 'CASCADE',
+});
+NotificationSetting.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
+// User with ChatParticipant relation
+User.hasMany(ChatParticipant, {
+  foreignKey: 'userId',
+  as: 'chatParticipants',
+  onDelete: 'CASCADE',
+});
+ChatParticipant.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
+// ChatRoom with ChatParticipant relation
+ChatRoom.hasMany(ChatParticipant, {
+  foreignKey: 'chatRoomId',
+  as: 'chatParticipants',
+  onDelete: 'CASCADE',
+});
+ChatParticipant.belongsTo(ChatRoom, {
+  foreignKey: 'chatRoomId',
+});
+
+// User with Message relation
+User.hasMany(Message, {
+  foreignKey: 'userId',
+  as: 'messages',
+  onDelete: 'CASCADE',
+});
+Message.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
+// ChatRoom with Message relation
+ChatRoom.hasMany(Message, {
+  foreignKey: 'chatRoomId',
+  as: 'messages',
+  onDelete: 'CASCADE',
+});
+Message.belongsTo(ChatRoom, {
+  foreignKey: 'chatRoomId',
 });
