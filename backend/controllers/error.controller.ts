@@ -11,6 +11,8 @@ export enum Errors {
   ingredientExists = 'ingredientAlreadyExists',
   directoryReading = 'directoryReading',
   imageNotFound = 'imageNotFound',
+  noSettings = 'noSettings',
+  noNotificationSettings = 'noNotificationSettings',
 }
 
 export const errorHandler = (

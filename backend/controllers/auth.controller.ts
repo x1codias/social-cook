@@ -88,7 +88,7 @@ const register = async (req: Request, res: Response) => {
     const newUserSettings = await Setting.create({
       userId: newUser.get().id,
       lang: SettingLangs.en,
-      private: true,
+      isPrivate: true,
     });
 
     const newUserNotificationSettings =
@@ -112,7 +112,7 @@ const register = async (req: Request, res: Response) => {
         photo: `http://localhost:3001/uploads/users/${newUser.dataValues.photo}`,
         settings: {
           lang: newUserSettings.dataValues.lang,
-          private: newUserSettings.dataValues.private,
+          private: newUserSettings.dataValues.isPrivate,
         },
         notificationSettings: {
           follow:
@@ -184,7 +184,7 @@ const login = async (
       message: 'welcomeBackChef',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    return errorHandler(500, Errors.serverError, res);
   }
 };
 
@@ -214,7 +214,7 @@ const logout = async (req: Request, res: Response) => {
       message: 'hopeToSeeAgainChef',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    return errorHandler(500, Errors.serverError, res);
   }
 };
 
@@ -226,12 +226,12 @@ const googleAuthentication = async (
     const authorizationHeader =
       req.headers['authorization'];
     if (!authorizationHeader) {
-      errorHandler(401, Errors.tokenMissing, res);
+      return errorHandler(401, Errors.tokenMissing, res);
     }
 
     const accessToken = authorizationHeader.split(' ')[1];
     if (!accessToken) {
-      errorHandler(401, Errors.tokenInvalid, res);
+      return errorHandler(401, Errors.tokenInvalid, res);
     }
 
     const response = await fetch(
@@ -277,7 +277,7 @@ const googleAuthentication = async (
       registered: created,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    return errorHandler(500, Errors.serverError, res);
   }
 };
 
@@ -289,12 +289,12 @@ const facebookAuthentication = async (
     const authorizationHeader =
       req.headers['authorization'];
     if (!authorizationHeader) {
-      errorHandler(401, Errors.tokenMissing, res);
+      return errorHandler(401, Errors.tokenMissing, res);
     }
 
     const accessToken = authorizationHeader.split(' ')[1];
     if (!accessToken) {
-      errorHandler(401, Errors.tokenInvalid, res);
+      return errorHandler(401, Errors.tokenInvalid, res);
     }
 
     const response = await fetch(
@@ -335,7 +335,7 @@ const facebookAuthentication = async (
       registered: created,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    return errorHandler(500, Errors.serverError, res);
   }
 };
 

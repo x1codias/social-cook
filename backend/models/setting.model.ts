@@ -10,7 +10,7 @@ export enum SettingLangs {
 export type SettingType = {
   userId: number;
   lang: SettingLangs;
-  private: boolean;
+  isPrivate: boolean;
 };
 
 const Setting = sequelize.define<Model<SettingType>>(
@@ -31,7 +31,7 @@ const Setting = sequelize.define<Model<SettingType>>(
         notEmpty: true,
       },
     },
-    private: {
+    isPrivate: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       validate: {

@@ -31,7 +31,7 @@ const favorites = async (req: Request, res: Response) => {
       favoriteRcipes: rows.map(row => row.dataValues),
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    return errorHandler(500, Errors.serverError, res);
   }
 };
 
@@ -48,7 +48,7 @@ const addFavorite = async (req: Request, res: Response) => {
       message: 'addedToFavorites',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    return errorHandler(500, Errors.serverError, res);
   }
 };
 
@@ -70,7 +70,7 @@ const removeFromFavorites = async (
       message: 'removedFromFavorites',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    return errorHandler(500, Errors.serverError, res);
   }
 };
 
