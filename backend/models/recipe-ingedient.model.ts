@@ -51,6 +51,7 @@ const RecipeIngredient = sequelize.define<
   {
     tableName: 'recipe_ingredients',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

@@ -37,6 +37,7 @@ const Setting = sequelize.define<Model<SettingType>>(
   {
     tableName: 'settings',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

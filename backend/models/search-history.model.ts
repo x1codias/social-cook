@@ -68,6 +68,7 @@ const SearchHistory = sequelize.define<
   {
     tableName: 'search_history',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

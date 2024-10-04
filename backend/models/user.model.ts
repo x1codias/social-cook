@@ -61,6 +61,7 @@ const User = sequelize.define<Model<UserType>>(
   {
     tableName: 'users',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

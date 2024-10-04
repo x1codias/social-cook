@@ -31,6 +31,7 @@ const Followage = sequelize.define<Model<FollowageType>>(
   {
     tableName: 'followages',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

@@ -39,6 +39,7 @@ const Rating = sequelize.define<Model<RatingType>>(
   {
     tableName: 'ratings',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

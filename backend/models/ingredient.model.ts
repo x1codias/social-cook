@@ -26,6 +26,7 @@ const Ingredient = sequelize.define<Model<IngredientType>>(
   {
     tableName: 'ingredients',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

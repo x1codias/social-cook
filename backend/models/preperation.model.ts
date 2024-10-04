@@ -39,6 +39,7 @@ const Preperation = sequelize.define<
   {
     tableName: 'preperations',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 

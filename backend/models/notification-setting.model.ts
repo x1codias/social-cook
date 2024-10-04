@@ -55,6 +55,7 @@ const NotificationSetting = sequelize.define<
   {
     tableName: 'notification_settings',
     timestamps: true,
+    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 
