@@ -3,10 +3,15 @@ import { Errors, errorHandler } from './error.controller';
 import Favorite from '../models/favorite.model';
 import { Op } from 'sequelize';
 import Recipe from '../models/recipe.model';
+import { AuthRequest } from './auth.controller';
 
-const favorites = async (req: Request, res: Response) => {
+const favorites = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
-    const { userId, offset, limit } = req.body;
+    const { offset, limit } = req.body;
+    const { userId } = req.user;
 
     const favorites = await Favorite.findAll({
       where: {
@@ -35,11 +40,15 @@ const favorites = async (req: Request, res: Response) => {
   }
 };
 
-const addFavorite = async (req: Request, res: Response) => {
+const addFavorite = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
-    const { userId, recipeId } = req.body;
+    const { recipeId } = req.body;
+    const { userId } = req.user;
 
-    const newFavorite = await Favorite.create({
+    await Favorite.create({
       recipeId,
       userId,
     });
@@ -53,11 +62,12 @@ const addFavorite = async (req: Request, res: Response) => {
 };
 
 const removeFromFavorites = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
-    const { userId, recipeId } = req.body;
+    const { userId } = req.user;
+    const { recipeId } = req.body;
 
     await Favorite.destroy({
       where: {

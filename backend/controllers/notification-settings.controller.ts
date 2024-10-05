@@ -1,9 +1,10 @@
 import { Response, Request } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import NotificationSetting from '../models/notification-setting.model';
+import { AuthRequest } from './auth.controller';
 
 const editNotificationSettings = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
@@ -14,7 +15,7 @@ const editNotificationSettings = async (
       likeComment,
       mention,
     } = req.body;
-    const { userId } = req.params;
+    const { userId } = req.user;
 
     const notificationSettingToUpdate =
       await NotificationSetting.findOne({

@@ -5,8 +5,8 @@ import Recipe from './recipe.model';
 
 export type FavoriteType = {
   id?: number;
-  userId: string;
-  recipeId: string;
+  userId: number;
+  recipeId: number;
 };
 
 const Favorite = sequelize.define<Model<FavoriteType>>(

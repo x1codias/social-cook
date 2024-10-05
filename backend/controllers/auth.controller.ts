@@ -1,4 +1,9 @@
-import { Secret, sign, verify } from 'jsonwebtoken';
+import {
+  JwtPayload,
+  Secret,
+  sign,
+  verify,
+} from 'jsonwebtoken';
 import { compare, hash, genSalt } from 'bcryptjs';
 import User, { UserType } from '../models/user.model';
 import Token, { TokenType } from '../models/token.model';
@@ -11,8 +16,12 @@ import Setting, {
 } from '../models/setting.model';
 import NotificationSetting from '../models/notification-setting.model';
 
+export interface AuthRequest extends Request {
+  user: { userId: number };
+}
+
 const verifyToken = (
-  req: Request,
+  req: Request & { user: string | JwtPayload },
   res: Response,
   next: NextFunction
 ) => {
@@ -28,10 +37,11 @@ const verifyToken = (
     ? authHeader.trim().substring(7)
     : authHeader;
 
-  verify(token, process.env.JWT_KEY, err => {
+  verify(token, process.env.JWT_KEY, (err, user) => {
     if (err) {
       return errorHandler(401, Errors.tokenInvalid, res);
     }
+    req.user = user;
 
     // Proceed to the next middleware or route handler
     next();
@@ -137,11 +147,7 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const login = async (req: Request, res: Response) => {
   try {
     const { identifier, password } = req.body as {
       identifier: string;
@@ -188,11 +194,9 @@ const login = async (
   }
 };
 
-const logout = async (req: Request, res: Response) => {
+const logout = async (req: AuthRequest, res: Response) => {
   try {
-    const { userId } = req.body as {
-      userId: number;
-    };
+    const { userId } = req.user;
 
     const user = await User.findOne({
       where: { id: userId },

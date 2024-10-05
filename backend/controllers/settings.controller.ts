@@ -1,14 +1,15 @@
 import { Response, Request } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import Setting from '../models/setting.model';
+import { AuthRequest } from './auth.controller';
 
 const editSettings = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
     const { lang, isPrivate } = req.body;
-    const { userId } = req.params;
+    const { userId } = req.user;
 
     const settingToUpdate = await Setting.findOne({
       where: { userId },

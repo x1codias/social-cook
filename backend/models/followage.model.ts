@@ -6,6 +6,7 @@ export type FollowageType = {
   userId: number;
   followerId: number;
   count?: number;
+  pending: boolean;
 };
 
 const Followage = sequelize.define<Model<FollowageType>>(
@@ -25,6 +26,14 @@ const Followage = sequelize.define<Model<FollowageType>>(
       references: {
         model: User,
         key: 'id',
+      },
+    },
+    pending: {
+      type: DataTypes.BOOLEAN,
+      unique: true,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
       },
     },
   },

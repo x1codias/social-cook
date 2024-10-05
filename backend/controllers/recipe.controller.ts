@@ -3,6 +3,7 @@ import { Response, Request } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import Preperation from '../models/preperation.model';
 import RecipeIngredient from '../models/recipe-ingedient.model';
+import { AuthRequest } from './auth.controller';
 
 const recipes = async (req: Request, res: Response) => {
   try {
@@ -37,12 +38,11 @@ const recipe = async (req: Request, res: Response) => {
 };
 
 const createRecipe = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
     const {
-      userId,
       title,
       duration,
       category,
@@ -51,6 +51,7 @@ const createRecipe = async (
       ingredients,
       preparation,
     } = req.body;
+    const { userId } = req.user;
 
     if (!req.files) {
       return errorHandler(400, Errors.imageNotFound, res);
@@ -82,7 +83,7 @@ const createRecipe = async (
         category,
         difficulty,
         description,
-        userId: parseInt(userId),
+        userId,
         photos: photoFileNames,
       },
     });

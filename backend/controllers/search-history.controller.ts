@@ -2,13 +2,14 @@ import { Response, Request } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import SearchHistory from '../models/search-history.model';
 import { Op } from 'sequelize';
+import { AuthRequest } from './auth.controller';
 
 const searchHistory = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.user;
 
     const { count, rows } =
       await SearchHistory.findAndCountAll({
@@ -29,7 +30,7 @@ const searchHistory = async (
 };
 
 const deleteSearch = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
@@ -37,7 +38,7 @@ const deleteSearch = async (
 
     await SearchHistory.destroy({
       where: {
-        userId: { [Op.in]: searchIds },
+        id: { [Op.in]: searchIds },
       },
     });
 

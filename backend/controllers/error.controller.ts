@@ -13,6 +13,8 @@ export enum Errors {
   imageNotFound = 'imageNotFound',
   noSettings = 'noSettings',
   noNotificationSettings = 'noNotificationSettings',
+  duplicateFollow = 'duplicateFollow',
+  noFollow = 'noFollow',
 }
 
 export const errorHandler = (
