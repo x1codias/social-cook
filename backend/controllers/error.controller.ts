@@ -15,6 +15,8 @@ export enum Errors {
   noNotificationSettings = 'noNotificationSettings',
   duplicateFollow = 'duplicateFollow',
   noFollow = 'noFollow',
+  duplicateBlock = 'duplicateBlock',
+  noBlock = 'noBlock',
 }
 
 export const errorHandler = (

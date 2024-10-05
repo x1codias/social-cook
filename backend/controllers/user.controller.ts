@@ -1,11 +1,12 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import User from '../models/user.model';
 import Followage from '../models/followage.model';
 import { Op } from 'sequelize';
 import sequelize from '../sequelize';
+import { AuthRequest } from './auth.controller';
 
-const users = async (req: Request, res: Response) => {
+const users = async (req: AuthRequest, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string);
     const offset = parseInt(req.query.offset as string);
@@ -62,7 +63,7 @@ const users = async (req: Request, res: Response) => {
   }
 };
 
-const user = async (req: Request, res: Response) => {
+const user = async (req: AuthRequest, res: Response) => {
   try {
     const { username } = req.params;
     const user = await User.findOne({
@@ -92,7 +93,10 @@ const user = async (req: Request, res: Response) => {
   }
 };
 
-const editUser = async (req: Request, res: Response) => {
+const editUser = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
   } catch (error) {
     errorHandler(500, Errors.serverError, res);

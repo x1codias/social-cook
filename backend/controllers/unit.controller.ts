@@ -1,8 +1,9 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import Unit from '../models/unit.model';
+import { AuthRequest } from './auth.controller';
 
-const units = async (req: Request, res: Response) => {
+const units = async (req: AuthRequest, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string);
     const offset = parseInt(req.query.offset as string);

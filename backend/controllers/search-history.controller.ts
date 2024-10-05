@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import SearchHistory from '../models/search-history.model';
 import { Op } from 'sequelize';

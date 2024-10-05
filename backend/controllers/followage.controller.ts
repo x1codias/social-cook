@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import Followage from '../models/followage.model';
 import { AuthRequest } from './auth.controller';

@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import NotificationSetting from '../models/notification-setting.model';
 import { AuthRequest } from './auth.controller';

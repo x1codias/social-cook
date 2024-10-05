@@ -1,8 +1,12 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import Ingredient from '../models/ingredient.model';
+import { AuthRequest } from './auth.controller';
 
-const ingredients = async (req: Request, res: Response) => {
+const ingredients = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
     const limit = parseInt(req.query.limit as string);
     const offset = parseInt(req.query.offset as string);
@@ -23,7 +27,7 @@ const ingredients = async (req: Request, res: Response) => {
 };
 
 const createIngredient = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {

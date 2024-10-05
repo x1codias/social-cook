@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import Favorite from '../models/favorite.model';
 import { Op } from 'sequelize';

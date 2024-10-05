@@ -1,11 +1,11 @@
 import Recipe from '../models/recipe.model';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
 import Preperation from '../models/preperation.model';
 import RecipeIngredient from '../models/recipe-ingedient.model';
 import { AuthRequest } from './auth.controller';
 
-const recipes = async (req: Request, res: Response) => {
+const recipes = async (req: AuthRequest, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string);
     const offset = parseInt(req.query.offset as string);
@@ -24,7 +24,7 @@ const recipes = async (req: Request, res: Response) => {
   }
 };
 
-const recipe = async (req: Request, res: Response) => {
+const recipe = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const recipe = await Recipe.findOne({ where: { id } });
@@ -159,7 +159,7 @@ const createRecipe = async (
 };
 
 const deleteRecipe = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
