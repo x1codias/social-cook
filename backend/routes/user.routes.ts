@@ -9,14 +9,10 @@ import {
 
 const userRoutes = Router();
 
-userRoutes.get(
-  '?username={username}&offset={offset}&limit={limit}',
-  verifyToken,
-  users
-);
+userRoutes.get('/', verifyToken, users);
 userRoutes.get('/{id}', verifyToken, user);
 userRoutes.patch(
-  '/{username}',
+  '/{id}',
   verifyToken,
   upload.single('photo'),
   editUser

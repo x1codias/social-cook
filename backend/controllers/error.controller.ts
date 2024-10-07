@@ -17,6 +17,7 @@ export enum Errors {
   noFollow = 'noFollow',
   duplicateBlock = 'duplicateBlock',
   noBlock = 'noBlock',
+  recipeDoesntExist = 'recipeDoesntExist',
 }
 
 export const errorHandler = (

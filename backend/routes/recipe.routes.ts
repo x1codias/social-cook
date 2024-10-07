@@ -10,11 +10,7 @@ import { upload } from '../controllers/file.controller';
 
 const recipeRoutes = Router();
 
-recipeRoutes.get(
-  '?title={title}&offset={offset}&limit={limit}',
-  verifyToken,
-  recipes
-);
+recipeRoutes.get('/', verifyToken, recipes);
 recipeRoutes.post(
   '/',
   verifyToken,

@@ -21,7 +21,7 @@ export interface AuthRequest extends Request {
 }
 
 const verifyToken = (
-  req: Request & { user: string | JwtPayload },
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -41,7 +41,7 @@ const verifyToken = (
     if (err) {
       return errorHandler(401, Errors.tokenInvalid, res);
     }
-    req.user = user;
+    req.user = user as { userId: number };
 
     // Proceed to the next middleware or route handler
     next();

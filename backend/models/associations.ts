@@ -96,7 +96,7 @@ User.belongsToMany(User, {
   onDelete: 'CASCADE',
 });
 User.belongsToMany(User, {
-  through: Favorite,
+  through: Followage,
   as: 'following',
   foreignKey: 'followerId',
   otherKey: 'userId',
@@ -143,7 +143,7 @@ Comment.belongsTo(Recipe, {
 // User with Chatroom relation
 User.hasMany(ChatRoom, {
   foreignKey: 'userId',
-  as: 'comments',
+  as: 'chatRooms',
   onDelete: 'CASCADE',
 });
 ChatRoom.belongsTo(User, {

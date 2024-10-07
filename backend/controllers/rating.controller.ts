@@ -2,6 +2,9 @@ import { Response } from 'express';
 import { AuthRequest } from './auth.controller';
 import { errorHandler, Errors } from './error.controller';
 import Rating from '../models/rating.model';
+import { NotificationContext } from '../models/notification.model';
+import Recipe from '../models/recipe.model';
+import { createNotification } from '../services/notification.service';
 
 const rateEditRecipe = async (
   req: AuthRequest,
@@ -30,10 +33,33 @@ const rateEditRecipe = async (
       });
 
       await newRating.save();
+
+      return res.status(200).json({
+        message: 'editedRating',
+      });
     }
 
+    const recipe = await Recipe.findOne({
+      where: { id: parseInt(recipeId) },
+    });
+
+    if (!recipe) {
+      return errorHandler(
+        404,
+        Errors.recipeDoesntExist,
+        res
+      );
+    }
+
+    await createNotification(
+      recipe.get().userId,
+      userId,
+      NotificationContext.rating,
+      rating
+    );
+
     res.status(200).json({
-      message: created ? 'newRating' : 'editedRating',
+      message: 'newRating',
     });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);

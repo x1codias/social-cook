@@ -7,15 +7,17 @@ export enum NotificationContext {
   commentLike = 'commentLike',
   rating = 'rating',
   follow = 'follow',
+  mention = 'mention',
 }
 
 export type NotificationType = {
-  id: number;
+  id?: number;
   userId: number;
   actorId: number;
   context: NotificationContext;
   read: boolean;
   ratingValue?: number;
+  createdAt?: Date;
 };
 
 const Notification = sequelize.define<

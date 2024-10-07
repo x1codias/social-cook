@@ -14,6 +14,10 @@ import {
 } from './controllers/error.controller';
 import sequelize from './sequelize';
 import cors from 'cors';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { createLogger, format, transports } from 'winston';
+import { socketIntegration } from './sockets/index';
 
 import './models/associations';
 
@@ -22,20 +26,49 @@ dotenv.config();
 const app = express();
 const { PORT } = process.env;
 
-// Sync the model with the database
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log('Database & tables created!');
-  })
-  .catch(err => {
-    console.error('Error while synchronizing tables', err);
-  });
+export const logger = createLogger({
+  level: 'info',
+  format: format.combine(format.timestamp(), format.json()),
+  transports: [
+    new transports.Console(),
+    new transports.File({
+      dirname: 'logs',
+      filename: 'error.log',
+      level: 'error',
+    }),
+    new transports.File({
+      dirname: 'logs',
+      filename: 'combined.log',
+    }),
+  ],
+});
+
+// Create http server to attach websockets
+const server = createServer(app);
+export const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 app.use(express.static('public'));
+
+// Sync the model with the database
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    logger.info('Database & tables created!');
+  })
+  .catch(err => {
+    logger.error('Error while synchronizing tables', err);
+  });
+
+// Websocket integration
+socketIntegration(io);
 
 const apiRouter = express.Router();
 apiRouter.use('/', authRoutes);
@@ -52,7 +85,7 @@ app.use(
     res: Response,
     next: NextFunction
   ) => {
-    console.error('Global error handler:', error);
+    logger.error('Global error handler:', error);
     errorHandler(500, Errors.serverError, res); // Handle internal server error
     next();
   }
@@ -60,5 +93,5 @@ app.use(
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  logger.info(`Server started on port ${PORT}`);
 });
