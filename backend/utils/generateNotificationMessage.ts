@@ -14,6 +14,8 @@ export const generateNotificationMessage = (
       return 'someoneMentionedYou';
     case NotificationContext.rating:
       return 'someoneRatedRecipe';
+    case NotificationContext.favorite:
+      return 'someoneAddedRecipeToFavorite';
     default:
       return 'newNotification';
   }

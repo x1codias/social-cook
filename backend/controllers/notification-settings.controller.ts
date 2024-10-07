@@ -14,6 +14,7 @@ const editNotificationSettings = async (
       rating,
       likeComment,
       mention,
+      favorite,
     } = req.body;
     const { userId } = req.user;
 
@@ -36,6 +37,7 @@ const editNotificationSettings = async (
       rating,
       likeComment,
       mention,
+      favorite,
     });
 
     await notificationSettingToUpdate.save();

@@ -3,6 +3,8 @@ import { Errors, errorHandler } from './error.controller';
 import Followage from '../models/followage.model';
 import { AuthRequest } from './auth.controller';
 import Setting from '../models/setting.model';
+import { createNotification } from '../services/notification.service';
+import { NotificationContext } from '../models/notification.model';
 
 const follow = async (req: AuthRequest, res: Response) => {
   try {
@@ -35,6 +37,12 @@ const follow = async (req: AuthRequest, res: Response) => {
       followerId: userId,
       pending: targetUserSettings?.get().isPrivate,
     });
+
+    await createNotification(
+      parseInt(targetId),
+      userId,
+      NotificationContext.follow
+    );
 
     res.status(200).json({
       message: 'followSuccessfull',

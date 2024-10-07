@@ -4,6 +4,8 @@ import Favorite from '../models/favorite.model';
 import { Op } from 'sequelize';
 import Recipe from '../models/recipe.model';
 import { AuthRequest } from './auth.controller';
+import { createNotification } from '../services/notification.service';
+import { NotificationContext } from '../models/notification.model';
 
 const favorites = async (
   req: AuthRequest,
@@ -48,10 +50,28 @@ const addFavorite = async (
     const { recipeId } = req.body;
     const { userId } = req.user;
 
+    const recipe = await Recipe.findOne({
+      where: { id: recipeId },
+    });
+
+    if (!recipe) {
+      return errorHandler(
+        404,
+        Errors.recipeDoesntExist,
+        res
+      );
+    }
+
     await Favorite.create({
       recipeId,
       userId,
     });
+
+    await createNotification(
+      recipe.get().userId,
+      userId,
+      NotificationContext.favorite
+    );
 
     res.status(200).json({
       message: 'addedToFavorites',

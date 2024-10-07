@@ -8,6 +8,7 @@ export enum NotificationContext {
   rating = 'rating',
   follow = 'follow',
   mention = 'mention',
+  favorite = 'favorite',
 }
 
 export type NotificationType = {
