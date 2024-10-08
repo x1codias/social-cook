@@ -16,8 +16,8 @@ import sequelize from './sequelize';
 import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { createLogger, format, transports } from 'winston';
 import { socketIntegration } from './sockets/index';
+import logger from './logger';
 
 import './models/associations';
 
@@ -25,23 +25,6 @@ dotenv.config();
 
 const app = express();
 const { PORT } = process.env;
-
-export const logger = createLogger({
-  level: 'info',
-  format: format.combine(format.timestamp(), format.json()),
-  transports: [
-    new transports.Console(),
-    new transports.File({
-      dirname: 'logs',
-      filename: 'error.log',
-      level: 'error',
-    }),
-    new transports.File({
-      dirname: 'logs',
-      filename: 'combined.log',
-    }),
-  ],
-});
 
 // Create http server to attach websockets
 const server = createServer(app);
