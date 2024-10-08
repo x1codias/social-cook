@@ -1,11 +1,11 @@
 import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
-import Favorite from '../models/favorite.model';
-import { Op } from 'sequelize';
-import Recipe from '../models/recipe.model';
 import { AuthRequest } from './auth.controller';
-import { createNotification } from '../services/notification.service';
-import { NotificationContext } from '../models/notification.model';
+import {
+  addFavoriteService,
+  getFavoritesService,
+  removeFromFavoriteService,
+} from '../services/favorite.services';
 
 const favorites = async (
   req: AuthRequest,
@@ -15,27 +15,12 @@ const favorites = async (
     const { offset, limit } = req.body;
     const { userId } = req.user;
 
-    const favorites = await Favorite.findAll({
-      where: {
-        userId,
-      },
-    });
-
-    const { count, rows } = await Recipe.findAndCountAll({
-      offset,
-      limit,
-      where: {
-        id: {
-          [Op.in]: favorites.map(
-            row => row.dataValues.recipeId
-          ),
-        },
-      },
-    });
+    const { total, favoriteRecipes } =
+      await getFavoritesService(userId, offset, limit);
 
     res.status(200).json({
-      total: count,
-      favoriteRcipes: rows.map(row => row.dataValues),
+      total,
+      favoriteRecipes,
     });
   } catch (error) {
     return errorHandler(500, Errors.serverError, res);
@@ -50,28 +35,7 @@ const addFavorite = async (
     const { recipeId } = req.body;
     const { userId } = req.user;
 
-    const recipe = await Recipe.findOne({
-      where: { id: recipeId },
-    });
-
-    if (!recipe) {
-      return errorHandler(
-        404,
-        Errors.recipeDoesntExist,
-        res
-      );
-    }
-
-    await Favorite.create({
-      recipeId,
-      userId,
-    });
-
-    await createNotification(
-      recipe.get().userId,
-      userId,
-      NotificationContext.favorite
-    );
+    await addFavoriteService(recipeId, userId, res);
 
     res.status(200).json({
       message: 'addedToFavorites',
@@ -89,12 +53,7 @@ const removeFromFavorites = async (
     const { userId } = req.user;
     const { recipeId } = req.body;
 
-    await Favorite.destroy({
-      where: {
-        recipeId,
-        userId,
-      },
-    });
+    await removeFromFavoriteService(recipeId, userId);
 
     res.status(200).json({
       message: 'removedFromFavorites',

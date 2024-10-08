@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { verifyToken } from '../controllers/auth.controller';
-import { upload } from '../controllers/file.controller';
+import { verifyToken } from '../middlwares/verify-token.middleware';
+import { upload } from '../middlwares/file.middleware';
 import {
   editUser,
   user,

@@ -1,10 +1,10 @@
 import { Response } from 'express';
 import { AuthRequest } from './auth.controller';
 import { errorHandler, Errors } from './error.controller';
-import Rating from '../models/rating.model';
-import { NotificationContext } from '../models/notification.model';
-import Recipe from '../models/recipe.model';
-import { createNotification } from '../services/notification.service';
+import {
+  rateEditRecipeService,
+  undoRatingService,
+} from '../services/rating.services';
 
 const rateEditRecipe = async (
   req: AuthRequest,
@@ -15,47 +15,11 @@ const rateEditRecipe = async (
     const { recipeId } = req.params;
     const { rating } = req.body;
 
-    const [newRating, created] = await Rating.findOrCreate({
-      where: {
-        userId,
-        recipeId: parseInt(recipeId),
-      },
-      defaults: {
-        userId,
-        recipeId: parseInt(recipeId),
-        rating,
-      },
-    });
-
-    if (created) {
-      await newRating.update({
-        rating,
-      });
-
-      await newRating.save();
-
-      return res.status(200).json({
-        message: 'editedRating',
-      });
-    }
-
-    const recipe = await Recipe.findOne({
-      where: { id: parseInt(recipeId) },
-    });
-
-    if (!recipe) {
-      return errorHandler(
-        404,
-        Errors.recipeDoesntExist,
-        res
-      );
-    }
-
-    await createNotification(
-      recipe.get().userId,
+    await rateEditRecipeService(
       userId,
-      NotificationContext.rating,
-      rating
+      parseInt(recipeId),
+      rating,
+      res
     );
 
     res.status(200).json({
@@ -74,12 +38,7 @@ const undoRating = async (
     const { userId } = req.user;
     const { recipeId } = req.params;
 
-    await Rating.destroy({
-      where: {
-        userId,
-        recipeId: parseInt(recipeId),
-      },
-    });
+    await undoRatingService(userId, parseInt(recipeId));
 
     res.status(200).json({
       message: 'ratingUndone',

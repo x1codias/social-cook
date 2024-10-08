@@ -5,8 +5,8 @@ import {
   recipe,
   recipes,
 } from '../controllers/recipe.controller';
-import { verifyToken } from '../controllers/auth.controller';
-import { upload } from '../controllers/file.controller';
+import { verifyToken } from '../middlwares/verify-token.middleware';
+import { upload } from '../middlwares/file.middleware';
 
 const recipeRoutes = Router();
 

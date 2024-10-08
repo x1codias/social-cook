@@ -1,28 +1,17 @@
 import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
-import Blockage from '../models/blockage.model';
 import { AuthRequest } from './auth.controller';
+import {
+  blockService,
+  unBlockService,
+} from '../services/blockage.services';
 
 const block = async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.user;
     const { targetId } = req.params;
 
-    const existingBlock = await Blockage.findOne({
-      where: {
-        blockedId: userId,
-        userId: parseInt(targetId),
-      },
-    });
-
-    if (existingBlock) {
-      return errorHandler(409, Errors.duplicateBlock, res);
-    }
-
-    await Blockage.create({
-      userId: parseInt(targetId),
-      blockedId: userId,
-    });
+    await blockService(userId, parseInt(targetId), res);
 
     res.status(200).json({
       message: 'blockSuccessfull',
@@ -37,23 +26,7 @@ const unblock = async (req: AuthRequest, res: Response) => {
     const { userId } = req.user;
     const { targetId } = req.params;
 
-    const existingBlock = await Blockage.findOne({
-      where: {
-        blockedId: userId,
-        userId: parseInt(targetId),
-      },
-    });
-
-    if (!existingBlock) {
-      return errorHandler(404, Errors.noBlock, res);
-    }
-
-    await Blockage.destroy({
-      where: {
-        blockedId: userId,
-        userId: parseInt(targetId),
-      },
-    });
+    await unBlockService(userId, parseInt(targetId), res);
 
     res.status(200).json({
       message: 'unblockSuccessfull',

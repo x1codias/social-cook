@@ -5,9 +5,9 @@ import {
   login,
   logout,
   register,
-  verifyToken,
 } from '../controllers/auth.controller';
-import { upload } from '../controllers/file.controller';
+import { upload } from '../middlwares/file.middleware';
+import { verifyToken } from '../middlwares/verify-token.middleware';
 
 const authRoutes = Router();
 

@@ -1,7 +1,10 @@
 import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
-import Ingredient from '../models/ingredient.model';
 import { AuthRequest } from './auth.controller';
+import {
+  createIngredientService,
+  getIngredientsService,
+} from '../services/ingredient.services';
 
 const ingredients = async (
   req: AuthRequest,
@@ -11,15 +14,12 @@ const ingredients = async (
     const limit = parseInt(req.query.limit as string);
     const offset = parseInt(req.query.offset as string);
 
-    const { count, rows } =
-      await Ingredient.findAndCountAll({
-        offset,
-        limit,
-      });
+    const { total, ingredients } =
+      await getIngredientsService(offset, limit);
 
     res.status(200).json({
-      total: count,
-      ingredients: rows.map(row => row.dataValues),
+      total,
+      ingredients,
     });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);
@@ -33,23 +33,10 @@ const createIngredient = async (
   try {
     const { name } = req.body as { name: string };
 
-    const [newIngredient, created] =
-      await Ingredient.findOrCreate({
-        where: {
-          name: name.toLowerCase(),
-        },
-        defaults: {
-          name: name.toLowerCase(),
-        },
-      });
-
-    if (!created) {
-      return errorHandler(
-        409,
-        Errors.ingredientExists,
-        res
-      );
-    }
+    const { newIngredient } = createIngredientService(
+      name,
+      res
+    );
 
     res.status(200).json({
       message: 'recipeCreated',

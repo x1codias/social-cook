@@ -1,92 +1,43 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
-import User from '../models/user.model';
-import Followage from '../models/followage.model';
-import { Op } from 'sequelize';
-import sequelize from '../sequelize';
 import { AuthRequest } from './auth.controller';
+import {
+  getUserService,
+  getUsersService,
+} from '../services/user.services';
 
-const users = async (req: AuthRequest, res: Response) => {
+const users = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string);
     const offset = parseInt(req.query.offset as string);
     const username = (req.query.username as string) || '';
 
-    const { count, rows } = await User.findAndCountAll({
+    const { total, users } = await getUsersService(
       offset,
       limit,
-      where: {
-        username: { [Op.eq]: username },
-      },
-    });
-
-    const userIds = rows.map(
-      row => row.get().id
-    ) as number[];
-
-    const followers = await Followage.findAll({
-      where: {
-        userId: {
-          [Op.in]: userIds,
-        },
-      },
-      attributes: [
-        'userId',
-        [
-          sequelize.fn('COUNT', sequelize.col('userId')),
-          'count',
-        ],
-      ],
-      group: ['userId'],
-    });
-
-    const followersCountMap: { [key: number]: number } = {};
-    followers.map(entry => {
-      followersCountMap[entry.get().userId] =
-        entry.getDataValue('count') as number;
-    });
-
-    const formattedUsers = rows.map(async row => {
-      return {
-        ...row.dataValues,
-        followersCount:
-          followersCountMap[row.get().id as number] || 0,
-      };
-    });
+      username
+    );
 
     res.status(200).json({
-      total: count,
-      users: formattedUsers,
+      total,
+      users,
     });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);
   }
 };
 
-const user = async (req: AuthRequest, res: Response) => {
+const user = async (req: Request, res: Response) => {
   try {
-    const { username } = req.params;
-    const user = await User.findOne({
-      where: { username },
-    });
+    const { userId } = req.params;
 
-    if (!user) {
-      return errorHandler(404, 'noUserFound', res);
-    }
-
-    const followersCount = await Followage.count({
-      where: {
-        userId: user.get().id,
-      },
-    });
-
-    const formattedUser = {
-      ...user?.dataValues,
-      followersCount,
-    };
+    const { user } = await getUserService(
+      parseInt(userId),
+      res
+    );
 
     res.status(200).json({
-      user: formattedUser,
+      user,
     });
   } catch (error) {
     errorHandler(500, Errors.serverError, res);
@@ -98,6 +49,7 @@ const editUser = async (
   res: Response
 ) => {
   try {
+    const { userId } = req.user;
   } catch (error) {
     errorHandler(500, Errors.serverError, res);
   }

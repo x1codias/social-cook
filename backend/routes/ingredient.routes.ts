@@ -3,7 +3,7 @@ import {
   ingredients,
   createIngredient,
 } from '../controllers/ingredient.controller';
-import { verifyToken } from '../controllers/auth.controller';
+import { verifyToken } from '../middlwares/verify-token.middleware';
 
 const ingredientRoutes = Router();
 

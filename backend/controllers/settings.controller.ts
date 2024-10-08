@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
-import Setting from '../models/setting.model';
 import { AuthRequest } from './auth.controller';
+import { editUserSettingsService } from '../services/settings.services';
 
 const editSettings = async (
   req: AuthRequest,
@@ -11,19 +11,12 @@ const editSettings = async (
     const { lang, isPrivate } = req.body;
     const { userId } = req.user;
 
-    const settingToUpdate = await Setting.findOne({
-      where: { userId },
-    });
-
-    if (!settingToUpdate) {
-      return errorHandler(404, Errors.noSettings, res);
-    }
-
-    await settingToUpdate.update({
+    await editUserSettingsService(
+      userId,
+      res,
       lang,
-      isPrivate,
-    });
-    await settingToUpdate.save();
+      isPrivate
+    );
 
     res.status(200).json({
       message: 'settingsUpdated',

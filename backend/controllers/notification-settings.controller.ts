@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Errors, errorHandler } from './error.controller';
-import NotificationSetting from '../models/notification-setting.model';
 import { AuthRequest } from './auth.controller';
+import { editNotificationSettingsService } from '../services/notification-settings.services';
 
 const editNotificationSettings = async (
   req: AuthRequest,
@@ -18,29 +18,18 @@ const editNotificationSettings = async (
     } = req.body;
     const { userId } = req.user;
 
-    const notificationSettingToUpdate =
-      await NotificationSetting.findOne({
-        where: { userId },
-      });
-
-    if (!notificationSettingToUpdate) {
-      return errorHandler(
-        404,
-        Errors.noNotificationSettings,
-        res
-      );
-    }
-
-    await notificationSettingToUpdate.update({
-      follow,
-      comment,
-      rating,
-      likeComment,
-      mention,
-      favorite,
-    });
-
-    await notificationSettingToUpdate.save();
+    await editNotificationSettingsService(
+      userId,
+      {
+        follow,
+        comment,
+        rating,
+        likeComment,
+        mention,
+        favorite,
+      },
+      res
+    );
 
     res.status(200).json({
       message: 'notificationSettingsUpdated',

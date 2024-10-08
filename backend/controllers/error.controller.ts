@@ -22,7 +22,7 @@ export enum Errors {
 
 export const errorHandler = (
   code: number,
-  key: string,
+  key: Errors,
   res: Response
 ) => {
   const errorResponse = {
