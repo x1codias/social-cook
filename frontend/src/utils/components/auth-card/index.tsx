@@ -210,7 +210,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                 justifyContent: 'space-between',
               }}
             >
-              {/* <DefaultInput
+              <DefaultInput
                 width={120}
                 type={'file'}
                 name={'photo'}
@@ -223,7 +223,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                     accept: 'image/*', // Optional: Limit to image files
                   },
                 }}
-              /> */}
+              />
               <DefaultInput
                 minWidth={'290px'}
                 type={'text'}
@@ -238,7 +238,10 @@ const AuthCard: React.FC<AuthCardProps> = (
             </div>
           )}
           <DefaultButton
-            customStyles={{ alignSelf: 'center' }}
+            customStyles={{
+              alignSelf: 'center',
+              padding: '8px 26px',
+            }}
             type={'submit'}
             label={`Sign ${
               inputs.length > 2 ? 'Up' : 'In'

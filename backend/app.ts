@@ -69,7 +69,7 @@ app.use(
     next: NextFunction
   ) => {
     logger.error('Global error handler:', error);
-    errorHandler(500, Errors.serverError, res); // Handle internal server error
+    errorHandler(Errors.serverError, res); // Handle internal server error
     next();
   }
 );

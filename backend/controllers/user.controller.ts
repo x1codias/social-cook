@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
   getUserService,
@@ -23,7 +23,7 @@ const users = async (req: Request, res: Response) => {
       users,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -31,16 +31,13 @@ const user = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    const { user } = await getUserService(
-      parseInt(userId),
-      res
-    );
+    const { user } = await getUserService(parseInt(userId));
 
     res.status(200).json({
       user,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -51,7 +48,7 @@ const editUser = async (
   try {
     const { userId } = req.user;
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

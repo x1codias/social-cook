@@ -1,8 +1,4 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import Preperation from '../models/preperation.model';
 import RecipeIngredient from '../models/recipe-ingedient.model';
 import Recipe from '../models/recipe.model';
@@ -39,9 +35,16 @@ const createRecipeService = async (
   category: any,
   difficulty: any,
   description: any,
-  photoFileNames: any,
-  res: Response
+  files: any
 ) => {
+  if (!files) {
+    throw new Error(Errors.imageNotFound);
+  }
+
+  const photoFileNames = (
+    files as Express.Multer.File[]
+  ).map(file => file.filename);
+
   const parsedPreparation = JSON.parse(preparation);
   const parsedDuration = {
     hours: parseInt(JSON.parse(duration).hours),
@@ -66,7 +69,7 @@ const createRecipeService = async (
   });
 
   if (!created) {
-    return errorHandler(409, Errors.recipeExists, res);
+    throw new Error(Errors.recipeExists);
   }
 
   let preparationRecipe;

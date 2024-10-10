@@ -1,6 +1,6 @@
 import { DefaultEventsMap, Server } from 'socket.io';
-import { logger } from '../app';
 import { notificationChannel } from './notification.socket';
+import logger from '../logger';
 
 const socketIntegration = (
   io: Server<

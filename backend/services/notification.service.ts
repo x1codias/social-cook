@@ -1,4 +1,5 @@
-import { io, logger } from '../app';
+import { io } from '../app';
+import logger from '../logger';
 import Notification, {
   NotificationContext,
 } from '../models/notification.model';

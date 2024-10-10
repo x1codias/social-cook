@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
   createIngredientService,
@@ -22,7 +22,7 @@ const ingredients = async (
       ingredients,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -33,9 +33,8 @@ const createIngredient = async (
   try {
     const { name } = req.body as { name: string };
 
-    const { newIngredient } = createIngredientService(
-      name,
-      res
+    const { newIngredient } = await createIngredientService(
+      name
     );
 
     res.status(200).json({
@@ -43,7 +42,7 @@ const createIngredient = async (
       ingredient: newIngredient,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

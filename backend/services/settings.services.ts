@@ -1,15 +1,10 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import Setting, {
   SettingLangs,
 } from '../models/setting.model';
 
 export const editUserSettingsService = async (
   userId: number,
-  res: Response,
   lang: SettingLangs,
   isPrivate: boolean
 ) => {
@@ -18,7 +13,7 @@ export const editUserSettingsService = async (
   });
 
   if (!settingToUpdate) {
-    return errorHandler(404, Errors.noSettings, res);
+    throw new Error(Errors.noSettings);
   }
 
   await settingToUpdate.update({

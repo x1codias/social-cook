@@ -1,8 +1,4 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import { NotificationContext } from '../models/notification.model';
 import Rating from '../models/rating.model';
 import Recipe from '../models/recipe.model';
@@ -11,8 +7,7 @@ import { createNotification } from './notification.service';
 const rateEditRecipeService = async (
   userId: number,
   recipeId: number,
-  rating: number,
-  res: Response
+  rating: number
 ) => {
   const [newRating, created] = await Rating.findOrCreate({
     where: {
@@ -41,7 +36,7 @@ const rateEditRecipeService = async (
   });
 
   if (!recipe) {
-    return errorHandler(404, Errors.recipeDoesntExist, res);
+    throw new Error(Errors.recipeDoesntExist);
   }
 
   await createNotification(

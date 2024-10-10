@@ -2,11 +2,7 @@ import { Op } from 'sequelize';
 import Followage from '../models/followage.model';
 import User from '../models/user.model';
 import sequelize from '../sequelize';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
-import { Response } from 'express';
+import { Errors } from '../controllers/error.controller';
 
 const getUsersService = async (
   offset: number,
@@ -59,16 +55,13 @@ const getUsersService = async (
   };
 };
 
-const getUserService = async (
-  userId: number,
-  res: Response
-) => {
+const getUserService = async (userId: number) => {
   const user = await User.findOne({
     where: { id: userId },
   });
 
   if (!user) {
-    return errorHandler(404, Errors.userNotFound, res);
+    throw new Error(Errors.userNotFound);
   }
 
   const followersCount = await Followage.count({

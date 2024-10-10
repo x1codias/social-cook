@@ -1,6 +1,6 @@
 import { UserType } from '../models/user.model';
 import { Response, Request } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import {
   facebookAuthService,
   googleAuthService,
@@ -27,8 +27,7 @@ const register = async (req: Request, res: Response) => {
       email,
       password,
       biography,
-      photoFileName,
-      res
+      photoFileName
     );
 
     res.status(200).json({
@@ -38,7 +37,7 @@ const register = async (req: Request, res: Response) => {
       message: 'welcomeChef',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -49,10 +48,9 @@ const login = async (req: Request, res: Response) => {
       password: string;
     };
 
-    const { user, token } = loginService(
+    const { user, token } = await loginService(
       identifier,
-      password,
-      res
+      password
     );
 
     res.status(200).json({
@@ -62,7 +60,7 @@ const login = async (req: Request, res: Response) => {
       message: 'welcomeBackChef',
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -70,14 +68,14 @@ const logout = async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.user;
 
-    await logoutService(userId, res);
+    await logoutService(userId);
 
     res.status(200).json({
       severity: 'success',
       message: 'hopeToSeeAgainChef',
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -90,7 +88,7 @@ const googleAuthentication = async (
       req.headers['authorization'];
 
     const { user, token, created } =
-      await googleAuthService(authorizationHeader, res);
+      await googleAuthService(authorizationHeader);
 
     res.status(200).json({
       severity: 'success',
@@ -100,7 +98,7 @@ const googleAuthentication = async (
       registered: created,
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -112,10 +110,8 @@ const facebookAuthentication = async (
     const authorizationHeader =
       req.headers['authorization'];
 
-    const { user, token, created } = facebookAuthService(
-      authorizationHeader,
-      res
-    );
+    const { user, token, created } =
+      await facebookAuthService(authorizationHeader);
 
     res.status(200).json({
       severity: 'success',
@@ -125,7 +121,7 @@ const facebookAuthentication = async (
       registered: created,
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

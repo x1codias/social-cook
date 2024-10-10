@@ -1,8 +1,4 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import Followage from '../models/followage.model';
 import { NotificationContext } from '../models/notification.model';
 import Setting from '../models/setting.model';
@@ -10,8 +6,7 @@ import { createNotification } from './notification.service';
 
 const followService = async (
   targetId: number,
-  userId: number,
-  res: Response
+  userId: number
 ) => {
   const targetUserSettings = await Setting.findOne({
     where: {
@@ -20,7 +15,7 @@ const followService = async (
   });
 
   if (!targetUserSettings) {
-    return errorHandler(404, Errors.noSettings, res);
+    throw new Error(Errors.noSettings);
   }
 
   const existingFollow = await Followage.findOne({
@@ -31,7 +26,7 @@ const followService = async (
   });
 
   if (existingFollow) {
-    return errorHandler(409, Errors.duplicateFollow, res);
+    throw new Error(Errors.duplicateFollow);
   }
 
   await Followage.create({
@@ -49,8 +44,7 @@ const followService = async (
 
 const unFollowService = async (
   targetId: number,
-  userId: number,
-  res: Response
+  userId: number
 ) => {
   const existingFollow = await Followage.findOne({
     where: {
@@ -60,7 +54,7 @@ const unFollowService = async (
   });
 
   if (!existingFollow) {
-    return errorHandler(404, Errors.noFollow, res);
+    throw new Error(Errors.noFollow);
   }
 
   await Followage.destroy({

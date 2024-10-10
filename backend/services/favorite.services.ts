@@ -1,13 +1,9 @@
 import { Op } from 'sequelize';
 import Favorite from '../models/favorite.model';
 import Recipe from '../models/recipe.model';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import { createNotification } from './notification.service';
 import { NotificationContext } from '../models/notification.model';
-import { Response } from 'express';
 
 const getFavoritesService = async (
   userId: number,
@@ -40,15 +36,14 @@ const getFavoritesService = async (
 
 const addFavoriteService = async (
   recipeId: number,
-  userId: number,
-  res: Response
+  userId: number
 ) => {
   const recipe = await Recipe.findOne({
     where: { id: recipeId },
   });
 
   if (!recipe) {
-    return errorHandler(404, Errors.recipeDoesntExist, res);
+    throw new Error(Errors.recipeDoesntExist);
   }
 
   await Favorite.create({

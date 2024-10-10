@@ -1,5 +1,5 @@
 import { DefaultEventsMap, Socket } from 'socket.io';
-import { logger } from '../app';
+import logger from '../logger';
 
 export const notificationChannel = (
   socket: Socket<

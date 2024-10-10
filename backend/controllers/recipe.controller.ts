@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
   createRecipeService,
@@ -23,7 +23,7 @@ const recipes = async (req: AuthRequest, res: Response) => {
       recipes,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -39,7 +39,7 @@ const recipe = async (req: AuthRequest, res: Response) => {
       recipe,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -59,14 +59,6 @@ const createRecipe = async (
     } = req.body;
     const { userId } = req.user;
 
-    if (!req.files) {
-      return errorHandler(400, Errors.imageNotFound, res);
-    }
-
-    const photoFileNames = (
-      req.files as Express.Multer.File[]
-    ).map(file => file.filename);
-
     const { recipe } = await createRecipeService(
       title,
       userId,
@@ -76,8 +68,7 @@ const createRecipe = async (
       category,
       difficulty,
       description,
-      photoFileNames,
-      res
+      req.files
     );
 
     res.status(200).json({
@@ -85,7 +76,7 @@ const createRecipe = async (
       recipe,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -102,7 +93,7 @@ const deleteRecipe = async (
       message: 'recipeDeleted',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

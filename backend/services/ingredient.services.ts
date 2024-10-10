@@ -1,8 +1,4 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import Ingredient from '../models/ingredient.model';
 
 const getIngredientsService = async (
@@ -20,10 +16,7 @@ const getIngredientsService = async (
   };
 };
 
-const createIngredientService = async (
-  name: string,
-  res: Response
-) => {
+const createIngredientService = async (name: string) => {
   const [newIngredient, created] =
     await Ingredient.findOrCreate({
       where: {
@@ -35,7 +28,7 @@ const createIngredientService = async (
     });
 
   if (!created) {
-    return errorHandler(409, Errors.ingredientExists, res);
+    throw new Error(Errors.ingredientExists);
   }
 
   return { newIngredient };
