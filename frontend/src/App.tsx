@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 import Feed from './pages/feed';
 import CreateRecipe from './pages/recipe/create';
 import Recipe from './pages/recipe';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = (): JSX.Element => {
   const userToken = useSelector(
@@ -23,6 +25,7 @@ const App: React.FC = (): JSX.Element => {
         justifyContent: userToken ? 'flex-start' : 'center',
       }}
     >
+      <ToastContainer />
       {userToken && <TopBar />}
       <Routes>
         <Route

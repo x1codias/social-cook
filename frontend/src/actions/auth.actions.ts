@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { LOGIN, LOGOUT, REGISTER } from './types';
 import { Dispatch } from 'redux';
+import { toast } from 'react-toastify';
+import i18n from '../translations/i18n';
 
 export const register =
   (registerData: FormData) =>
@@ -10,8 +12,12 @@ export const register =
         import.meta.env.VITE_BACKEND_URL + '/register',
         registerData
       );
+      toast(i18n.t('welcomeChef'), { type: 'success' });
       dispatch({ type: REGISTER, payload: response.data });
     } catch (error) {
+      toast(i18n.t(error.response.data.message), {
+        type: error.response.data.severity,
+      });
       console.log(error);
     }
   };
@@ -24,8 +30,12 @@ export const login =
         import.meta.env.VITE_BACKEND_URL + '/login',
         loginData
       );
+      toast(i18n.t('welcomeBackChef'), { type: 'success' });
       dispatch({ type: LOGIN, payload: response.data });
     } catch (error) {
+      toast(i18n.t(error.response.data.message), {
+        type: error.response.data.severity,
+      });
       console.log(error);
     }
   };
@@ -45,6 +55,9 @@ export const logout =
       );
       dispatch({ type: LOGOUT, payload: response.data });
     } catch (error) {
+      toast(i18n.t(error.response.data.message), {
+        type: error.response.data.severity,
+      });
       console.log(error);
     }
   };
@@ -66,6 +79,9 @@ export const googleAuthentication =
         payload: response.data,
       });
     } catch (error) {
+      toast(i18n.t(error.response.data.message), {
+        type: error.response.data.severity,
+      });
       console.log(error);
     }
   };
@@ -88,6 +104,9 @@ export const facebookAuthentication =
         payload: response.data,
       });
     } catch (error) {
+      toast(i18n.t(error.response.data.message), {
+        type: error.response.data.severity,
+      });
       console.log(error);
     }
   };

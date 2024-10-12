@@ -9,5 +9,18 @@
   "salads": "Saladas",
   "breakfast": "Pequeno Almoço",
   "fingerFood": "Petisco",
-  "desserts": "Sobremesa"
+  "desserts": "Sobremesa",
+  "hasLessThanFourCharacters": "Possui menos de 4 caracteres",
+  "hasWhiteSpace": "Possui espaços",
+  "invalidEmail": "Email inválido",
+  "notHasUpperCaseLetter": "Possui uma letra maiúscula",
+  "notHasLowerCaseLetter": "Possui uma letra minúscula",
+  "hasLessThanEightCharacters": "Possui menos de 8 caracteres",
+  "passwordDifferent": "Password não condis com a original",
+  "welcomeChef": "Bem vindo Chefe!",
+  "welcomeBackChef": "Bem vindo de volta Chefe!",
+  "emailPassword": "Credenciais incorretas",
+  "tokenInvalid": "Token inválido",
+  "userExists": "Utilizador já existe",
+  "tokenMissing": "Token em falta"
 }

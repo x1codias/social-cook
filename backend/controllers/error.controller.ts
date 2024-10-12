@@ -44,6 +44,10 @@ export const errorHandler = (
     case Errors.userNotFound:
     case Errors.imageNotFound:
     case Errors.recipeDoesntExist:
+    case Errors.noSettings:
+    case Errors.noNotificationSettings:
+    case Errors.noFollow:
+    case Errors.noBlock:
       statusCode = 404; // Not Found
       break;
 
@@ -52,10 +56,6 @@ export const errorHandler = (
       break;
 
     case Errors.directoryReading:
-    case Errors.noSettings:
-    case Errors.noNotificationSettings:
-    case Errors.noFollow:
-    case Errors.noBlock:
       statusCode = 500; // Server Error
       break;
 

@@ -25,6 +25,7 @@ const InputErrors: FC<InputErrorsType> = ({
           (key, index) =>
             validationResults[inputName][key] && (
               <div
+                key={key}
                 style={{
                   display: 'flex',
                   alignItems: 'center',

@@ -16,5 +16,11 @@
   "notHasUpperCaseLetter": "Has an upper case letter",
   "notHasLowerCaseLetter": "Has a lower case letter",
   "hasLessThanEightCharacters": "Has less than 8 characters",
-  "passwordDifferent": "Password doesn't match original"
+  "passwordDifferent": "Password doesn't match original",
+  "welcomeChef": "Welcome Chef!",
+  "welcomeBackChef": "Welcome back Chef!",
+  "emailPassword": "Wrong credentials",
+  "tokenInvalid": "Invalid Token",
+  "userExists": "User already exists",
+  "tokenMissing": "Missing token"
 }
