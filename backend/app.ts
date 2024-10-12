@@ -42,7 +42,7 @@ app.use(express.static('public'));
 
 // Sync the model with the database
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     logger.info('Database & tables created!');
   })

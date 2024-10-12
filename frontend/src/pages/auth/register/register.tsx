@@ -1,7 +1,9 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { register } from '../../../actions/auth.actions';
 import { useNavigate } from 'react-router';
-import AuthCard from '../../../utils/components/auth-card';
+import AuthCard, {
+  InputTypes,
+} from '../../../utils/components/auth-card';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store';
 
@@ -24,27 +26,31 @@ const Register: React.FC = (): JSX.Element => {
   const loginInputs = [
     {
       placeholder: 'Username',
-      type: 'text',
+      type: InputTypes.text,
       name: 'username',
       value: formData.username,
+      required: true,
     },
     {
       placeholder: 'Email',
-      type: 'email',
+      type: InputTypes.email,
       name: 'email',
       value: formData.email,
+      required: true,
     },
     {
       placeholder: 'Password',
-      type: 'password',
+      type: InputTypes.password,
       name: 'password',
       value: formData.password,
+      required: true,
     },
     {
       placeholder: 'Repeat Password',
-      type: 'password',
+      type: InputTypes.password,
       name: 'repeatPassword',
       value: formData.repeatPassword,
+      required: true,
     },
   ];
 

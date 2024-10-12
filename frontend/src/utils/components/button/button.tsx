@@ -8,6 +8,7 @@ type DefaultButtonProps = {
   label?: string;
   onClick?: () => void;
   icon?: JSX.Element;
+  disabled?: boolean;
 };
 
 const DefaultButton: React.FC<DefaultButtonProps> = (
@@ -20,6 +21,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
     icon,
     onClick,
     customStyles,
+    disabled,
   } = props;
   const { DefaultButton } = styles;
 
@@ -29,6 +31,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
       variant={variant}
       type={type}
       sx={customStyles}
+      disabled={disabled}
     >
       {icon && icon}
       <Typography fontSize={18}>{label}</Typography>

@@ -35,6 +35,9 @@ const styles = {
           ? theme.palette.default.primary
           : theme.palette.default.dark,
     },
+    '&.Mui-disabled': {
+      backgroundColor: theme.palette.customBackground.input,
+    },
   })),
 };
 

@@ -11,11 +11,15 @@ import styles from './styles';
 type ImageInputProps = {
   onImageChanged: (file: File) => void;
   onDeleteImage: (fileName: string) => void;
+  customIconSize: number;
+  customStyles?: any;
 };
 
 const ImageInput: React.FC<ImageInputProps> = ({
   onImageChanged,
   onDeleteImage,
+  customStyles,
+  customIconSize,
 }): JSX.Element => {
   const { ImageContainer } = styles;
   const [imagePreview, setImagePreview] = useState<
@@ -54,6 +58,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
     <ImageContainer
       {...getRootProps()}
       imgUrl={imagePreview as string}
+      style={customStyles}
       onMouseEnter={() =>
         (imagePreview as string).trim().length > 0 &&
         setShowEditBtn(true)
@@ -76,13 +81,13 @@ const ImageInput: React.FC<ImageInputProps> = ({
             borderRadius: '30px',
             border: `3px solid ${theme.palette.default.dark}`,
             zIndex: 2,
-            padding: '8px',
+            padding: '6px',
             pointerEvents: 'none', // Make sure the icon is not clickable to avoid interfering with dropzone
           }}
         >
           <EditRounded
             style={{
-              fontSize: '36px',
+              fontSize: `${customIconSize - 5}px`,
               fill: theme.palette.customBackground.input,
             }}
           />
@@ -92,7 +97,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
       {(imagePreview as string).trim().length === 0 ? (
         <AddRounded
           style={{
-            fontSize: '46px',
+            fontSize: `${customIconSize}px`,
             fill: theme.palette.customBackground.input,
             backgroundColor: theme.palette.default.primary,
             borderRadius: '8px 0 0 0',
@@ -104,7 +109,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
       ) : (
         <CloseRounded
           style={{
-            fontSize: '46px',
+            fontSize: `${customIconSize}px`,
             fill: theme.palette.customBackground.input,
             backgroundColor: theme.palette.default.primary,
             borderRadius: '8px 0 0 0',

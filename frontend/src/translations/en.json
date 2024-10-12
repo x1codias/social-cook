@@ -9,5 +9,12 @@
   "salads": "Salads",
   "breakfast": "Breakfast",
   "fingerFood": "Finger Food",
-  "desserts": "Desserts"
+  "desserts": "Desserts",
+  "hasLessThanFourCharacters": "Has less than 4 characters",
+  "hasWhiteSpace": "Has white space",
+  "invalidEmail": "Invalid email",
+  "notHasUpperCaseLetter": "Has an upper case letter",
+  "notHasLowerCaseLetter": "Has a lower case letter",
+  "hasLessThanEightCharacters": "Has less than 8 characters",
+  "passwordDifferent": "Password doesn't match original"
 }

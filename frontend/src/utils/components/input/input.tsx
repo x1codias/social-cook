@@ -12,6 +12,7 @@ type DefaultInputProps = {
   onChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  onBlur?: () => void;
   InputProps?: {
     inputProps?: {
       min?: number;
@@ -21,6 +22,7 @@ type DefaultInputProps = {
   };
   multiline?: boolean;
   name?: string;
+  hasError?: boolean;
 };
 
 const DefaultInput: React.FC<DefaultInputProps> = (
@@ -38,6 +40,8 @@ const DefaultInput: React.FC<DefaultInputProps> = (
     name,
     onKeyDown,
     onChange,
+    onBlur,
+    hasError,
   } = props;
   const { InputField } = styles;
 
@@ -54,6 +58,8 @@ const DefaultInput: React.FC<DefaultInputProps> = (
       onKeyDown={onKeyDown}
       InputProps={InputProps}
       multiline={multiline}
+      onBlur={onBlur}
+      hasError={hasError}
     />
   );
 };

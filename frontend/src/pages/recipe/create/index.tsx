@@ -270,6 +270,7 @@ const CreateRecipe: React.FC = (): JSX.Element => {
                   ),
                 })
               }
+              customIconSize={46}
             />
           ))}
         </Masonry>

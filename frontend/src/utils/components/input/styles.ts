@@ -9,35 +9,48 @@ type CustomTextFieldProps = TextFieldProps & {
   height: string;
   maxWidth: string;
   minWidth: string;
+  hasError: boolean;
 };
 
 const styles = {
   InputField: styled(TextField)<
     Partial<CustomTextFieldProps>
-  >(({ height, maxWidth, minWidth }) => ({
+  >(({ height, maxWidth, minWidth, hasError }) => ({
     '& .MuiInputBase-root': {
       fontWeight: 500,
-      padding: '6px 10px',
+      padding: '10px 10px',
       borderRadius: '6px',
       fontSize: '16px',
-      height: height || '50px',
+      maxHeight: height || '50px',
       backgroundColor:
         theme.palette.customBackground?.input,
-      overflow: 'hidden',
       maxWidth: maxWidth || '300px',
       minWidth: minWidth || '90px',
+      overflow: 'hidden',
     },
     '& .MuiInputBase-input': {
       color: theme.palette.customText?.primary,
-      padding: 0,
       minHeight: height ? `${height} !important` : 'auto',
+      padding: '10px 0',
     },
     '& .MuiOutlinedInput-root': {
-      '&.Mui-focused fieldset': {
+      border:
+        hasError &&
+        `1px solid ${theme.palette.customError.main}`,
+      '&.Mui-focused': {
         border: `2px solid ${theme.palette.default.primary}`,
       },
+      '&:hover': {
+        border: `2px solid ${theme.palette.default.primary}`,
+      },
+      '&.Mui-focused fieldset': {
+        border: 'none',
+      },
       '&:hover fieldset': {
-        borderColor: `2px solid ${theme.palette.default.light}`,
+        border: 'none',
+      },
+      '&   fieldset': {
+        border: hasError && 'none',
       },
     },
   })),

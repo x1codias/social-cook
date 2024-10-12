@@ -2,7 +2,6 @@ import React, { KeyboardEvent, useState } from 'react';
 import styles from './styles';
 import foodImage from '../../../assets/beautiful-colorful-vector-illustration-seamless-food-wallpaper-background_950558-4988.avif';
 import {
-  Button,
   Divider,
   IconButton,
   InputAdornment,
@@ -20,6 +19,30 @@ import { AppDispatch } from '../../../store';
 import { FacebookLoginClient } from '@greatsumini/react-facebook-login';
 import DefaultButton from '../button/button';
 import DefaultInput from '../input/input';
+import ImageInput from '../image-input';
+import {
+  validateInput,
+  validateRequiredFieldsEmpty,
+} from '../../functions/form-validation';
+import InputErrors from './components/input-errors';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export enum InputTypes {
+  text = 'text',
+  password = 'password',
+  email = 'email',
+}
+
+interface ValidationErrors {
+  [key: string]: string;
+}
+
+export interface ValidationResults {
+  password: ValidationErrors;
+  username: ValidationErrors;
+  repeatPassword: ValidationErrors;
+  email: ValidationErrors;
+}
 
 type AuthCardProps = {
   handleSubmit: (
@@ -40,9 +63,14 @@ type AuthCardProps = {
   setFormData: (formData: any) => void;
   inputs: {
     placeholder: string;
-    type: 'text' | 'password' | 'email';
+    type: InputTypes;
     value: string;
-    name: string;
+    name:
+      | 'username'
+      | 'password'
+      | 'repeatPassword'
+      | 'email';
+    required: boolean;
   }[];
 };
 
@@ -63,6 +91,14 @@ const AuthCard: React.FC<AuthCardProps> = (
     useState<{
       [key: string]: boolean;
     }>({});
+  const [validationResults, setValidationResults] =
+    useState<ValidationResults>({
+      password: {},
+      username: {},
+      repeatPassword: {},
+      email: {},
+    });
+
   const googleAuth = useGoogleLogin({
     onSuccess: async tokenResponse => {
       try {
@@ -70,8 +106,6 @@ const AuthCard: React.FC<AuthCardProps> = (
           googleAuthentication(tokenResponse.access_token)
         );
         navigate('/');
-
-        // Handle success, e.g., store the token or redirect the user
       } catch (error) {
         console.error('Google Login Error:', error);
       }
@@ -82,8 +116,12 @@ const AuthCard: React.FC<AuthCardProps> = (
   });
 
   const dispatchFBAuth = async (accessToken: string) => {
-    await dispatch(facebookAuthentication(accessToken));
-    navigate('/');
+    try {
+      await dispatch(facebookAuthentication(accessToken));
+      navigate('/');
+    } catch (error) {
+      console.error('Facebook Login Error:', error);
+    }
   };
 
   const facebookAuth = async (
@@ -139,6 +177,30 @@ const AuthCard: React.FC<AuthCardProps> = (
     }));
   };
 
+  const handleBlurValidation = (input: {
+    placeholder: string;
+    type: InputTypes;
+    value: string;
+    name: string;
+    required: boolean;
+  }) => {
+    if (inputs.length > 2) {
+      const result = validateInput(
+        input.name,
+        input.value,
+        input.name === 'repeatPassword'
+          ? inputs.find(inp => inp.name === 'password')
+              ?.value
+          : undefined
+      );
+
+      setValidationResults({
+        ...validationResults,
+        [input.name]: result,
+      });
+    }
+  };
+
   return (
     <CardContainer>
       <div
@@ -165,41 +227,56 @@ const AuthCard: React.FC<AuthCardProps> = (
           }}
         >
           {inputs.map(input => (
-            <DefaultInput
-              minWidth={'420px'}
-              key={input.name}
-              name={input.name}
-              type={
-                input.name
-                  .toLowerCase()
-                  .includes('password') &&
-                passwordVisibility[input.name]
-                  ? 'text'
-                  : input.type
-              }
-              placeholder={input.placeholder}
-              value={input.value}
-              InputProps={{
-                endAdornment: input.name
-                  .toLowerCase()
-                  .includes('password') ? (
-                  <InputAdornment position="end">
-                    <PasswordButton
-                      variant={'text'}
-                      onClick={() =>
-                        togglePasswordVisibility(input.name)
-                      }
-                    >
-                      {passwordVisibility[input.name]
-                        ? 'Hide'
-                        : 'Show'}
-                    </PasswordButton>
-                  </InputAdornment>
-                ) : undefined,
-              }}
-              onKeyDown={handleKeyDown}
-              onChange={handleFormDataChange}
-            />
+            <>
+              <DefaultInput
+                minWidth={'420px'}
+                key={input.name}
+                name={input.name}
+                type={
+                  input.name
+                    .toLowerCase()
+                    .includes('password') &&
+                  passwordVisibility[input.name]
+                    ? 'text'
+                    : input.type
+                }
+                placeholder={input.placeholder}
+                value={input.value}
+                InputProps={{
+                  endAdornment: input.name
+                    .toLowerCase()
+                    .includes('password') ? (
+                    <InputAdornment position="end">
+                      <PasswordButton
+                        variant={'text'}
+                        onClick={() =>
+                          togglePasswordVisibility(
+                            input.name
+                          )
+                        }
+                      >
+                        {passwordVisibility[input.name]
+                          ? 'Hide'
+                          : 'Show'}
+                      </PasswordButton>
+                    </InputAdornment>
+                  ) : undefined,
+                }}
+                onKeyDown={handleKeyDown}
+                onChange={handleFormDataChange}
+                onBlur={() => handleBlurValidation(input)}
+                hasError={
+                  input.value.length > 0 &&
+                  Object.values(
+                    validationResults[input.name]
+                  ).some(Boolean)
+                }
+              />
+              <InputErrors
+                validationResults={validationResults}
+                inputName={input.name}
+              />
+            </>
           ))}
           {inputs.length > 2 && (
             <div
@@ -210,19 +287,14 @@ const AuthCard: React.FC<AuthCardProps> = (
                 justifyContent: 'space-between',
               }}
             >
-              <DefaultInput
-                width={120}
-                type={'file'}
-                name={'photo'}
-                height={'100px'}
-                onKeyDown={handleKeyDown}
-                onChange={handleFormDataChange}
-                filename={formData.photo?.name}
-                InputProps={{
-                  inputProps: {
-                    accept: 'image/*', // Optional: Limit to image files
-                  },
+              <ImageInput
+                onDeleteImage={() => {}}
+                onImageChanged={() => {}}
+                customStyles={{
+                  height: '100%',
+                  maxWidth: '30%',
                 }}
+                customIconSize={30}
               />
               <DefaultInput
                 minWidth={'290px'}
@@ -246,6 +318,15 @@ const AuthCard: React.FC<AuthCardProps> = (
             label={`Sign ${
               inputs.length > 2 ? 'Up' : 'In'
             }`}
+            disabled={
+              validateRequiredFieldsEmpty(
+                inputs.map(inp => inp.value)
+              ) ||
+              Object.values(validationResults).some(
+                validation =>
+                  Object.values(validation).some(Boolean) // Check if any validation error is truthy
+              )
+            }
           />
         </form>
         <div
