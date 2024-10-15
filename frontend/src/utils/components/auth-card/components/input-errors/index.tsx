@@ -1,4 +1,3 @@
-import { CloseRounded } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import theme from '../../../../../themes/global.theme';
@@ -17,7 +16,7 @@ const InputErrors: FC<InputErrorsType> = ({
   const { t } = useTranslation();
 
   return (
-    <>
+    <div style={{ padding: '4px' }}>
       {validationResults[inputName] &&
         Object.keys(validationResults[inputName]).length >
           0 &&
@@ -29,15 +28,9 @@ const InputErrors: FC<InputErrorsType> = ({
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '4px',
+                  gap: '6px',
                 }}
               >
-                <CloseRounded
-                  sx={{
-                    fontSize: '18px',
-                    fill: theme.palette.default.primary,
-                  }}
-                />
                 <Typography
                   fontSize={12}
                   color={theme.palette.default.primary}
@@ -48,7 +41,7 @@ const InputErrors: FC<InputErrorsType> = ({
               </div>
             )
         )}
-    </>
+    </div>
   );
 };
 

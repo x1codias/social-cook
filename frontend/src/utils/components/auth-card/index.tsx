@@ -227,7 +227,7 @@ const AuthCard: React.FC<AuthCardProps> = (
           }}
         >
           {inputs.map(input => (
-            <>
+            <div key={input.name}>
               <DefaultInput
                 minWidth={'420px'}
                 key={input.name}
@@ -266,7 +266,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                 onChange={handleFormDataChange}
                 onBlur={() => handleBlurValidation(input)}
                 hasError={
-                  input.value.length > 0 &&
+                  validationResults[input.name] &&
                   Object.values(
                     validationResults[input.name]
                   ).some(Boolean)
@@ -276,7 +276,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                 validationResults={validationResults}
                 inputName={input.name}
               />
-            </>
+            </div>
           ))}
           {inputs.length > 2 && (
             <div

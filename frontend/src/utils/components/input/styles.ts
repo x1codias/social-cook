@@ -6,10 +6,10 @@ import {
 import theme from '../../../themes/global.theme';
 
 type CustomTextFieldProps = TextFieldProps & {
-  height: string;
-  maxWidth: string;
-  minWidth: string;
-  hasError: boolean;
+  height?: string;
+  maxWidth?: string;
+  minWidth?: string;
+  hasError?: boolean;
 };
 
 const styles = {
@@ -34,9 +34,9 @@ const styles = {
       padding: '10px 0',
     },
     '& .MuiOutlinedInput-root': {
-      border:
-        hasError &&
-        `1px solid ${theme.palette.customError.main}`,
+      border: hasError
+        ? `1px solid ${theme.palette.customError.main}`
+        : undefined,
       '&.Mui-focused': {
         border: `2px solid ${theme.palette.default.primary}`,
       },
@@ -50,7 +50,7 @@ const styles = {
         border: 'none',
       },
       '&   fieldset': {
-        border: hasError && 'none',
+        border: hasError ? 'none' : undefined,
       },
     },
   })),
