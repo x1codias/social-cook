@@ -19,6 +19,8 @@ export enum Errors {
   noBlock = 'noBlock',
   recipeDoesntExist = 'recipeDoesntExist',
   badRequest = 'badRequest',
+  notFound = 'notFound',
+  noPermission = 'noPermission',
 }
 
 export const errorHandler = (
@@ -31,6 +33,7 @@ export const errorHandler = (
   switch (key) {
     case Errors.emailPassword:
     case Errors.tokenInvalid:
+    case Errors.noPermission:
       statusCode = 401; // Unauthorized
       break;
 
@@ -49,6 +52,7 @@ export const errorHandler = (
     case Errors.noNotificationSettings:
     case Errors.noFollow:
     case Errors.noBlock:
+    case Errors.notFound:
       statusCode = 404; // Not Found
       break;
 
