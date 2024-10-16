@@ -43,13 +43,15 @@ export const login =
 export const logout =
   (userId: number) => async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token')
+      );
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/logout',
         { userId },
         {
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );

@@ -6,7 +6,7 @@ import {
 
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem('token') || null,
+  token: null,
 };
 
 const authReducer = (
@@ -17,7 +17,7 @@ const authReducer = (
     case REGISTER:
     case LOGIN:
       const { token, user } = action.payload;
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', JSON.stringify(token));
       localStorage.setItem('user', JSON.stringify(user));
       return {
         user,

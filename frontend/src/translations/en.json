@@ -22,5 +22,6 @@
   "emailPassword": "Wrong credentials",
   "tokenInvalid": "Invalid Token",
   "userExists": "User already exists",
-  "tokenMissing": "Missing token"
+  "tokenMissing": "Missing token",
+  "incorrectEmailPassword": "Incorrect email or password"
 }

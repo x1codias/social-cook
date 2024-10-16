@@ -266,6 +266,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                 onChange={handleFormDataChange}
                 onBlur={() => handleBlurValidation(input)}
                 hasError={
+                  validationResults &&
                   validationResults[input.name] &&
                   Object.values(
                     validationResults[input.name]
@@ -322,10 +323,12 @@ const AuthCard: React.FC<AuthCardProps> = (
               validateRequiredFieldsEmpty(
                 inputs.map(inp => inp.value)
               ) ||
-              Object.values(validationResults).some(
-                validation =>
-                  Object.values(validation).some(Boolean) // Check if any validation error is truthy
-              )
+              (validationResults &&
+                Object.values(validationResults).some(
+                  validation =>
+                    validation &&
+                    Object.values(validation).some(Boolean) // Check if any validation error is truthy
+                ))
             }
           />
         </form>

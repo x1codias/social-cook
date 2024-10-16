@@ -18,6 +18,7 @@ export enum Errors {
   duplicateBlock = 'duplicateBlock',
   noBlock = 'noBlock',
   recipeDoesntExist = 'recipeDoesntExist',
+  badRequest = 'badRequest',
 }
 
 export const errorHandler = (
@@ -52,6 +53,7 @@ export const errorHandler = (
       break;
 
     case Errors.tokenMissing:
+    case Errors.badRequest:
       statusCode = 400; // Bad Request
       break;
 

@@ -9,6 +9,7 @@ import { Op } from 'sequelize';
 import { Errors } from '../controllers/error.controller';
 import sequelize from '../sequelize';
 import Token from '../models/token.model';
+import { v4 } from 'uuid';
 
 const registerService = async (
   username: string,
@@ -55,6 +56,7 @@ const registerService = async (
         rating: true,
         likeComment: true,
         mention: true,
+        favorite: true,
       },
       { transaction: t }
     );
@@ -123,7 +125,7 @@ const loginService = async (
         user.get().photo
       }`,
     },
-    token: token.get().token,
+    token,
   };
 };
 
@@ -166,6 +168,9 @@ const googleAuthService = async (
 
   const data = await response.json();
 
+  const baseUsername = data.email.split('@')[0];
+  const uniqueUsername = `${baseUsername}-${v4()}`;
+
   const [newUser, created] = await User.findOrCreate({
     where: {
       [Op.or]: [
@@ -174,7 +179,7 @@ const googleAuthService = async (
       ],
     },
     defaults: {
-      username: data.email.split('@')[0],
+      username: uniqueUsername,
       email: data.email,
       googleId: data.sub,
       photo: data.picture,
@@ -214,6 +219,9 @@ const facebookAuthService = async (
 
   const data = await response.json();
 
+  const baseUsername = data.email.split('@')[0];
+  const uniqueUsername = `${baseUsername}-${v4()}`;
+
   const [newUser, created] = await User.findOrCreate({
     where: {
       [Op.or]: [
@@ -222,7 +230,7 @@ const facebookAuthService = async (
       ],
     },
     defaults: {
-      username: data.email.split('@')[0],
+      username: uniqueUsername,
       email: data.email,
       facebookId: data.id,
       photo: data.picture.data.url,

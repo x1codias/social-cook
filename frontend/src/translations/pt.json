@@ -22,5 +22,6 @@
   "emailPassword": "Credenciais incorretas",
   "tokenInvalid": "Token inválido",
   "userExists": "Utilizador já existe",
-  "tokenMissing": "Token em falta"
+  "tokenMissing": "Token em falta",
+  "incorrectEmailPassword": "Email ou palavra passe incorretos"
 }

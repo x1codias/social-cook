@@ -30,6 +30,8 @@ const register = async (req: Request, res: Response) => {
       photoFileName
     );
 
+    console.log(token);
+
     res.status(200).json({
       user,
       token,

@@ -27,6 +27,7 @@ export const verifyToken = (
     token,
     process.env.JWT_KEY as string,
     (err, user) => {
+      console.log(err);
       if (err) {
         return errorHandler(Errors.tokenInvalid, res);
       }
