@@ -201,13 +201,13 @@ ChatParticipant.belongsTo(ChatRoom, {
 });
 
 // User with Message relation
-User.hasMany(Message, {
-  foreignKey: 'userId',
+ChatParticipant.hasMany(Message, {
+  foreignKey: 'participantId',
   as: 'messages',
   onDelete: 'CASCADE',
 });
-Message.belongsTo(User, {
-  foreignKey: 'userId',
+Message.belongsTo(ChatParticipant, {
+  foreignKey: 'participantId',
 });
 
 // ChatRoom with Message relation

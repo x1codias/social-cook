@@ -126,19 +126,23 @@ const createChatRoomService = async (
     ...new Set([...participantUserIds, userId]),
   ];
 
-  const formattedParticipants: ChatParticipantType[] =
-    allParticipantIds.map(participantId => ({
+  const formattedParticipants = allParticipantIds.map(
+    participantId => ({
       userId: participantId,
       chatRoomId: newChatRoom.get().id,
       role:
         participantId === userId
           ? ChatParticipantRole.admin
           : ChatParticipantRole.member,
-    }));
+    })
+  );
 
-  await ChatParticipant.bulkCreate(formattedParticipants, {
-    transaction,
-  });
+  await ChatParticipant.bulkCreate(
+    formattedParticipants as ChatParticipantType[],
+    {
+      transaction,
+    }
+  );
 
   await transaction.commit();
 
