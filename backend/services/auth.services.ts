@@ -38,31 +38,32 @@ const registerService = async (
     throw new Error(Errors.userExists);
   }
 
-  await sequelize.transaction(async t => {
-    await Setting.create(
-      {
-        userId: newUser.get().id,
-        lang: SettingLangs.en,
-        isPrivate: true,
-      },
-      { transaction: t }
-    );
+  const transaction = await sequelize.transaction();
+  await Setting.create(
+    {
+      userId: newUser.get().id,
+      lang: SettingLangs.en,
+      isPrivate: true,
+    },
+    { transaction }
+  );
 
-    await NotificationSetting.create(
-      {
-        userId: newUser.get().id,
-        follow: true,
-        comment: true,
-        rating: true,
-        likeComment: true,
-        mention: true,
-        favorite: true,
-      },
-      { transaction: t }
-    );
-  });
+  await NotificationSetting.create(
+    {
+      userId: newUser.get().id,
+      follow: true,
+      comment: true,
+      rating: true,
+      likeComment: true,
+      mention: true,
+      favorite: true,
+    },
+    { transaction }
+  );
 
-  const token = await generateToken(newUser);
+  const token = await generateToken(newUser, transaction);
+
+  await transaction.commit();
 
   return {
     user: {

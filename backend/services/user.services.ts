@@ -3,6 +3,7 @@ import Followage from '../models/followage.model';
 import User from '../models/user.model';
 import sequelize from '../sequelize';
 import { Errors } from '../controllers/error.controller';
+import Recipe from '../models/recipe.model';
 
 const getUsersService = async (
   offset: number,
@@ -80,6 +81,30 @@ const getUserService = async (userId: number) => {
   };
 };
 
+const getUserRecipesService = async (
+  userId: number,
+  limit: number,
+  offset: number
+) => {
+  const userRecipes = await Recipe.findAndCountAll({
+    limit,
+    offset,
+    where: {
+      userId,
+    },
+  });
+
+  return {
+    count: userRecipes.count,
+    recipes: userRecipes.rows.map(row => row.get()),
+  };
+};
+
 const editUserService = async () => {};
 
-export { getUsersService, getUserService, editUserService };
+export {
+  getUsersService,
+  getUserService,
+  editUserService,
+  getUserRecipesService,
+};

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
+  getUserRecipesService,
   getUserService,
   getUsersService,
 } from '../services/user.services';
@@ -52,4 +53,28 @@ const editUser = async (
   }
 };
 
-export { users, user, editUser };
+const userRecipes = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { userId } = req.params;
+    const limit = parseInt(req.query.limit as string);
+    const offset = parseInt(req.query.offset as string);
+
+    const { count, recipes } = await getUserRecipesService(
+      parseInt(userId),
+      limit,
+      offset
+    );
+
+    res.status(200).json({
+      count,
+      recipes,
+    });
+  } catch (error) {
+    errorHandler(error.message, res);
+  }
+};
+
+export { users, user, editUser, userRecipes };

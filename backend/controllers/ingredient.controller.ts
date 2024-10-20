@@ -4,7 +4,26 @@ import { AuthRequest } from './auth.controller';
 import {
   createIngredientService,
   getIngredientsService,
+  getRecipeIngredientsService,
 } from '../services/ingredient.services';
+
+const recipeIngredients = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { recipeId } = req.params;
+
+    const { ingredients } =
+      await getRecipeIngredientsService(parseInt(recipeId));
+
+    res.status(200).json({
+      ingredients,
+    });
+  } catch (error) {
+    errorHandler(error.message, res);
+  }
+};
 
 const ingredients = async (
   req: AuthRequest,
@@ -46,4 +65,4 @@ const createIngredient = async (
   }
 };
 
-export { ingredients, createIngredient };
+export { recipeIngredients, ingredients, createIngredient };

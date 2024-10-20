@@ -13,6 +13,6 @@ export const notificationChannel = (
     logger.info(
       `User ${userId} joined their notification channel`
     );
-    socket.join(`user_${userId}`);
+    socket.join(`notifications_${userId}`);
   });
 };

@@ -1,5 +1,31 @@
 import { Errors } from '../controllers/error.controller';
 import Ingredient from '../models/ingredient.model';
+import RecipeIngredient from '../models/recipe-ingedient.model';
+import Unit from '../models/unit.model';
+
+const getRecipeIngredientsService = async (
+  recipeId: number
+) => {
+  const ingredients = await RecipeIngredient.findAll({
+    where: {
+      recipeId,
+    },
+    include: [
+      {
+        model: Unit,
+        as: 'unit',
+      },
+      {
+        model: Ingredient,
+        as: 'ingredient',
+      },
+    ],
+  });
+
+  return {
+    ingredients: ingredients.map(row => row.get()),
+  };
+};
 
 const getIngredientsService = async (
   offset: number,
@@ -34,4 +60,8 @@ const createIngredientService = async (name: string) => {
   return { newIngredient };
 };
 
-export { getIngredientsService, createIngredientService };
+export {
+  getIngredientsService,
+  createIngredientService,
+  getRecipeIngredientsService,
+};
