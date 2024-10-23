@@ -14,6 +14,11 @@ const logger = createLogger({
       dirname: 'logs',
       filename: 'combined.log',
     }),
+    new transports.File({
+      dirname: 'logs',
+      filename: 'passwords.log',
+      level: 'password',
+    }),
   ],
 });
 

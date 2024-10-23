@@ -11,6 +11,8 @@ export enum RecipeCategories {
   breakfast = 'breakfast',
   fingerFood = 'fingerFood',
   desserts = 'desserts',
+  soups = 'soups',
+  pizzas = 'pizzas',
 }
 
 export enum Difficulties {

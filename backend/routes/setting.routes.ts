@@ -4,6 +4,6 @@ import { verifyToken } from '../middlwares/verify-token.middleware';
 
 const settingRoutes = Router();
 
-settingRoutes.get('/', verifyToken, editSettings);
+settingRoutes.put('/', verifyToken, editSettings);
 
 export default settingRoutes;

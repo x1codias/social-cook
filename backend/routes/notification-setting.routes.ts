@@ -4,7 +4,7 @@ import { verifyToken } from '../middlwares/verify-token.middleware';
 
 const notificationSettingRoutes = Router();
 
-notificationSettingRoutes.get(
+notificationSettingRoutes.put(
   '/',
   verifyToken,
   editNotificationSettings
