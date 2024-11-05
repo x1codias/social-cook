@@ -10,6 +10,8 @@ const generateRecipeIngredient = (
   recipeId,
   unitId,
   ingredientId,
+  createdAt: new Date(),
+  updatedAt: new Date(),
 });
 
 const recipeIngredients = [

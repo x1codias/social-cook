@@ -15,6 +15,12 @@ module.exports = {
       __dirname,
       'passwords.log'
     );
+
+    // Check if the password log file exists, and clean it if it does
+    if (fs.existsSync(passwordLogPath)) {
+      fs.truncateSync(passwordLogPath, 0); // This empties the file
+    }
+
     const passwordLogStream = fs.createWriteStream(
       passwordLogPath,
       { flags: 'a' }

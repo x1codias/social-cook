@@ -4,7 +4,6 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import foodImage from '../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import theme from '../../../themes/global.theme';
 import {
   AccessTimeRounded,
@@ -13,16 +12,20 @@ import {
 import { LuChefHat } from 'react-icons/lu';
 import DefaultButton from '../../../utils/components/button/button';
 import { useNavigate } from 'react-router';
+import { Recipe } from '../../../utils/types/Recipe';
+import { encodeForCSS } from '../../../utils/functions/encodeUrl';
+import { capitalizeFirstLetter } from '../../../utils/functions/capitalizeFirstLetter';
 
 type FoodCardExpandedProps = {
   recipeId: boolean;
   onClose: () => void;
+  recipeData: Recipe;
 };
 
 const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
   props
 ): JSX.Element => {
-  const { recipeId, onClose } = props;
+  const { recipeId, onClose, recipeData } = props;
   const navigate = useNavigate();
 
   return (
@@ -40,7 +43,11 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
         <div style={{ display: 'flex' }}>
           <div
             style={{
-              backgroundImage: `url(${foodImage})`,
+              backgroundImage: `url(${
+                recipeData.photos
+                  ? encodeForCSS(recipeData.photos[0])
+                  : ''
+              })`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
@@ -68,19 +75,22 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                 borderBottom: `2px solid ${theme.palette.grey?.[400]}`,
               }}
             >
-              {'Cesar Salad'}
+              {recipeData.title}
             </Typography>
             <Typography
               style={{
                 fontFamily: 'Fredoka',
                 fontSize: '18px',
-                backgroundColor: 'lightgreen',
+                backgroundColor:
+                  theme.palette.categories[
+                    recipeData.category
+                  ],
                 padding: '4px 16px',
                 borderRadius: '20px',
                 textAlign: 'center',
               }}
             >
-              {'Salad'}
+              {capitalizeFirstLetter(recipeData.category)}
             </Typography>
             <div
               style={{
@@ -114,9 +124,9 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                     border: `1px solid ${theme.palette.default.dark}`,
                   }}
                 >
-                  {'1 '}
+                  {`${recipeData.duration.hours} `}
                   <span>{'H'}</span>
-                  {' : 20 '}
+                  {` : ${recipeData.duration.minutes} `}
                   <span>{'M'}</span>
                 </Typography>
               </div>
@@ -169,11 +179,15 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                     padding: '4px 8px',
                     color: theme.palette.customText.button,
                     backgroundColor:
-                      theme.palette.difficulty.easy,
+                      theme.palette.difficulty[
+                        recipeData.difficulty
+                      ],
                     borderRadius: '20px',
                   }}
                 >
-                  {'Easy'}
+                  {capitalizeFirstLetter(
+                    recipeData.difficulty
+                  )}
                 </Typography>
               </div>
             </div>
@@ -196,7 +210,9 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                   minWidth: 'fit-content',
                 }}
               >
-                <Avatar>{'J'}</Avatar>
+                <Avatar src={recipeData.User.photo}>
+                  {recipeData.User.username}
+                </Avatar>
                 <Typography
                   style={{
                     fontFamily: 'Roboto',
@@ -205,7 +221,7 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                     color: theme.palette.text?.primary,
                   }}
                 >
-                  {'Jane Doe'}
+                  {recipeData.User.username}
                 </Typography>
               </div>
               <Divider
@@ -223,15 +239,15 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                   fontSize: '14px',
                 }}
               >
-                {
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged"
-                }
+                {recipeData.description}
               </Typography>
             </div>
             <DefaultButton
               variant={'text'}
               label={'Full Recipe'}
-              onClick={() => navigate('/recipes/1')}
+              onClick={() =>
+                navigate(`/recipes/${recipeData.id}`)
+              }
             />
           </div>
         </div>

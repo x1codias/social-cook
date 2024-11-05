@@ -10,13 +10,15 @@ import {
 export const getRecipe =
   (recipeId: number) => async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL +
           `/recipes/${recipeId}`,
         {
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );
@@ -35,7 +37,9 @@ export const getRecipes =
   (limit: number, offset: number) =>
   async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + '/recipes',
         {
@@ -44,7 +48,7 @@ export const getRecipes =
             offset: offset.toString(),
           },
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );
@@ -60,13 +64,15 @@ export const getRecipes =
 export const createRecipe =
   (recipeData: FormData) => async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/recipes',
         recipeData,
         {
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );
@@ -82,13 +88,15 @@ export const createRecipe =
 export const deleteRecipe =
   (recipeId: number) => async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
       await axios.delete(
         import.meta.env.VITE_BACKEND_URL +
           `/recipes/${recipeId}`,
         {
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );

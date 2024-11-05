@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/auth/login/login';
 import Register from './pages/auth/register/register';
 import TopBar from './utils/components/top-bar';
-import { useSelector } from 'react-redux';
 import Feed from './pages/feed';
 import CreateRecipe from './pages/recipe/create';
 import Recipe from './pages/recipe';
@@ -10,9 +9,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = (): JSX.Element => {
-  const userToken = useSelector(
-    (state: { auth: { token: string } }) => state.auth.token
+  const userToken = JSON.parse(
+    (localStorage.getItem('token') as string) || 'null'
   );
+
+  console.log(userToken);
 
   return (
     <div
@@ -54,6 +55,12 @@ const App: React.FC = (): JSX.Element => {
             />
           </>
         )}
+        <Route
+          path="*"
+          element={
+            <Navigate to={userToken ? '/' : '/login'} />
+          }
+        />
       </Routes>
     </div>
   );

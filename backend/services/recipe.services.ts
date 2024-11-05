@@ -2,6 +2,7 @@ import { Errors } from '../controllers/error.controller';
 import Preperation from '../models/preperation.model';
 import RecipeIngredient from '../models/recipe-ingedient.model';
 import Recipe from '../models/recipe.model';
+import User from '../models/user.model';
 
 const getRecipesService = async (
   offset: number,
@@ -10,6 +11,12 @@ const getRecipesService = async (
   const { count, rows } = await Recipe.findAndCountAll({
     offset,
     limit,
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'username', 'photo'],
+      },
+    ],
   });
 
   return {

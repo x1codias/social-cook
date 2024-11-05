@@ -9,7 +9,9 @@ export const getIngredients =
   (limit: number, offset: number) =>
   async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + '/ingredients',
         {
@@ -18,7 +20,7 @@ export const getIngredients =
             offset: offset.toString(),
           },
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );
@@ -34,13 +36,15 @@ export const getIngredients =
 export const createIngredient =
   (name: string) => async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/ingredients',
         { name },
         {
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );

@@ -4,21 +4,22 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import foodImage from '../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import theme from '../../../themes/global.theme';
 import styles from './styles';
 import DefaultButton from '../../../utils/components/button/button';
 import FoodCardExpanded from '../food-card-expanded';
+import { Recipe } from '../../../utils/types/Recipe';
 
 type FoodCardProps = {
   height: number;
   loading?: boolean;
+  recipeData: Recipe;
 };
 
 const FoodCard: React.FC<FoodCardProps> = (
   props
 ): JSX.Element => {
-  const { height, loading } = props;
+  const { height, loading, recipeData } = props;
   const { RecipeImage } = styles;
   const [openRecipeDialog, setOpenRecipeDialog] =
     useState(false);
@@ -57,10 +58,17 @@ const FoodCard: React.FC<FoodCardProps> = (
             width: '100%',
           }}
         >
-          <RecipeImage foodImage={foodImage} />
+          <RecipeImage
+            foodImage={
+              recipeData.photos ? recipeData.photos[0] : ''
+            }
+          />
           <div
             style={{
-              backgroundColor: 'lightgreen',
+              backgroundColor:
+                theme.palette.categories[
+                  recipeData.category
+                ],
               padding: '12px',
             }}
           >
@@ -71,7 +79,7 @@ const FoodCard: React.FC<FoodCardProps> = (
                 fontSize: '16px',
               }}
             >
-              {'Cesar Salad'}
+              {recipeData.title}
             </Typography>
           </div>
           <div
@@ -86,7 +94,9 @@ const FoodCard: React.FC<FoodCardProps> = (
               gap: '8px',
             }}
           >
-            <Avatar>{'J'}</Avatar>
+            <Avatar src={recipeData.User.photo}>
+              {recipeData.User.username}
+            </Avatar>
             <Typography
               style={{
                 fontFamily: 'Roboto',
@@ -95,7 +105,7 @@ const FoodCard: React.FC<FoodCardProps> = (
                 color: theme.palette.text?.primary,
               }}
             >
-              {'Jane Doe'}
+              {recipeData.User.username}
             </Typography>
             <DefaultButton
               label={'More details'}
@@ -110,6 +120,7 @@ const FoodCard: React.FC<FoodCardProps> = (
       <FoodCardExpanded
         recipeId={openRecipeDialog}
         onClose={() => setOpenRecipeDialog(false)}
+        recipeData={recipeData}
       />
     </>
   );

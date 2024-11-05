@@ -31,6 +31,7 @@ const recipeReducer = (
         recipe: action.payload.recipe,
       };
     case GET_RECIPES:
+      console.log(action.payload);
       const { recipes, total } = action.payload;
 
       const newOffset =

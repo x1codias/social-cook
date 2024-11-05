@@ -16,7 +16,7 @@ const Unit = sequelize.define<Model<UnitType>>(
       autoIncrement: true, // Enable auto-increment for the ID field
     },
     name: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
@@ -24,7 +24,7 @@ const Unit = sequelize.define<Model<UnitType>>(
       },
     },
     symbol: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,

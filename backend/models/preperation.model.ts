@@ -24,7 +24,7 @@ const Preperation = sequelize.define<
       allowNull: true,
     },
     steps: {
-      type: DataTypes.ARRAY(DataTypes.TEXT),
+      type: DataTypes.JSON,
       allowNull: true,
     },
     recipeId: {

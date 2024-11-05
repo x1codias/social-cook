@@ -27,6 +27,17 @@ export type Recipe = {
   tags?: string[];
   photos?: string[];
   userId: number;
+  difficulty: Difficulties;
+  description: string;
+  duration: {
+    hours: number;
+    minutes: number;
+  };
+  User: {
+    id: number;
+    username: string;
+    photo: string;
+  };
 };
 
 export type RecipeInput = {

@@ -50,7 +50,7 @@ const Recipe = sequelize.define<Model<RecipeType>>(
     },
     duration: {
       type: DataTypes.JSON,
-      allowNull: true,
+      allowNull: false,
     },
     description: {
       type: DataTypes.TEXT,
@@ -82,6 +82,7 @@ const Recipe = sequelize.define<Model<RecipeType>>(
     photos: {
       type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
     },
     userId: {
       type: DataTypes.INTEGER,

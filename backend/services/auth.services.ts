@@ -197,7 +197,7 @@ const googleAuthService = async (
       biography: newUser.dataValues.biography,
       photo: newUser.dataValues.photo,
     },
-    token: token.dataValues.token,
+    token,
     created,
   };
 };
@@ -249,7 +249,7 @@ const facebookAuthService = async (
       biography: newUser.dataValues.biography,
       photo: newUser.dataValues.photo,
     },
-    token: token.dataValues.token,
+    token,
     created,
   };
 };

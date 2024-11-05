@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Masonry, {
   ResponsiveMasonry,
 } from 'react-responsive-masonry';
@@ -14,6 +19,8 @@ import { Recipe } from '../../utils/types/Recipe';
 
 const Feed: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
+  const isInitialFetch = useRef(true); // Add ref to track initial mount
+  const [loading, setLoading] = useState(false);
   const getRandomHeight = () => {
     const minHeight = 300; // minimum height in pixels
     const maxHeight = 800; // maximum height in pixels
@@ -23,21 +30,26 @@ const Feed: React.FC = (): JSX.Element => {
       ) + minHeight
     );
   };
-  const heights = [...Array(12)].map(() =>
-    getRandomHeight()
-  );
   const scrollData = useSelector(
-    (state: { recipe: { scrollData: Recipe[] } }) =>
+    (state: { recipe: { scrollData: any } }) =>
       state.recipe.scrollData
   );
 
   const getFeedData = useCallback(async () => {
+    setLoading(true);
     await dispatch(getRecipes(10, 0));
   }, [dispatch]);
 
   useEffect(() => {
-    getFeedData();
+    if (isInitialFetch.current) {
+      // Only call getFeedData on initial render
+      getFeedData();
+      isInitialFetch.current = false;
+      setLoading(false);
+    }
   }, [getFeedData]);
+
+  console.log(scrollData);
 
   return (
     <div
@@ -74,9 +86,16 @@ const Feed: React.FC = (): JSX.Element => {
         }}
       >
         <Masonry gutter="14px">
-          {heights.map((height, index) => (
-            <FoodCard key={index} height={height} />
-          ))}
+          {scrollData.recipes.map(
+            (recipe: Recipe, index: number) => (
+              <FoodCard
+                key={index}
+                height={getRandomHeight()}
+                recipeData={recipe}
+                loading={loading}
+              />
+            )
+          )}
         </Masonry>
       </ResponsiveMasonry>
       <Footer />

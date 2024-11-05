@@ -7,17 +7,21 @@ const generateRecipe = (
   description,
   difficulty,
   category,
-  userId
+  userId,
+  photos
 ) => ({
   title,
-  duration: {
+  duration: JSON.stringify({
     hours,
     minutes,
-  },
+  }),
   description,
   difficulty,
   category,
+  photos: JSON.stringify(photos),
   userId,
+  createdAt: new Date(),
+  updatedAt: new Date(),
 });
 
 const recipes = [
@@ -28,7 +32,10 @@ const recipes = [
     'Classic Italian pasta dish with rich meat sauce.',
     'medium',
     'pastas',
-    1
+    1,
+    [
+      'https://www.recipetineats.com/tachyon/2018/07/Spaghetti-Bolognese.jpg',
+    ]
   ),
   generateRecipe(
     'Caesar Salad',
@@ -37,7 +44,10 @@ const recipes = [
     'Crisp romaine lettuce with Caesar dressing and croutons.',
     'easy',
     'salads',
-    2
+    2,
+    [
+      'https://www.allrecipes.com/thmb/mXZ0Tulwn3x9_YB_ZbkiTveDYFE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/229063-Classic-Restaurant-Caesar-Salad-ddmfs-4x3-231-89bafa5e54dd4a8c933cf2a5f9f12a6f.jpg',
+    ]
   ),
   generateRecipe(
     'Chicken Curry',
@@ -46,7 +56,10 @@ const recipes = [
     'A flavorful chicken curry with spices and coconut milk.',
     'hard',
     'meat',
-    3
+    3,
+    [
+      'https://www.allrecipes.com/thmb/FL-xnyAllLyHcKdkjUZkotVlHR8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/46822-indian-chicken-curry-ii-DDMFS-4x3-39160aaa95674ee395b9d4609e3b0988.jpg',
+    ]
   ),
   generateRecipe(
     'Pancakes',
@@ -55,7 +68,10 @@ const recipes = [
     'Fluffy pancakes with syrup and butter.',
     'easy',
     'breakfast',
-    4
+    4,
+    [
+      'https://www.allrecipes.com/thmb/FE0PiuuR0Uh06uVh1c2AsKjRGbc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/21014-Good-old-Fashioned-Pancakes-mfs_002-0e249c95678f446291ebc9408ae64c05.jpg',
+    ]
   ),
   generateRecipe(
     'Chocolate Cake',
@@ -64,7 +80,10 @@ const recipes = [
     'Moist and rich chocolate cake with frosting.',
     'medium',
     'desserts',
-    5
+    5,
+    [
+      'https://scientificallysweet.com/wp-content/uploads/2020/09/IMG_4117-feature.jpg',
+    ]
   ),
   generateRecipe(
     'Grilled Cheese Sandwich',
@@ -73,7 +92,10 @@ const recipes = [
     'Crispy grilled cheese sandwich with melted cheese.',
     'easy',
     'fingerFood',
-    6
+    6,
+    [
+      'https://cdn.loveandlemons.com/wp-content/uploads/2023/01/grilled-cheese.jpg',
+    ]
   ),
   generateRecipe(
     'Beef Stroganoff',
@@ -82,7 +104,10 @@ const recipes = [
     'A creamy beef and mushroom dish served over noodles, perfect for a hearty meal.',
     'medium',
     'meat',
-    7
+    7,
+    [
+      'https://www.allrecipes.com/thmb/mSWde3PHTu-fDkbvWBw0D1JlS8U=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/25202beef-stroganoff-iii-ddmfs-3x4-233-0f26fa477e9c446b970a32502468efc6.jpg',
+    ]
   ),
   generateRecipe(
     'Avocado Toast',
@@ -91,7 +116,10 @@ const recipes = [
     'Mashed avocado on toasted bread with a sprinkle of salt and pepper.',
     'easy',
     'fingerFood',
-    8
+    8,
+    [
+      'https://www.eatingbirdfood.com/wp-content/uploads/2023/12/avocado-toast-hero-cropped.jpg',
+    ]
   ),
   generateRecipe(
     'French Onion Soup',
@@ -100,7 +128,10 @@ const recipes = [
     'A rich and savory soup made with caramelized onions, beef broth, and topped with melted cheese.',
     'Medium',
     'soups',
-    9
+    9,
+    [
+      'https://www.simplyrecipes.com/thmb/pO8Mz9BAGEmAOBylOojpwbx8OHo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-French-Onion-Soup-LEAD-06-00d3b5bcdf4a4261b89e1be4aedf90f3.jpg',
+    ]
   ),
   generateRecipe(
     'Tacos al Pastor',
@@ -109,7 +140,10 @@ const recipes = [
     'Traditional Mexican street tacos with marinated pork and pineapple.',
     'hard',
     'meat',
-    6
+    6,
+    [
+      'https://www.seriouseats.com/thmb/4kbwN13BlZnZ3EywrtG2AzCKuYs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20210712-tacos-al-pastor-melissa-hom-seriouseats-37-f72cdd02c9574bceb1eef1c8a23b76ed.jpg',
+    ]
   ),
   generateRecipe(
     'Quiche Lorraine',
@@ -118,7 +152,10 @@ const recipes = [
     'A savory pie filled with eggs, cream, bacon, and cheese, perfect for breakfast or brunch.',
     'medium',
     'breakfast',
-    6
+    6,
+    [
+      'https://www.allrecipes.com/thmb/plG7UKAQvPQdn04AA_SBfj88ki0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/17515-quiche-lorraine-i-DDMFS-4x3-efda035d462a4242b7a18f39e21df047.jpg',
+    ]
   ),
   generateRecipe(
     'Chocolate Chip Cookies',
@@ -127,7 +164,10 @@ const recipes = [
     'Classic chewy chocolate chip cookies with crispy edges and a gooey center.',
     'easy',
     'desserts',
-    12
+    12,
+    [
+      'https://sallysbakingaddiction.com/wp-content/uploads/2013/05/classic-chocolate-chip-cookies.jpg',
+    ]
   ),
   generateRecipe(
     'Shrimp Scampi',
@@ -136,7 +176,10 @@ const recipes = [
     'Succulent shrimp sautéed in garlic butter, served over a bed of linguine.',
     'medium',
     'fish',
-    10
+    10,
+    [
+      'https://static01.nyt.com/images/2022/06/02/dining/ShrimpScampi_thumb/ShrimpScampi_thumb-square640.jpg',
+    ]
   ),
   generateRecipe(
     'Vegetable Stir-fry',
@@ -145,7 +188,10 @@ const recipes = [
     'A quick and healthy stir-fry made with a mix of colorful vegetables and soy sauce.',
     'easy',
     'vegan',
-    9
+    9,
+    [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiphrNcjfvL_UgvwWdgU6GdmJzN-6qV7MleA&s',
+    ]
   ),
   generateRecipe(
     'Lasagna',
@@ -154,7 +200,10 @@ const recipes = [
     'Layered pasta, meat sauce, and cheese baked to perfection, a hearty Italian dish.',
     'hard',
     'pastas',
-    8
+    8,
+    [
+      'https://assets.bonappetit.com/photos/656f48d75b552734225041ba/1:1/w_3129,h_3129,c_limit/20231120-WEB-Lasanga-6422.jpg',
+    ]
   ),
   generateRecipe(
     'Margarita Pizza',
@@ -163,7 +212,10 @@ const recipes = [
     'A thin-crust pizza topped with fresh mozzarella, basil, and tomato sauce.',
     'medium',
     'pizzas',
-    8
+    8,
+    [
+      'https://cdn.loveandlemons.com/wp-content/uploads/opengraph/2023/07/margherita-pizza-recipe.jpg',
+    ]
   ),
 ];
 

@@ -122,9 +122,9 @@ const createChatRoomService = async (
     throw new Error(Errors.badRequest);
   }
 
-  const allParticipantIds = [
-    ...new Set([...participantUserIds, userId]),
-  ];
+  const allParticipantIds = Array.from(
+    new Set([...participantUserIds, userId])
+  );
 
   const formattedParticipants = allParticipantIds.map(
     participantId => ({

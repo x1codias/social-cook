@@ -8,16 +8,20 @@ const preparationSteps = [
   "If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.",
 ];
 
+const preparations = Array.from(
+  { length: 10 },
+  (_, index) => ({
+    recipeId: index + 1, // Assuming recipe IDs are 1 to 12
+    prepVideo: null, // Set a video URL or null
+    steps: preparationSteps, // Array of steps
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  })
+);
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const preparations = Array(20).map(
-      (_preparation, index) => ({
-        recipeId: index,
-        steps: preparationSteps,
-      })
-    );
-
     await queryInterface.bulkInsert(
       'preperations',
       preparations,

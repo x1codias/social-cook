@@ -10,7 +10,7 @@ import {
 } from '../services/auth.services';
 
 export interface AuthRequest extends Request {
-  user: { userId: number };
+  user?: { userId: number };
 }
 
 const register = async (req: Request, res: Response) => {

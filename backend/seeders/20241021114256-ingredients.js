@@ -19,7 +19,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const ingredientsMapped = ingredients.map(
       ingredient => ({
-        name: ingredient.name,
+        name: ingredient,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       })
     );
 

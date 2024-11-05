@@ -21,7 +21,7 @@ const authReducer = (
       localStorage.setItem('user', JSON.stringify(user));
       return {
         user,
-        token,
+        token: token,
       };
     case LOGOUT:
       localStorage.removeItem('token');
