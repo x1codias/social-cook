@@ -1,59 +1,26 @@
 'use strict';
 
+const generateUnits = (name, symbol) => ({
+  name,
+  symbol,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+});
+
+const units = [
+  generateUnits('Unit', 'uni'),
+  generateUnits('Kilogram', 'kg'),
+  generateUnits('Gram', 'g'),
+  generateUnits('Miligram', 'mg'),
+  generateUnits('Litre', 'l'),
+  generateUnits('Mililitre', 'ml'),
+  generateUnits('Table Spoon', 'table sp.'),
+  generateUnits('Tea Spoon', 'tea sp.'),
+];
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const units = [
-      {
-        name: 'Unit',
-        symbol: 'uni',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Kilogram',
-        symbol: 'kg',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Gram',
-        symbol: 'g',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Miligram',
-        symbol: 'mg',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Litre',
-        symbol: 'l',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Mililitre',
-        symbol: 'ml',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Table Spoon',
-        symbol: 'table sp.',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Tea Spoon',
-        symbol: 'tea sp.',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ];
-
     await queryInterface.bulkInsert('units', units, {});
   },
 

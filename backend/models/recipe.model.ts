@@ -28,9 +28,9 @@ export type RecipeType = {
   description?: string;
   difficulty: Difficulties;
   category: RecipeCategories;
-  tags?: string[];
   photos?: string[];
   userId: number;
+  servings?: number;
 };
 
 const Recipe = sequelize.define<Model<RecipeType>>(
@@ -75,10 +75,13 @@ const Recipe = sequelize.define<Model<RecipeType>>(
         notEmpty: true,
       },
     },
-    // tags: {
-    //   type: DataTypes.JSON,
-    //   allowNull: true,
-    // },
+    servings: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     photos: {
       type: DataTypes.JSON,
       allowNull: true,

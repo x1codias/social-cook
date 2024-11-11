@@ -46,10 +46,6 @@ const App: React.FC = (): JSX.Element => {
         ) : (
           <>
             <Route
-              path="/recipes/create"
-              element={<CreateRecipe />}
-            />
-            <Route
               path="/recipes/:id"
               element={<Recipe />}
             />

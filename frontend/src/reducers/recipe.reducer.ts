@@ -16,6 +16,7 @@ const initialState: RecipeState = {
     limit: 10,
     offset: 0,
     hasMore: true,
+    page: 0, // Track the current page
   },
   recipe: null,
 };
@@ -31,25 +32,24 @@ const recipeReducer = (
         recipe: action.payload.recipe,
       };
     case GET_RECIPES:
-      console.log(action.payload);
       const { recipes, total } = action.payload;
 
       const newOffset =
         state.scrollData.offset + recipes.length;
-      const hasMore =
-        state.scrollData.recipes.length < total;
+      const hasMore = newOffset < total;
 
       return {
         ...state,
         scrollData: {
+          ...state.scrollData,
           recipes: [
             ...state.scrollData.recipes,
             ...recipes,
-          ],
+          ], // Use spread to maintain immutability
           offset: newOffset,
-          limit: 10,
           total: total,
-          hasMore,
+          hasMore: hasMore,
+          page: state.scrollData.page + 1, // Increment page only on successful fetch
         },
       };
     case CREATE_RECIPE:

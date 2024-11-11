@@ -8,6 +8,8 @@ const getRecipesService = async (
   offset: number,
   limit: number
 ) => {
+  console.log(limit, offset);
+
   const { count, rows } = await Recipe.findAndCountAll({
     offset,
     limit,

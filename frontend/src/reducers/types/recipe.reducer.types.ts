@@ -13,6 +13,7 @@ export interface RecipeState {
     limit: number;
     offset: number;
     hasMore: boolean;
+    page: number;
   };
   recipe: Recipe | null;
 }
