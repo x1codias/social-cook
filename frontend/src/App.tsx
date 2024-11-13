@@ -3,17 +3,14 @@ import Login from './pages/auth/login/login';
 import Register from './pages/auth/register/register';
 import TopBar from './utils/components/top-bar';
 import Feed from './pages/feed';
-import CreateRecipe from './pages/recipe/create';
-import Recipe from './pages/recipe';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CreateRecipeModal from './pages/recipe/create/modal';
 
 const App: React.FC = (): JSX.Element => {
   const userToken = JSON.parse(
     (localStorage.getItem('token') as string) || 'null'
   );
-
-  console.log(userToken);
 
   return (
     <div
@@ -44,12 +41,7 @@ const App: React.FC = (): JSX.Element => {
             />
           </>
         ) : (
-          <>
-            <Route
-              path="/recipes/:id"
-              element={<Recipe />}
-            />
-          </>
+          <></>
         )}
         <Route
           path="*"
@@ -58,6 +50,7 @@ const App: React.FC = (): JSX.Element => {
           }
         />
       </Routes>
+      {userToken && <CreateRecipeModal />}
     </div>
   );
 };

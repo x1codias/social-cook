@@ -24,8 +24,8 @@ const styles = {
       maxHeight: height || '50px',
       backgroundColor:
         theme.palette.customBackground?.input,
-      maxWidth: maxWidth || '300px',
-      minWidth: minWidth || '90px',
+      maxWidth: maxWidth || '100%',
+      minWidth: minWidth || '100%',
       overflow: 'hidden',
     },
     '& .MuiInputBase-input': {
@@ -37,17 +37,11 @@ const styles = {
       border: hasError
         ? `1px solid ${theme.palette.customError.main}`
         : undefined,
-      '&.Mui-focused': {
-        border: `2px solid ${theme.palette.default.primary}`,
-      },
-      '&:hover': {
-        border: `2px solid ${theme.palette.default.primary}`,
-      },
       '&.Mui-focused fieldset': {
-        border: 'none',
+        border: `2px solid ${theme.palette.default.primary}`,
       },
       '&:hover fieldset': {
-        border: 'none',
+        border: `2px solid ${theme.palette.default.primary}`,
       },
       '&   fieldset': {
         border: hasError ? 'none' : undefined,

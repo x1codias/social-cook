@@ -1,8 +1,9 @@
-import { Button, styled } from '@mui/material';
-import theme from '../../../themes/global.theme';
+import { Button } from '@mui/material';
+import { styled } from '@mui/system';
+import theme from '../../../../../themes/global.theme';
 
 const styles = {
-  DefaultButton: styled(Button)(({ variant }) => ({
+  ImageBtn: styled(Button)(({ variant }) => ({
     backgroundColor:
       variant === 'outlined'
         ? theme.palette.background?.paper
@@ -23,6 +24,7 @@ const styles = {
       variant === 'outlined'
         ? `1px solid ${theme.palette.default.primary}`
         : 'none',
+    fontSize: '14px',
     '&:hover': {
       color: theme.palette.customText?.button,
       border:

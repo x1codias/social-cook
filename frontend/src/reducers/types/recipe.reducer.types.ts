@@ -3,6 +3,9 @@ import {
   GET_RECIPES,
   CREATE_RECIPE,
   DELETE_RECIPE,
+  OPEN_CREATE_RECIPE_MODAL,
+  CLOSE_CREATE_RECIPE_MODAL,
+  CHANGE_CREATE_RECIPE_STEP,
 } from '../../actions/types';
 import { Recipe } from '../../utils/types/Recipe';
 
@@ -16,6 +19,8 @@ export interface RecipeState {
     page: number;
   };
   recipe: Recipe | null;
+  openCreateRecipe: boolean;
+  createRecipeStep: number;
 }
 
 export interface RecipePayload {
@@ -43,8 +48,24 @@ interface DeleteRecipeAction {
   payload: { id: number };
 }
 
+interface OpenCreateRecipeModalAction {
+  type: typeof OPEN_CREATE_RECIPE_MODAL;
+}
+
+interface CloseCreateRecipeModalAction {
+  type: typeof CLOSE_CREATE_RECIPE_MODAL;
+}
+
+interface ChangeCreateRecipeStep {
+  type: typeof CHANGE_CREATE_RECIPE_STEP;
+  payload: { step: number };
+}
+
 export type RecipeActionTypes =
   | GetRecipeAction
   | GetRecipesAction
   | CreateRecipeAction
-  | DeleteRecipeAction;
+  | DeleteRecipeAction
+  | OpenCreateRecipeModalAction
+  | CloseCreateRecipeModalAction
+  | ChangeCreateRecipeStep;

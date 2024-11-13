@@ -34,7 +34,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
       disabled={disabled}
     >
       {icon && icon}
-      <Typography fontSize={18}>{label}</Typography>
+      <Typography fontSize={16}>{label}</Typography>
     </DefaultButton>
   );
 };

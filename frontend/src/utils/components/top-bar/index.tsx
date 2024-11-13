@@ -17,10 +17,12 @@ import { useSelector } from 'react-redux';
 import { Account } from '../../types/Account';
 import ProfileDropdown from './components/profile-dropdown';
 import { useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { IoClose, IoStar } from 'react-icons/io5';
 import SearchHistory from './components/search-history';
 import SearchHints from './components/search-hints';
+import { OPEN_CREATE_RECIPE_MODAL } from '../../../actions/types';
+import { useDispatch } from 'react-redux';
 
 const TopBar: React.FC = (): JSX.Element => {
   const { AppBar, AppTitle, Search } = styles;
@@ -29,15 +31,24 @@ const TopBar: React.FC = (): JSX.Element => {
       (state: { auth: { user: Account } }) =>
         state.auth.user
     ) || JSON.parse(localStorage.getItem('user') as string);
+  const openCreateRecipe = useSelector(
+    (state: { recipe: { openCreateRecipe: boolean } }) =>
+      state.recipe.openCreateRecipe
+  );
   const [openMenu, setOpenMenu] =
     useState<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
-  const location = useLocation();
   const [isFocused, setIsFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState('');
+  const dispatch = useDispatch();
+
+  const handleOpenCreateRecipeModal = () =>
+    dispatch({
+      type: OPEN_CREATE_RECIPE_MODAL,
+    });
 
   const handleFocus = () => {
     setIsFocused(true); // Open the popover when input is focused
@@ -108,14 +119,12 @@ const TopBar: React.FC = (): JSX.Element => {
           placement="bottom"
         >
           <IconButton
-            onClick={() => navigate('/recipes/create')}
+            onClick={() => handleOpenCreateRecipeModal()}
           >
             <IoIosAddCircle
               size={30}
               fill={
-                location.pathname.includes(
-                  '/recipes/create'
-                )
+                openCreateRecipe
                   ? theme.palette.default.primary
                   : theme.palette.grey?.[500]
               }

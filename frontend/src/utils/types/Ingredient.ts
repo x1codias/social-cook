@@ -4,7 +4,7 @@ export type Ingredient = {
 };
 
 export type IngredientItem = {
-  name: number | string;
+  name: string;
   quantity?: number;
-  unit: number | string;
+  unit: string;
 };

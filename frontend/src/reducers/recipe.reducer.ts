@@ -3,6 +3,9 @@ import {
   GET_RECIPES,
   CREATE_RECIPE,
   DELETE_RECIPE,
+  OPEN_CREATE_RECIPE_MODAL,
+  CLOSE_CREATE_RECIPE_MODAL,
+  CHANGE_CREATE_RECIPE_STEP,
 } from '../actions/types';
 import {
   RecipeState,
@@ -19,6 +22,8 @@ const initialState: RecipeState = {
     page: 0, // Track the current page
   },
   recipe: null,
+  openCreateRecipe: false,
+  createRecipeStep: 0,
 };
 
 const recipeReducer = (
@@ -54,6 +59,7 @@ const recipeReducer = (
       };
     case CREATE_RECIPE:
       return {
+        ...state,
         scrollData: {
           ...state.scrollData,
           recipes: [
@@ -69,11 +75,28 @@ const recipeReducer = (
           recipe => recipe.id !== action.payload.id
         );
       return {
+        ...state,
         scrollData: {
           ...state.scrollData,
           recipes: filteredRecipes,
         },
         recipe: null,
+      };
+    case OPEN_CREATE_RECIPE_MODAL:
+      return {
+        ...state,
+        openCreateRecipe: true,
+      };
+    case CLOSE_CREATE_RECIPE_MODAL:
+      return {
+        ...state,
+        openCreateRecipe: false,
+      };
+    case CHANGE_CREATE_RECIPE_STEP:
+      console.log(action.payload);
+      return {
+        ...state,
+        createRecipeStep: action.payload.step,
       };
     default:
       return state;

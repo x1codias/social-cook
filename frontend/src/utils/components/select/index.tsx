@@ -6,6 +6,7 @@ import {
 import styles from './styles';
 import {
   capitalize,
+  InputLabel,
   MenuItem,
   TextField,
   Typography,
@@ -23,13 +24,14 @@ type DefaultSelectProps<
     val: string | number,
     valToChange: string
   ) => void;
-  label: string;
-  minWidth: number;
+  placeholder: string;
+  minWidth?: number;
   onOpen?: () => void;
   onClose?: () => void;
   search?: boolean;
   addBtnLbl?: string;
   onAddClick?: () => void;
+  label?: string;
 };
 
 const DefaultSelect = <
@@ -41,13 +43,14 @@ const DefaultSelect = <
     value,
     options,
     onChange,
-    label,
+    placeholder,
     minWidth,
     onOpen,
     onClose,
     search,
     addBtnLbl,
     onAddClick,
+    label,
   } = props;
   const { SelectField, SelectItem, AddBtn } = styles;
 
@@ -159,41 +162,60 @@ const DefaultSelect = <
       style={{ display: 'none' }}
       disabled
     >
-      {label}
+      {placeholder}
     </MenuItem>,
     // Add all formatted options as children
     ...formattedOptions(),
   ].filter(Boolean); // Filter out any `false` elements if `search` or `addBtnLbl` are not provided
 
   return (
-    <SelectField
-      defaultValue={value}
-      displayEmpty
-      IconComponent={props => (
-        <ExpandMore {...props} fontSize={'large'} />
-      )}
-      minWidth={minWidth}
-      onChange={e => {
-        onChange(
-          e.target.value as string | number,
-          'value'
-        );
-      }}
-      onOpen={onOpen}
-      onClose={onClose}
-      MenuProps={{
-        PaperProps: {
-          sx: {
-            maxHeight: '220px',
-            '& .MuiList-root': {
-              padding: 0, // Remove padding from the list items
-            },
-          },
-        },
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
       }}
     >
-      {selectChildren}
-    </SelectField>
+      {label && (
+        <InputLabel
+          sx={{
+            fontSize: '16px',
+            fontFamily: 'Comfortaa',
+            fontWeight: 700,
+          }}
+        >
+          {label}:
+        </InputLabel>
+      )}
+      <SelectField
+        defaultValue={value}
+        displayEmpty
+        IconComponent={props => (
+          <ExpandMore {...props} fontSize={'large'} />
+        )}
+        minWidth={minWidth ? minWidth : 100}
+        onChange={e => {
+          onChange(
+            e.target.value as string | number,
+            'value'
+          );
+        }}
+        onOpen={onOpen}
+        onClose={onClose}
+        MenuProps={{
+          PaperProps: {
+            sx: {
+              maxHeight: '220px',
+              '& .MuiList-root': {
+                padding: 0, // Remove padding from the list items
+              },
+            },
+          },
+        }}
+      >
+        {selectChildren}
+      </SelectField>
+    </div>
   );
 };
 
