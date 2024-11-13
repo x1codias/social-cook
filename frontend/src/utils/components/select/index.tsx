@@ -14,6 +14,7 @@ import {
 import { Unit } from '../../types/Unit';
 import { Ingredient } from '../../types/Ingredient';
 import theme from '../../../themes/global.theme';
+import { useTranslation } from 'react-i18next';
 
 type DefaultSelectProps<
   T extends string | Ingredient | Unit
@@ -53,6 +54,7 @@ const DefaultSelect = <
     label,
   } = props;
   const { SelectField, SelectItem, AddBtn } = styles;
+  const { t } = useTranslation();
 
   const formattedOptions = () => {
     return options.map((option, index) => {
@@ -63,7 +65,7 @@ const DefaultSelect = <
               key={index}
               value={option as string}
             >
-              {capitalize(String(option))}
+              {t(option)}
             </SelectItem>
           );
         case 'object':
@@ -72,9 +74,7 @@ const DefaultSelect = <
               key={index}
               value={(option as Ingredient | Unit).id}
             >
-              {capitalize(
-                (option as Ingredient | Unit).name
-              ) + '(s)'}
+              {t((option as Ingredient | Unit).name)}
             </SelectItem>
           );
         default:
@@ -174,6 +174,7 @@ const DefaultSelect = <
         display: 'flex',
         alignItems: 'center',
         gap: '6px',
+        width: '100%',
       }}
     >
       {label && (

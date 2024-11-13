@@ -41,5 +41,10 @@
   "minutes": "Minutos",
   "photos": "Fotos",
   "uploadPhoto": "Carregar foto",
-  "addIngredient": "Adicionar ingrediente"
+  "addIngredient": "Adicionar ingrediente",
+  "selectIngredient": "Selecione um ingrediente",
+  "selectUnit": "Selecione uma unidade",
+  "ingredient": "Ingrediente",
+  "unit": "Unidade",
+  "quantity": "Quantidade"
 }

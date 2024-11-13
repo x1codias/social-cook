@@ -64,6 +64,7 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
           display: 'flex',
           alignItems: 'flex-start',
           gap: '16px',
+          width: '100%',
         }}
       >
         <div
@@ -167,6 +168,7 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
             flexDirection: 'column',
             alignItems: 'flex-start',
             gap: '16px',
+            flexGrow: 1,
           }}
         >
           <DefaultInput

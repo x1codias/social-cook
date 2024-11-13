@@ -14,6 +14,7 @@ const initialState: IngredientState = {
     limit: 10,
     offset: 0,
     hasMore: true,
+    page: 0, // Track the current page
   },
 };
 
@@ -27,20 +28,20 @@ const ingredientReducer = (
 
       const newOffset =
         state.scrollData.offset + ingredients.length;
-      const hasMore =
-        state.scrollData.ingredients.length < total;
+      const hasMore = newOffset < total;
 
       return {
         ...state,
         scrollData: {
+          ...state.scrollData,
           ingredients: [
             ...state.scrollData.ingredients,
             ...ingredients,
-          ],
+          ], // Use spread to maintain immutability
           offset: newOffset,
-          limit: 10,
-          total,
-          hasMore,
+          total: total,
+          hasMore: hasMore,
+          page: state.scrollData.page + 1, // Increment page only on successful fetch
         },
       };
     case CREATE_INGREDIENT:
