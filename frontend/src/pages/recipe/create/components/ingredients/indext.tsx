@@ -16,18 +16,24 @@ import DefaultInput from '../../../../../utils/components/input/input';
 import useFetchData from '../../../../../utils/hooks/useFetchData';
 import { getUnits } from '../../../../../actions/unit.actions';
 import { DeleteRounded } from '@mui/icons-material';
+import { useCallback, useEffect } from 'react';
 
 type IngredientsPageModalProps = {
   recipeIngredients: IngredientItem[];
   setRecipeIngredients: (
     ingredients: IngredientItem[]
   ) => void;
+  setCanProceed: (val: boolean) => void;
 };
 
 const IngredientsPageModal: React.FC<
   IngredientsPageModalProps
 > = (props): JSX.Element => {
-  const { recipeIngredients, setRecipeIngredients } = props;
+  const {
+    recipeIngredients,
+    setRecipeIngredients,
+    setCanProceed,
+  } = props;
   const { t } = useTranslation();
   const ingredientsScrollData = useSelector(
     (state: { ingredient: { scrollData: any } }) =>
@@ -82,6 +88,23 @@ const IngredientsPageModal: React.FC<
 
     setRecipeIngredients(updatedIngredients);
   };
+
+  const validateFields = useCallback(() => {
+    const hasIngredients = recipeIngredients.length > 0;
+
+    const validIngredientFields = recipeIngredients.some(
+      ingredient =>
+        (ingredient.name as number) > 0 &&
+        ingredient.quantity > 0 &&
+        (ingredient.name as number) > 0
+    );
+
+    return hasIngredients && validIngredientFields;
+  }, [recipeIngredients]);
+
+  useEffect(() => {
+    setCanProceed(validateFields());
+  }, [validateFields, setCanProceed]);
 
   return (
     <div

@@ -55,6 +55,7 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
       video: undefined,
       steps: [],
     });
+  const [canProceed, setCanProceed] = useState(false);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { StepConnector } = styles;
@@ -83,6 +84,7 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
           <DetailsPageModal
             recipeDetails={recipeDetails}
             setRecipeDetails={setRecipeDetails}
+            setCanProceed={setCanProceed}
           />
         );
       case 1:
@@ -90,6 +92,7 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
           <IngredientsPageModal
             recipeIngredients={recipeIngredients}
             setRecipeIngredients={setRecipeIngredients}
+            setCanProceed={setCanProceed}
           />
         );
       case 2:
@@ -97,18 +100,13 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
           <PreparationPageModal
             recipePreparation={recipePreparation}
             setRecipePreparation={setRecipePreparation}
+            setCanProceed={setCanProceed}
           />
         );
       default:
         return <></>;
     }
   };
-
-  console.log(
-    recipeDetails,
-    recipeDetails,
-    recipeIngredients
-  );
 
   return (
     <Dialog
@@ -156,12 +154,14 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
             onClick={() =>
               handleChangeRecipeStep(createRecipeStep + 1)
             }
+            disabled={!canProceed}
           />
         )}
         {createRecipeStep === 2 && (
           <DefaultButton
             label={t('finish')}
             onClick={() => ({})}
+            disabled={!canProceed}
           />
         )}
       </DialogActions>
