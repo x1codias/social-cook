@@ -20,10 +20,8 @@ type DefaultSelectProps<
 > = {
   value: string | number;
   options: T[];
-  onChange: (
-    val: string | number,
-    valToChange: string
-  ) => void;
+  onChange: (val: string | number) => void;
+  onChangeSearch?: (val: string) => void;
   placeholder: string;
   minWidth?: string;
   onOpen?: () => void;
@@ -51,6 +49,7 @@ const DefaultSelect = <
     addBtnLbl,
     onAddClick,
     label,
+    onChangeSearch,
   } = props;
   const { SelectField, SelectItem, AddBtn } = styles;
   const { t } = useTranslation();
@@ -97,7 +96,9 @@ const DefaultSelect = <
             e.stopPropagation();
           }}
           onKeyDown={e => e.stopPropagation()}
-          onChange={e => onChange(e.target.value, 'search')}
+          onChange={e =>
+            onChangeSearch && onChangeSearch(e.target.value)
+          }
           sx={{
             padding: '8px',
             backgroundColor:
@@ -195,10 +196,7 @@ const DefaultSelect = <
         )}
         minWidth={minWidth ? minWidth : '100px'}
         onChange={e => {
-          onChange(
-            e.target.value as string | number,
-            'value'
-          );
+          onChange(e.target.value as string | number);
         }}
         onOpen={onOpen}
         onClose={onClose}

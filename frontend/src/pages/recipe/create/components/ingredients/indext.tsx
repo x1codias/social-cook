@@ -16,7 +16,8 @@ import DefaultInput from '../../../../../utils/components/input/input';
 import useFetchData from '../../../../../utils/hooks/useFetchData';
 import { getUnits } from '../../../../../actions/unit.actions';
 import { DeleteRounded } from '@mui/icons-material';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { filteredIngredientScrollData } from '../../../../../utils/memoized-selectors';
 
 type IngredientsPageModalProps = {
   recipeIngredients: IngredientItem[];
@@ -38,6 +39,11 @@ const IngredientsPageModal: React.FC<
   const ingredientsScrollData = useSelector(
     (state: { ingredient: { scrollData: any } }) =>
       state.ingredient.scrollData
+  );
+  const [ingredientSearchTerm, setIngredientSearchTerm] =
+    useState('');
+  const filteredIngredients = useSelector(
+    filteredIngredientScrollData(ingredientSearchTerm)
   );
   const unitsScrollData = useSelector(
     (state: { unit: { scrollData: any } }) =>
@@ -159,9 +165,8 @@ const IngredientsPageModal: React.FC<
                   {index + 1}
                 </Avatar>
                 <DefaultSelect
-                  options={
-                    ingredientsScrollData.ingredients
-                  }
+                  options={filteredIngredients.ingredients}
+                  search
                   value={ingredient.name}
                   placeholder={t('selectIngredient')}
                   onChange={val =>
@@ -170,6 +175,9 @@ const IngredientsPageModal: React.FC<
                       'name',
                       val as string
                     )
+                  }
+                  onChangeSearch={val =>
+                    setIngredientSearchTerm(val)
                   }
                 />
                 <DefaultInput
