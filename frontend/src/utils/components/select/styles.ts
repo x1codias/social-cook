@@ -38,7 +38,7 @@ const styles = {
           border: `2px solid ${theme.palette.default.primary}`,
         },
         '&:hover fieldset': {
-          borderColor: `2px solid ${theme.palette.default.light}`,
+          border: `2px solid ${theme.palette.default.primary}`,
         },
       },
     })

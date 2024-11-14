@@ -113,8 +113,8 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
               }
               label={t('Duration')}
               min={0}
-              maxWidth={'70px'}
-              minWidth={'70px'}
+              maxWidth={'80px'}
+              minWidth={'80px'}
             />
             <Typography
               fontSize={16}
@@ -135,8 +135,8 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
                   },
                 })
               }
-              maxWidth={'70px'}
-              minWidth={'70px'}
+              maxWidth={'100px'}
+              minWidth={'100px'}
               min={0}
               max={59}
             />
@@ -181,8 +181,8 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
               })
             }
             label={t('servings')}
-            maxWidth={'70px'}
-            minWidth={'70px'}
+            maxWidth={'110px'}
+            minWidth={'110px'}
           />
           <DefaultSelect
             options={Object.values(RecipeCategories)}
