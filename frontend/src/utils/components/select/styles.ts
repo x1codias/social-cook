@@ -7,7 +7,7 @@ import { styled } from '@mui/system';
 import theme from '../../../themes/global.theme';
 
 type CustomSelectFieldProps = SelectProps & {
-  minWidth: number;
+  minWidth: string;
   defaultValue: number | string;
 };
 
@@ -15,7 +15,7 @@ const styles = {
   SelectField: styled(Select)<CustomSelectFieldProps>(
     ({ defaultValue, minWidth }) => ({
       '&.MuiInputBase-root': {
-        minWidth: `${minWidth}px`,
+        minWidth,
         backgroundColor:
           theme.palette.customBackground?.input,
         fontWeight: 500,
@@ -23,6 +23,7 @@ const styles = {
         borderRadius: '6px',
         fontSize: '16px',
         overflow: 'hidden',
+        flexGrow: 1,
         color:
           (defaultValue as string)?.length ||
           (defaultValue as number) > 0

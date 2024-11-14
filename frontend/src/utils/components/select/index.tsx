@@ -5,7 +5,6 @@ import {
 } from '@mui/icons-material';
 import styles from './styles';
 import {
-  capitalize,
   InputLabel,
   MenuItem,
   TextField,
@@ -26,7 +25,7 @@ type DefaultSelectProps<
     valToChange: string
   ) => void;
   placeholder: string;
-  minWidth?: number;
+  minWidth?: string;
   onOpen?: () => void;
   onClose?: () => void;
   search?: boolean;
@@ -194,7 +193,7 @@ const DefaultSelect = <
         IconComponent={props => (
           <ExpandMore {...props} fontSize={'large'} />
         )}
-        minWidth={minWidth ? minWidth : 100}
+        minWidth={minWidth ? minWidth : '100px'}
         onChange={e => {
           onChange(
             e.target.value as string | number,

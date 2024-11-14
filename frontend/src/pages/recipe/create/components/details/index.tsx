@@ -38,7 +38,6 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
         ...recipeDetails,
         photos: [...recipeDetails.photos, ...filesArray],
       });
-      // Handle adding files to recipe details or store
     }
   };
 

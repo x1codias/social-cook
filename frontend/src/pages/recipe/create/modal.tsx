@@ -23,6 +23,8 @@ import DetailsPageModal from './components/details';
 import { RecipeDetails } from './types/types';
 import { IngredientItem } from '../../../utils/types/Ingredient';
 import IngredientsPageModal from './components/ingredients/indext';
+import { Preparation } from '../../../utils/types/Preparation';
+import PreparationPageModal from './components/preparation';
 
 const CreateRecipeModal: React.FC = (): JSX.Element => {
   const openCreateRecipe = useSelector(
@@ -48,6 +50,11 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
     });
   const [recipeIngredients, setRecipeIngredients] =
     useState<IngredientItem[]>([]);
+  const [recipePreparation, setRecipePreparation] =
+    useState<Preparation>({
+      video: undefined,
+      steps: [],
+    });
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { StepConnector } = styles;
@@ -86,11 +93,22 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
           />
         );
       case 2:
-        return <></>;
+        return (
+          <PreparationPageModal
+            recipePreparation={recipePreparation}
+            setRecipePreparation={setRecipePreparation}
+          />
+        );
       default:
         return <></>;
     }
   };
+
+  console.log(
+    recipeDetails,
+    recipeDetails,
+    recipeIngredients
+  );
 
   return (
     <Dialog
@@ -99,6 +117,7 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
       PaperProps={{
         style: {
           width: '650px', // your custom width
+          height: '650px',
           maxWidth: '80vw', // optional max width relative to the viewport
         },
       }}

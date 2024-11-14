@@ -5,7 +5,7 @@ type DefaultButtonProps = {
   customStyles?: SxProps<Theme> | undefined;
   variant?: 'outlined' | 'contained' | 'text' | undefined;
   type?: 'submit' | 'button' | 'reset' | undefined;
-  label?: string;
+  label?: string | JSX.Element;
   onClick?: () => void;
   icon?: JSX.Element;
   disabled?: boolean;

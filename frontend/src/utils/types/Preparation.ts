@@ -1,9 +1,9 @@
 export type PreparationStep = {
-  photo?: string;
+  photo?: File;
   description: string;
 };
 
 export type Preparation = {
-  video?: string;
+  video?: File;
   steps: PreparationStep[];
 };

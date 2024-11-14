@@ -46,5 +46,21 @@
   "selectUnit": "Selecione uma unidade",
   "ingredient": "Ingrediente",
   "unit": "Unidade",
-  "quantity": "Quantidade"
+  "quantity": "Quantidade",
+  "noIngredientsAdded": "Nenhum ingrediente foi adicionado ainda",
+  "noStepsAdded": "Nenhum passo de preparação foi adicionado ainda",
+  "describeHowToPrepare": "Descreva como preparar a sua receita por",
+  "addingVideo": "Adicionando um vídeo",
+  "stepByStep": "Passo a passo",
+  "addVideoByDragNDrop": "Adicione um vídeo arrastando e soltando aqui",
+  "or": "Ou",
+  "byClicking": "Clicando nesta área",
+  "replaceVideo": "Substituir vídeo",
+  "addVideo": "Adicionar um vídeo",
+  "addStep": "Adicionar passo",
+  "step": "Passo",
+  "stepDescription": "Descrição do passo",
+  "easy": "Fácil",
+  "medium": "Intermédio",
+  "hard": "Difícil"
 }

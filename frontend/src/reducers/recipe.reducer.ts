@@ -93,7 +93,6 @@ const recipeReducer = (
         openCreateRecipe: false,
       };
     case CHANGE_CREATE_RECIPE_STEP:
-      console.log(action.payload);
       return {
         ...state,
         createRecipeStep: action.payload.step,
