@@ -62,5 +62,10 @@
   "stepDescription": "Descrição do passo",
   "easy": "Fácil",
   "medium": "Intermédio",
-  "hard": "Difícil"
+  "hard": "Difícil",
+  "addNewIngredient": "Adicionar novo ingrediente",
+  "name": "Nome",
+  "ingredientName": "Nome do ingrediente",
+  "cancel": "Cancelar",
+  "save": "Guardar"
 }

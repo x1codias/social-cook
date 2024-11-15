@@ -18,6 +18,7 @@ import { getUnits } from '../../../../../actions/unit.actions';
 import { DeleteRounded } from '@mui/icons-material';
 import { useCallback, useEffect, useState } from 'react';
 import { filteredIngredientScrollData } from '../../../../../utils/memoized-selectors';
+import AddIngredientModal from './components/add-ingredient';
 
 type IngredientsPageModalProps = {
   recipeIngredients: IngredientItem[];
@@ -36,6 +37,10 @@ const IngredientsPageModal: React.FC<
     setCanProceed,
   } = props;
   const { t } = useTranslation();
+  const [
+    openAddIngredientModal,
+    setOpenAddIngredientModal,
+  ] = useState(false);
   const ingredientsScrollData = useSelector(
     (state: { ingredient: { scrollData: any } }) =>
       state.ingredient.scrollData
@@ -169,15 +174,20 @@ const IngredientsPageModal: React.FC<
                   search
                   value={ingredient.name}
                   placeholder={t('selectIngredient')}
-                  onChange={val =>
+                  onChange={val => {
                     handleChangeIngredient(
                       index,
                       'name',
                       val as string
-                    )
-                  }
+                    );
+                    setIngredientSearchTerm('');
+                  }}
                   onChangeSearch={val =>
                     setIngredientSearchTerm(val)
+                  }
+                  addBtnLbl={t('addIngredient')}
+                  onAddClick={() =>
+                    setOpenAddIngredientModal(true)
                   }
                 />
                 <DefaultInput
@@ -238,6 +248,10 @@ const IngredientsPageModal: React.FC<
       <DefaultButton
         label={'+ ' + t('addIngredient')}
         onClick={handleAddNewIngredient}
+      />
+      <AddIngredientModal
+        open={openAddIngredientModal}
+        onClose={() => setOpenAddIngredientModal(false)}
       />
     </div>
   );
