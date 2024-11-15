@@ -6,6 +6,8 @@ import {
   GET_RECIPE,
   GET_RECIPES,
 } from './types';
+import i18n from '../translations/i18n';
+import { toast } from 'react-toastify';
 
 export const getRecipe =
   (recipeId: number) => async (dispatch: Dispatch) => {
@@ -67,20 +69,26 @@ export const createRecipe =
       const userToken = JSON.parse(
         localStorage.getItem('token') as string
       );
+
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/recipes',
         recipeData,
         {
           headers: {
             Authorization: `Bearer ${userToken.token}`,
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
+      toast(i18n.t('recipeCreated'), { type: 'success' });
       dispatch({
         type: CREATE_RECIPE,
         payload: response.data,
       });
     } catch (error) {
+      toast(i18n.t(error.response.data.message), {
+        type: error.response.data.severity,
+      });
       console.log(error);
     }
   };

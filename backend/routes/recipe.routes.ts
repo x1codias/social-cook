@@ -21,7 +21,11 @@ recipeRoutes.get('/', verifyToken, recipes);
 recipeRoutes.post(
   '/',
   verifyToken,
-  upload.array('images'),
+  upload.fields([
+    { name: 'photos', maxCount: 6 },
+    { name: 'preparationStepsPhotos', maxCount: 20 },
+    { name: 'preparationVideo', maxCount: 1 },
+  ]),
   createRecipe
 );
 recipeRoutes.delete('/{id}', verifyToken, deleteRecipe);

@@ -1,12 +1,15 @@
 import { SxProps, Theme, Typography } from '@mui/material';
 import styles from './styles';
+import { MouseEvent } from 'react';
 
 type DefaultButtonProps = {
   customStyles?: SxProps<Theme> | undefined;
   variant?: 'outlined' | 'contained' | 'text' | undefined;
   type?: 'submit' | 'button' | 'reset' | undefined;
   label?: string | JSX.Element;
-  onClick?: () => void;
+  onClick: (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => void;
   icon?: JSX.Element;
   disabled?: boolean;
 };
@@ -27,7 +30,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
 
   return (
     <DefaultButton
-      onClick={onClick}
+      onClick={e => onClick(e)}
       variant={variant}
       type={type}
       sx={customStyles}

@@ -69,3 +69,90 @@
 {"level":"info","message":"Database & tables created!","timestamp":"2024-11-13T14:58:06.979Z"}
 {"level":"info","message":"Server started on port 3001","timestamp":"2024-11-14T11:08:34.796Z"}
 {"level":"info","message":"Database & tables created!","timestamp":"2024-11-14T11:08:34.922Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T11:16:07.660Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T11:16:07.909Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T12:32:12.004Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T12:32:12.090Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T12:32:34.579Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T12:32:34.670Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:04:57.203Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:04:57.306Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:05:55.823Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:05:55.909Z"}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"photos[0]","level":"error","message":"Global error handler: Unexpected field","name":"MulterError","stack":"MulterError: Unexpected field\n    at wrappedFileFilter (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\multer\\index.js:40:19)\n    at Multipart.<anonymous> (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\multer\\lib\\make-middleware.js:107:7)\n    at Multipart.emit (node:events:518:28)\n    at Multipart.emit (node:domain:488:12)\n    at HeaderParser.cb (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:358:14)\n    at HeaderParser.push (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:394:37)\n    at feed (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\streamsearch\\lib\\sbmh.js:248:10)\n    at SBMH.push (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\streamsearch\\lib\\sbmh.js:104:16)\n    at Multipart._write (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:567:19)","storageErrors":[],"timestamp":"2024-11-15T13:06:26.923Z"}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"photos[0]","level":"error","message":"Global error handler: Unexpected field","name":"MulterError","stack":"MulterError: Unexpected field\n    at wrappedFileFilter (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\multer\\index.js:40:19)\n    at Multipart.<anonymous> (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\multer\\lib\\make-middleware.js:107:7)\n    at Multipart.emit (node:events:518:28)\n    at Multipart.emit (node:domain:488:12)\n    at HeaderParser.cb (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:358:14)\n    at HeaderParser.push (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:394:37)\n    at feed (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\streamsearch\\lib\\sbmh.js:248:10)\n    at SBMH.push (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\streamsearch\\lib\\sbmh.js:104:16)\n    at Multipart._write (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:567:19)","storageErrors":[],"timestamp":"2024-11-15T13:06:47.026Z"}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"photos","level":"error","message":"Global error handler: Unexpected field","name":"MulterError","stack":"MulterError: Unexpected field\n    at wrappedFileFilter (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\multer\\index.js:40:19)\n    at Multipart.<anonymous> (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\multer\\lib\\make-middleware.js:107:7)\n    at Multipart.emit (node:events:518:28)\n    at Multipart.emit (node:domain:488:12)\n    at HeaderParser.cb (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:358:14)\n    at HeaderParser.push (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:394:37)\n    at feed (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\streamsearch\\lib\\sbmh.js:248:10)\n    at SBMH.push (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\streamsearch\\lib\\sbmh.js:104:16)\n    at Multipart._write (C:\\Users\\xicod\\Projetos\\social-cook\\backend\\node_modules\\busboy\\lib\\types\\multipart.js:567:19)","storageErrors":[],"timestamp":"2024-11-15T13:08:37.017Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:11:38.492Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:11:38.612Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:15:29.395Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:15:29.478Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:16:26.112Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:16:26.199Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:17:51.951Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:17:52.036Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:18:51.509Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:18:51.649Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:22:04.976Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:22:05.066Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:22:07.651Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:22:07.783Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:48:25.728Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:48:25.815Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:51:40.105Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:51:40.187Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:53:14.742Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:53:14.825Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T13:56:23.470Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T13:56:23.555Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:03:39.547Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:03:39.630Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:06:05.335Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:06:05.418Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:14:58.740Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:14:58.820Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:23:02.850Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:23:02.951Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:26:44.287Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:26:44.376Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:30:33.962Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:30:34.044Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:34:01.279Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:34:01.365Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:34:57.446Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:34:57.529Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:35:03.957Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:35:04.041Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:35:50.249Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:35:50.331Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:37:15.013Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:37:15.112Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:40:46.859Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:40:46.941Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:41:49.151Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:41:49.241Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:43:12.168Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:43:12.256Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:46:30.138Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:46:30.233Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:47:25.543Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:47:25.637Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:49:36.484Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:49:36.569Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:51:04.202Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:51:04.283Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:52:04.641Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:52:04.724Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T14:52:16.927Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T14:52:17.010Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T15:00:33.081Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T15:00:33.163Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T15:05:33.057Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T15:05:33.138Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T15:31:14.213Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T15:31:14.297Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T15:32:46.517Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T15:32:46.608Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T15:33:09.846Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T15:33:09.929Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2024-11-15T15:33:13.219Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2024-11-15T15:33:13.308Z"}

@@ -58,17 +58,18 @@ const recipeReducer = (
         },
       };
     case CREATE_RECIPE:
-      return {
-        ...state,
-        scrollData: {
-          ...state.scrollData,
-          recipes: [
-            ...state.scrollData.recipes,
-            action.payload.recipe,
-          ],
-        },
-        recipe: action.payload.recipe,
-      };
+      return state;
+    // return {
+    //   ...state,
+    //   scrollData: {
+    //     ...state.scrollData,
+    //     recipes: [
+    //       ...state.scrollData.recipes,
+    //       action.payload.recipe,
+    //     ],
+    //   },
+    //   recipe: action.payload.recipe,
+    // };
     case DELETE_RECIPE:
       const filteredRecipes =
         state.scrollData.recipes.filter(

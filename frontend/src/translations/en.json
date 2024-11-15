@@ -67,5 +67,6 @@
   "name": "Name",
   "ingredientName": "Ingredient name",
   "cancel": "Cancel",
-  "save": "Save"
+  "save": "Save",
+  "recipeCreated": "Recipe created!"
 }

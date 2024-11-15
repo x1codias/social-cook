@@ -8,7 +8,7 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {
@@ -25,6 +25,9 @@ import { IngredientItem } from '../../../utils/types/Ingredient';
 import IngredientsPageModal from './components/ingredients/indext';
 import { Preparation } from '../../../utils/types/Preparation';
 import PreparationPageModal from './components/preparation';
+import { RecipeInput } from '../../../utils/types/Recipe';
+import { createRecipe } from '../../../actions/recipe.actions';
+import { AppDispatch } from '../../../store';
 
 const CreateRecipeModal: React.FC = (): JSX.Element => {
   const openCreateRecipe = useSelector(
@@ -56,9 +59,16 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
       steps: [],
     });
   const [canProceed, setCanProceed] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const { StepConnector } = styles;
+  const handleCloseCreateRecipeModal = useCallback(
+    () =>
+      dispatch({
+        type: CLOSE_CREATE_RECIPE_MODAL,
+      }),
+    [dispatch]
+  );
 
   const steps: string[] = [
     t('details'),
@@ -71,11 +81,14 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
       type: CLOSE_CREATE_RECIPE_MODAL,
     });
 
-  const handleChangeRecipeStep = (step: number) =>
-    dispatch({
-      type: CHANGE_CREATE_RECIPE_STEP,
-      payload: { step },
-    });
+  const handleChangeRecipeStep = useCallback(
+    (step: number) =>
+      dispatch({
+        type: CHANGE_CREATE_RECIPE_STEP,
+        payload: { step },
+      }),
+    [dispatch]
+  );
 
   const displayModalPage = () => {
     switch (createRecipeStep) {
@@ -107,6 +120,103 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
         return <></>;
     }
   };
+
+  const handleSaveRecipe = useCallback(
+    async (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault();
+
+      const recipe: RecipeInput = {
+        ...recipeDetails,
+        ingredients: [...recipeIngredients],
+        preparation: { ...recipePreparation },
+      };
+
+      const formData = new FormData();
+
+      formData.append('title', recipe.title);
+      formData.append('description', recipe.description);
+      formData.append('category', recipe.category);
+      formData.append('difficulty', recipe.difficulty);
+      formData.append(
+        'duration',
+        JSON.stringify(recipe.duration) // Convert object to JSON
+      );
+      formData.append(
+        'servings',
+        recipe.servings.toString()
+      );
+
+      formData.append(
+        'ingredients',
+        JSON.stringify(recipe.ingredients)
+      );
+
+      // Add recipe photos
+      recipe.photos.forEach(photo => {
+        if (photo instanceof File) {
+          formData.append(`photos`, photo);
+        } else {
+          formData.append(`photos`, photo); // For URLs, if applicable
+        }
+      });
+
+      // Add preparation steps
+      if (recipe.preparation.steps.length) {
+        recipe.preparation.steps.forEach(step => {
+          formData.append(
+            `preparationStepsDescription`,
+            step.description
+          );
+          if (step.photo) {
+            formData.append(
+              `preparationStepsPhotos`,
+              step.photo
+            );
+          }
+        });
+      }
+
+      // Add preparation video (if exists)
+      if (recipe.preparation.video) {
+        formData.append(
+          'preparationVideo',
+          recipe.preparation.video
+        );
+      }
+
+      await dispatch(createRecipe(formData));
+
+      setRecipeDetails({
+        title: '',
+        category: '',
+        duration: {
+          hours: 0,
+          minutes: 0,
+        },
+        servings: 0,
+        difficulty: '',
+        description: '',
+        photos: [],
+      });
+      setRecipeIngredients([]);
+      setRecipePreparation({
+        video: undefined,
+        steps: [],
+      });
+      handleChangeRecipeStep(0);
+      handleCloseCreateRecipeModal();
+    },
+    [
+      recipeDetails,
+      recipeIngredients,
+      recipePreparation,
+      dispatch,
+      handleCloseCreateRecipeModal,
+      handleChangeRecipeStep,
+    ]
+  );
 
   return (
     <Dialog
@@ -160,7 +270,7 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
         {createRecipeStep === 2 && (
           <DefaultButton
             label={t('finish')}
-            onClick={() => ({})}
+            onClick={e => handleSaveRecipe(e)}
             disabled={!canProceed}
           />
         )}

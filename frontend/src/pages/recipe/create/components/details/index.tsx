@@ -214,6 +214,7 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
             label={t('servings')}
             maxWidth={'110px'}
             minWidth={'110px'}
+            min={0}
           />
           <DefaultSelect
             options={Object.values(RecipeCategories)}

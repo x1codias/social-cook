@@ -55,27 +55,29 @@ const createRecipe = async (
       difficulty,
       description,
       ingredients,
-      preparation,
+      preparationStepsDescription,
+      servings,
     } = req.body;
     const { userId } = req.user;
 
-    const { recipe } = await createRecipeService(
+    await createRecipeService(
       title,
       userId,
-      preparation,
+      preparationStepsDescription,
       duration,
       ingredients,
       category,
       difficulty,
       description,
+      parseInt(servings),
       req.files
     );
 
     res.status(200).json({
       message: 'recipeCreated',
-      recipe,
     });
   } catch (error) {
+    console.log(error);
     errorHandler(error.message, res);
   }
 };
