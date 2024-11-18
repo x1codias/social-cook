@@ -16,7 +16,7 @@ import DefaultInput from '../../../../../utils/components/input/input';
 import useFetchData from '../../../../../utils/hooks/useFetchData';
 import { getUnits } from '../../../../../actions/unit.actions';
 import { DeleteRounded } from '@mui/icons-material';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { filteredIngredientScrollData } from '../../../../../utils/memoized-selectors';
 import AddIngredientModal from './components/add-ingredient';
 
@@ -25,17 +25,12 @@ type IngredientsPageModalProps = {
   setRecipeIngredients: (
     ingredients: IngredientItem[]
   ) => void;
-  setCanProceed: (val: boolean) => void;
 };
 
 const IngredientsPageModal: React.FC<
   IngredientsPageModalProps
 > = (props): JSX.Element => {
-  const {
-    recipeIngredients,
-    setRecipeIngredients,
-    setCanProceed,
-  } = props;
+  const { recipeIngredients, setRecipeIngredients } = props;
   const { t } = useTranslation();
   const [
     openAddIngredientModal,
@@ -99,23 +94,6 @@ const IngredientsPageModal: React.FC<
 
     setRecipeIngredients(updatedIngredients);
   };
-
-  const validateFields = useCallback(() => {
-    const hasIngredients = recipeIngredients.length > 0;
-
-    const validIngredientFields = recipeIngredients.some(
-      ingredient =>
-        (ingredient.name as number) > 0 &&
-        ingredient.quantity > 0 &&
-        (ingredient.name as number) > 0
-    );
-
-    return hasIngredients && validIngredientFields;
-  }, [recipeIngredients]);
-
-  useEffect(() => {
-    setCanProceed(validateFields());
-  }, [validateFields, setCanProceed]);
 
   return (
     <div

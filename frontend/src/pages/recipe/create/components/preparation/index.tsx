@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Preparation } from '../../../../../utils/types/Preparation';
 import ChooseMethod from './components/choose';
 import PreparationSteps from './components/steps';
@@ -7,17 +7,12 @@ import PreparationVideo from './components/video';
 type PreparationPageModalProps = {
   recipePreparation: Preparation;
   setRecipePreparation: (preparation: Preparation) => void;
-  setCanProceed: (val: boolean) => void;
 };
 
 const PreparationPageModal: React.FC<
   PreparationPageModalProps
 > = (props): JSX.Element => {
-  const {
-    recipePreparation,
-    setRecipePreparation,
-    setCanProceed,
-  } = props;
+  const { recipePreparation, setRecipePreparation } = props;
   const [option, setOption] = useState<
     'none' | 'video' | 'steps'
   >('none');
@@ -68,22 +63,6 @@ const PreparationPageModal: React.FC<
         return <></>;
     }
   };
-
-  const validateFields = useCallback(() => {
-    const hasVideo = !!recipePreparation.video;
-
-    const hasValidSteps =
-      recipePreparation.steps.length > 0 &&
-      recipePreparation.steps.some(
-        step => step.description.length > 0
-      );
-
-    return hasVideo || hasValidSteps;
-  }, [recipePreparation]);
-
-  useEffect(() => {
-    setCanProceed(validateFields());
-  }, [validateFields, setCanProceed]);
 
   return containerToShow();
 };

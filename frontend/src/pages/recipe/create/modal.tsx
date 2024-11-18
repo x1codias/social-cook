@@ -28,6 +28,7 @@ import PreparationPageModal from './components/preparation';
 import { RecipeInput } from '../../../utils/types/Recipe';
 import { createRecipe } from '../../../actions/recipe.actions';
 import { AppDispatch } from '../../../store';
+import useValidateRecipe from '../../../utils/hooks/useValidateRecipe';
 
 const CreateRecipeModal: React.FC = (): JSX.Element => {
   const openCreateRecipe = useSelector(
@@ -58,7 +59,6 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
       video: undefined,
       steps: [],
     });
-  const [canProceed, setCanProceed] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const { StepConnector } = styles;
@@ -97,7 +97,6 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
           <DetailsPageModal
             recipeDetails={recipeDetails}
             setRecipeDetails={setRecipeDetails}
-            setCanProceed={setCanProceed}
           />
         );
       case 1:
@@ -105,7 +104,6 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
           <IngredientsPageModal
             recipeIngredients={recipeIngredients}
             setRecipeIngredients={setRecipeIngredients}
-            setCanProceed={setCanProceed}
           />
         );
       case 2:
@@ -113,13 +111,19 @@ const CreateRecipeModal: React.FC = (): JSX.Element => {
           <PreparationPageModal
             recipePreparation={recipePreparation}
             setRecipePreparation={setRecipePreparation}
-            setCanProceed={setCanProceed}
           />
         );
       default:
         return <></>;
     }
   };
+
+  const { canProceed } = useValidateRecipe(
+    createRecipeStep,
+    recipeDetails,
+    recipeIngredients,
+    recipePreparation
+  );
 
   const handleSaveRecipe = useCallback(
     async (

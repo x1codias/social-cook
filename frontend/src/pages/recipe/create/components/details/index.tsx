@@ -16,19 +16,16 @@ import {
 import { CloseRounded } from '@mui/icons-material';
 import theme from '../../../../../themes/global.theme';
 import styles from './styles';
-import { useCallback, useEffect } from 'react';
 
 type DetailsPageModalProps = {
   recipeDetails: RecipeDetails;
   setRecipeDetails: (details: RecipeDetails) => void;
-  setCanProceed: (val: boolean) => void;
 };
 
 const DetailsPageModal: React.FC<DetailsPageModalProps> = (
   props
 ): JSX.Element => {
-  const { recipeDetails, setRecipeDetails, setCanProceed } =
-    props;
+  const { recipeDetails, setRecipeDetails } = props;
   const { t } = useTranslation();
   const { ImageBtn } = styles;
 
@@ -52,34 +49,6 @@ const DetailsPageModal: React.FC<DetailsPageModalProps> = (
       ),
     });
   };
-
-  const validateFields = useCallback(() => {
-    const hasTextFields =
-      recipeDetails.title.length > 0 &&
-      recipeDetails.description.length > 0;
-
-    const hasNumberFields =
-      (recipeDetails.duration.hours > 0 ||
-        recipeDetails.duration.minutes > 0) &&
-      recipeDetails.servings > 0;
-
-    const hasValuesSelected =
-      recipeDetails.category.length > 0 &&
-      recipeDetails.difficulty.length > 0;
-
-    const hasPhotos = recipeDetails.photos.length > 0;
-
-    return (
-      hasNumberFields &&
-      hasPhotos &&
-      hasTextFields &&
-      hasValuesSelected
-    );
-  }, [recipeDetails]);
-
-  useEffect(() => {
-    setCanProceed(validateFields());
-  }, [validateFields, setCanProceed]);
 
   return (
     <div
