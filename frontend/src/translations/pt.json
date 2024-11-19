@@ -68,5 +68,12 @@
   "ingredientName": "Nome do ingrediente",
   "cancel": "Cancelar",
   "save": "Guardar",
-  "recipeCreated": "Receita criada!"
+  "recipeCreated": "Receita criada!",
+  "recentSearches": "Pesquisas recentes",
+  "popularPublications": "Publicações populares",
+  "searchHistoryEmpty": "Histórico de pesquisas está vazio",
+  "notEnoughUserSearches": "Sem pesquisas de utilizadores suficientes",
+  "popularUsers": "Utilizadores populares",
+  "notEnoughRecipeSearches": "Sem pesquisas de receitas suficientes",
+  "popularRecipes": "Receitas populares"
 }

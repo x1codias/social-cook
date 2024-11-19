@@ -30,7 +30,6 @@
     "mysql2": "^3.9.3",
     "sequelize": "^6.37.2",
     "socket.io": "^4.8.0",
-    "ts-node": "^10.9.2",
     "uuid": "^10.0.0",
     "winston": "^3.15.0"
   },
@@ -44,9 +43,10 @@
     "@types/node": "^20.17.6",
     "@types/sequelize": "^4.28.20",
     "express": "^4.19.2",
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.7",
     "sequelize-auto-ts": "^1.0.21",
     "sequelize-cli": "^6.6.2",
-    "typescript": "^5.4.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

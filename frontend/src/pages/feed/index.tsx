@@ -8,7 +8,7 @@ import Footer from '../../utils/components/footer';
 import { useSelector } from 'react-redux';
 import { getRecipes } from '../../actions/recipe.actions';
 import { Recipe } from '../../utils/types/Recipe';
-import useFetchData from '../../utils/hooks/useFetchData';
+import useFetchDataInfinite from '../../utils/hooks/useFetchDataInfinite';
 
 const Feed: React.FC = (): JSX.Element => {
   const scrollData = useSelector(
@@ -16,10 +16,8 @@ const Feed: React.FC = (): JSX.Element => {
       state.recipe.scrollData
   );
 
-  const { initialLoading, infiniteLoading } = useFetchData(
-    getRecipes,
-    scrollData
-  );
+  const { initialLoading, infiniteLoading } =
+    useFetchDataInfinite(getRecipes, scrollData);
 
   const getRandomHeight = () => {
     const minHeight = 300; // Minimum height in pixels

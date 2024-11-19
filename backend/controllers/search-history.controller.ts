@@ -2,8 +2,10 @@ import { Response } from 'express';
 import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
-  deleteSearchHistoryService,
+  cleanSearchHistoryService,
+  getPopularSearchesService,
   getSearchHistoryService,
+  removeFromSearchHistoryService,
 } from '../services/search-history.services';
 
 const searchHistory = async (
@@ -13,11 +15,11 @@ const searchHistory = async (
   try {
     const { userId } = req.user;
 
-    const { total, searchHistory } =
-      await getSearchHistoryService(userId);
+    const { searchHistory } = await getSearchHistoryService(
+      userId
+    );
 
     res.status(200).json({
-      total,
       searchHistory,
     });
   } catch (error) {
@@ -25,14 +27,31 @@ const searchHistory = async (
   }
 };
 
-const deleteSearch = async (
+const popularSearches = async (
   req: AuthRequest,
   res: Response
 ) => {
   try {
-    const { searchIds } = req.body;
+    const { userSearches, recipeSearches } =
+      await getPopularSearchesService();
 
-    await deleteSearchHistoryService(searchIds);
+    res.status(200).json({
+      userSearches,
+      recipeSearches,
+    });
+  } catch (error) {
+    errorHandler(error.message, res);
+  }
+};
+
+const removeFromSearchHistory = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { searchId } = req.body;
+
+    await removeFromSearchHistoryService(searchId);
 
     res.status(200).json({
       message: 'searchDeleted',
@@ -42,4 +61,26 @@ const deleteSearch = async (
   }
 };
 
-export { searchHistory, deleteSearch };
+const cleanSearchHistory = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { userId } = req.user;
+
+    await cleanSearchHistoryService(userId);
+
+    res.status(200).json({
+      message: 'searchDeleted',
+    });
+  } catch (error) {
+    errorHandler(error.message, res);
+  }
+};
+
+export {
+  searchHistory,
+  popularSearches,
+  removeFromSearchHistory,
+  cleanSearchHistory,
+};

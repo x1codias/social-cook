@@ -28,6 +28,7 @@ import { socketIntegration } from './sockets/index';
 import logger from './logger';
 
 import './models/associations';
+import searchRoutes from './routes/search.routes';
 
 dotenv.config();
 
@@ -77,6 +78,7 @@ apiRouter.use(
   '/notificationSettings',
   notificationSettingRoutes
 );
+apiRouter.use('/search', searchRoutes);
 
 app.use('/api', apiRouter);
 

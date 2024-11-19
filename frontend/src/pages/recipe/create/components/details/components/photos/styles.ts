@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { styled } from '@mui/system';
-import theme from '../../../../../themes/global.theme';
+import theme from '../../../../../../../themes/global.theme';
 
 const styles = {
   ImageBtn: styled(Button)(({ variant }) => ({

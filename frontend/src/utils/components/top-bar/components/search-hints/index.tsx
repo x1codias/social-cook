@@ -49,15 +49,6 @@ const SearchHints: React.FC<
             variant={'outlined'}
             label={t('user')}
           />
-          <DefaultButton
-            customStyles={{
-              padding: '4px 36px',
-              borderRadius: '20px',
-              fontSize: '18px',
-            }}
-            variant={'outlined'}
-            label={t('category')}
-          />
         </div>
         <Grid2
           container

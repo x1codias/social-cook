@@ -13,12 +13,12 @@ import DefaultSelect from '../../../../../utils/components/select';
 import { useSelector } from 'react-redux';
 import { getIngredients } from '../../../../../actions/ingredient.actions';
 import DefaultInput from '../../../../../utils/components/input/input';
-import useFetchData from '../../../../../utils/hooks/useFetchData';
 import { getUnits } from '../../../../../actions/unit.actions';
 import { DeleteRounded } from '@mui/icons-material';
 import { useState } from 'react';
 import { filteredIngredientScrollData } from '../../../../../utils/memoized-selectors';
 import AddIngredientModal from './components/add-ingredient';
+import useFetchDataInfinite from '../../../../../utils/hooks/useFetchDataInfinite';
 
 type IngredientsPageModalProps = {
   recipeIngredients: IngredientItem[];
@@ -50,8 +50,11 @@ const IngredientsPageModal: React.FC<
       state.unit.scrollData
   );
 
-  useFetchData(getIngredients, ingredientsScrollData);
-  useFetchData(getUnits, unitsScrollData);
+  useFetchDataInfinite(
+    getIngredients,
+    ingredientsScrollData
+  );
+  useFetchDataInfinite(getUnits, unitsScrollData);
 
   const handleAddNewIngredient = () => {
     const newIngredient: IngredientItem = {

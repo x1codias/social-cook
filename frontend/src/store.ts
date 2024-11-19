@@ -7,6 +7,7 @@ import authReducer from './reducers/auth.reducer';
 import recipeReducer from './reducers/recipe.reducer';
 import ingredientReducer from './reducers/ingredient.reducer';
 import unitReducer from './reducers/unit.reducer';
+import searchReducer from './reducers/search.reducer';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     recipe: recipeReducer,
     ingredient: ingredientReducer,
     unit: unitReducer,
+    search: searchReducer,
   },
 });
 

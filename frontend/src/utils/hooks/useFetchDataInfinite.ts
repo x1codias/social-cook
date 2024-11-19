@@ -7,9 +7,14 @@ import {
   useState,
 } from 'react';
 import { Dispatch } from 'redux';
+import useInfiniteLoading from './useInfiniteLoading';
 
-const useFetchData = (
-  getFunction: () => (dispatch: Dispatch) => Promise<void>
+const useFetchDataInfinite = (
+  getFunction: (
+    limit: number,
+    offset: number
+  ) => (dispatch: Dispatch) => Promise<void>,
+  scrollData: any
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   const [initialLoading, setInitialLoading] =
@@ -22,21 +27,28 @@ const useFetchData = (
     setInitialLoading(true);
 
     try {
-      await dispatch(getFunction());
+      await dispatch(
+        getFunction(scrollData.limit, scrollData.offset)
+      );
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setInitialLoading(false);
       isFetchingRef.current = false;
     }
-  }, [dispatch]);
+  }, [dispatch, scrollData]);
 
   // Effect for fetching data on mount
   useEffect(() => {
     getData();
   }, [getData]);
 
-  return { initialLoading };
+  const { infiniteLoading } = useInfiniteLoading(
+    getData,
+    scrollData
+  );
+
+  return { initialLoading, infiniteLoading };
 };
 
-export default useFetchData;
+export default useFetchDataInfinite;
