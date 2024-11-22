@@ -6,6 +6,7 @@ import {
   OPEN_CREATE_RECIPE_MODAL,
   CLOSE_CREATE_RECIPE_MODAL,
   CHANGE_CREATE_RECIPE_STEP,
+  GET_RECIPES_SEARCH_DROPDOWN,
 } from '../actions/types';
 import {
   RecipeState,
@@ -21,6 +22,7 @@ const initialState: RecipeState = {
     hasMore: true,
     page: 0, // Track the current page
   },
+  searchDropdownRecipes: [],
   recipe: null,
   openCreateRecipe: false,
   createRecipeStep: 0,
@@ -57,6 +59,14 @@ const recipeReducer = (
           page: state.scrollData.page + 1, // Increment page only on successful fetch
         },
       };
+    case GET_RECIPES_SEARCH_DROPDOWN: {
+      const { recipes } = action.payload;
+
+      return {
+        ...state,
+        searchDropdownRecipes: recipes,
+      };
+    }
     case CREATE_RECIPE:
       return state;
     case DELETE_RECIPE:

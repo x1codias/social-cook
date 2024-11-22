@@ -75,5 +75,8 @@
   "notEnoughUserSearches": "Not enough user searches",
   "popularUsers": "Popular users",
   "notEnoughRecipeSearches": "Not enough recipe searches",
-  "popularRecipes": "Popular recipes"
+  "popularRecipes": "Popular recipes",
+  "followers": "Followers",
+  "following": "Following",
+  "seeMore": "See more"
 }

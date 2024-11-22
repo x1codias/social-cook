@@ -6,6 +6,7 @@ import {
   OPEN_CREATE_RECIPE_MODAL,
   CLOSE_CREATE_RECIPE_MODAL,
   CHANGE_CREATE_RECIPE_STEP,
+  GET_RECIPES_SEARCH_DROPDOWN,
 } from '../../actions/types';
 import { Recipe } from '../../utils/types/Recipe';
 
@@ -18,6 +19,7 @@ export interface RecipeState {
     hasMore: boolean;
     page: number;
   };
+  searchDropdownRecipes: Recipe[];
   recipe: Recipe | null;
   openCreateRecipe: boolean;
   createRecipeStep: number;
@@ -30,6 +32,11 @@ export interface RecipePayload {
 
 interface GetRecipesAction {
   type: typeof GET_RECIPES;
+  payload: RecipePayload;
+}
+
+interface GetRecipesSearchDropdownAction {
+  type: typeof GET_RECIPES_SEARCH_DROPDOWN;
   payload: RecipePayload;
 }
 
@@ -64,6 +71,7 @@ interface ChangeCreateRecipeStep {
 export type RecipeActionTypes =
   | GetRecipeAction
   | GetRecipesAction
+  | GetRecipesSearchDropdownAction
   | CreateRecipeAction
   | DeleteRecipeAction
   | OpenCreateRecipeModalAction

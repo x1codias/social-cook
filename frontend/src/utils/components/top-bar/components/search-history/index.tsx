@@ -80,6 +80,7 @@ const SearchHistory: React.FC<
           {searchHistory.length ? (
             searchHistory.map(search => (
               <SearchChip
+                key={search.id}
                 avatar={
                   <Avatar
                     src={
@@ -147,6 +148,7 @@ const SearchHistory: React.FC<
           {popularRecipeSearches.length ? (
             popularRecipeSearches.map(search => (
               <SearchChip
+                key={search.id}
                 avatar={
                   <Avatar src={search.recipe.photos?.[0]} />
                 }
@@ -199,6 +201,7 @@ const SearchHistory: React.FC<
           {popularUserSearches.length ? (
             popularUserSearches.map(search => (
               <SearchChip
+                key={search.id}
                 avatar={<Avatar src={search.user.photo} />}
                 label={search.user.username}
                 backgroundColor={

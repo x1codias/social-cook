@@ -9,7 +9,15 @@ import {
 import { Dispatch } from 'redux';
 
 const useFetchData = (
-  getFunction: () => (dispatch: Dispatch) => Promise<void>
+  getFunction: (
+    limit: number,
+    offset: number,
+    search?: string,
+    searchDropdown?: boolean
+  ) => (dispatch: Dispatch) => Promise<void>,
+  searchTerm?: string,
+  searchDropdown?: boolean,
+  searchType?: string
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   const [initialLoading, setInitialLoading] =
@@ -22,14 +30,16 @@ const useFetchData = (
     setInitialLoading(true);
 
     try {
-      await dispatch(getFunction());
+      await dispatch(
+        getFunction(10, 0, searchTerm, searchDropdown)
+      );
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setInitialLoading(false);
       isFetchingRef.current = false;
     }
-  }, [dispatch]);
+  }, [dispatch, searchTerm, searchType]);
 
   // Effect for fetching data on mount
   useEffect(() => {

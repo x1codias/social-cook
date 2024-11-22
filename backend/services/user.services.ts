@@ -8,14 +8,15 @@ import Recipe from '../models/recipe.model';
 const getUsersService = async (
   offset: number,
   limit: number,
-  username: string
+  search: string
 ) => {
+  const whereClause = search?.length
+    ? { username: { [Op.like]: `%${search}%` } }
+    : {};
   const { count, rows } = await User.findAndCountAll({
     offset,
     limit,
-    where: {
-      username: { [Op.eq]: username },
-    },
+    where: whereClause,
   });
 
   const userIds = rows.map(row => row.get().id) as number[];
@@ -42,9 +43,9 @@ const getUsersService = async (
       entry.getDataValue('count') as number;
   });
 
-  const formattedUsers = rows.map(async row => {
+  const formattedUsers = rows.map(row => {
     return {
-      ...row.dataValues,
+      ...row.get({ plain: true }),
       followersCount:
         followersCountMap[row.get().id as number] || 0,
     };

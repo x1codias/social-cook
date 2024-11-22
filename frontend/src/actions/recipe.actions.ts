@@ -5,6 +5,7 @@ import {
   DELETE_RECIPE,
   GET_RECIPE,
   GET_RECIPES,
+  GET_RECIPES_SEARCH_DROPDOWN,
 } from './types';
 import i18n from '../translations/i18n';
 import { toast } from 'react-toastify';
@@ -36,7 +37,12 @@ export const getRecipe =
   };
 
 export const getRecipes =
-  (limit: number, offset: number) =>
+  (
+    limit: number = 10,
+    offset: number = 0,
+    searchTerm?: string,
+    isSearchDropdown?: boolean
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       const userToken = JSON.parse(
@@ -46,16 +52,20 @@ export const getRecipes =
         import.meta.env.VITE_BACKEND_URL + '/recipes',
         {
           params: {
-            limit: limit.toString(),
-            offset: offset.toString(),
+            limit: limit,
+            offset: offset,
+            search: searchTerm || '',
           },
           headers: {
             Authorization: `Bearer ${userToken.token}`,
           },
         }
       );
+
       dispatch({
-        type: GET_RECIPES,
+        type: isSearchDropdown
+          ? GET_RECIPES_SEARCH_DROPDOWN
+          : GET_RECIPES,
         payload: response.data,
       });
     } catch (error) {

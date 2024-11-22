@@ -11,12 +11,12 @@ const users = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string);
     const offset = parseInt(req.query.offset as string);
-    const username = (req.query.username as string) || '';
+    const search = (req.query.search as string) || '';
 
     const { total, users } = await getUsersService(
       offset,
       limit,
-      username
+      search
     );
 
     res.status(200).json({

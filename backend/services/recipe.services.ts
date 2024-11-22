@@ -5,6 +5,7 @@ import RecipeIngredient from '../models/recipe-ingedient.model';
 import Recipe from '../models/recipe.model';
 import User from '../models/user.model';
 import { dirname } from 'path';
+import { Op } from 'sequelize';
 
 const moveFile = (
   sourcePath: string,
@@ -23,11 +24,16 @@ const moveFile = (
 
 const getRecipesService = async (
   offset: number,
-  limit: number
+  limit: number,
+  search: string
 ) => {
+  const whereClause = search?.length
+    ? { title: { [Op.like]: `%${search}%` } }
+    : {};
   const { count, rows } = await Recipe.findAndCountAll({
     offset,
     limit,
+    where: whereClause,
     include: [
       {
         model: User,

@@ -223,7 +223,7 @@ const TopBar: React.FC = (): JSX.Element => {
           {!searchValue.length ? (
             <SearchHistory />
           ) : (
-            <SearchHints />
+            <SearchHints searchValue={searchValue} />
           )}
         </div>
       </Popover>

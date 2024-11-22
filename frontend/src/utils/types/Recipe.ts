@@ -25,7 +25,7 @@ export type Recipe = {
   preperation: string;
   category: RecipeCategories;
   tags?: string[];
-  photos?: string[];
+  photos: string[];
   userId: number;
   difficulty: Difficulties;
   description: string;
