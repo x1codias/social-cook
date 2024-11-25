@@ -6,6 +6,7 @@ import {
   user,
   userRecipes,
   users,
+  usersFeed,
 } from '../controllers/user.controller';
 import {
   addFavorite,
@@ -24,6 +25,7 @@ import {
 const userRoutes = Router();
 
 userRoutes.get('/', verifyToken, users);
+userRoutes.get('/feed', verifyToken, usersFeed);
 userRoutes.get('/{id}', verifyToken, user);
 userRoutes.patch(
   '/{id}',

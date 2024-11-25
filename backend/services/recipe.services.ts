@@ -5,7 +5,8 @@ import RecipeIngredient from '../models/recipe-ingedient.model';
 import Recipe from '../models/recipe.model';
 import User from '../models/user.model';
 import { dirname } from 'path';
-import { Op } from 'sequelize';
+import { Model, Op, Sequelize } from 'sequelize';
+import Rating, { RatingType } from '../models/rating.model';
 
 const moveFile = (
   sourcePath: string,
@@ -22,7 +23,49 @@ const moveFile = (
   renameSync(sourcePath, destinationPath);
 };
 
-const getRecipesService = async (
+const getRecipesService = async (search: string) => {
+  const whereClause = search?.length
+    ? { title: { [Op.like]: `%${search}%` } }
+    : {};
+  const { count, rows } = await Recipe.findAndCountAll({
+    limit: 10,
+    where: whereClause,
+    include: [
+      {
+        model: Rating,
+        as: 'ratings',
+        attributes: [], // We only want to calculate the average, not fetch the ratings
+      },
+    ],
+    attributes: {
+      include: [
+        [
+          Sequelize.fn(
+            'AVG',
+            Sequelize.col('ratings.value')
+          ), // Calculate the average rating
+          'avgRating',
+        ],
+      ],
+    },
+    group: ['Recipe.id', 'User.id'],
+  });
+
+  const recipes = rows.map(row => {
+    const recipe = row.get(); // Extract raw data
+    return {
+      ...recipe,
+      avgRating: recipe.avgRating || null, // Parse avgRating if it exists
+    };
+  });
+
+  return {
+    total: count,
+    recipes,
+  };
+};
+
+const getRecipesFeedService = async (
   offset: number,
   limit: number,
   search: string
@@ -39,12 +82,37 @@ const getRecipesService = async (
         model: User,
         attributes: ['id', 'username', 'photo'],
       },
+      {
+        model: Rating,
+        as: 'ratings',
+        attributes: [], // We only want to calculate the average, not fetch the ratings
+      },
     ],
+    attributes: {
+      include: [
+        [
+          Sequelize.fn(
+            'AVG',
+            Sequelize.col('ratings.value')
+          ), // Calculate the average rating
+          'avgRating',
+        ],
+      ],
+    },
+    group: ['Recipe.id', 'User.id'],
+  });
+
+  const recipes = rows.map(row => {
+    const recipe = row.get(); // Extract raw data
+    return {
+      ...recipe,
+      avgRating: recipe.avgRating || null, // Parse avgRating if it exists
+    };
   });
 
   return {
     total: count,
-    recipes: rows.map(row => row.dataValues),
+    recipes,
   };
 };
 
@@ -243,6 +311,7 @@ const deleteRecipesService = async (id: number) => {
 
 export {
   getRecipesService,
+  getRecipesFeedService,
   getRecipeService,
   createRecipeService,
   editRecipesService,

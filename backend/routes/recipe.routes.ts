@@ -4,6 +4,7 @@ import {
   deleteRecipe,
   recipe,
   recipes,
+  recipesFeed,
 } from '../controllers/recipe.controller';
 import { verifyToken } from '../middlwares/verify-token.middleware';
 import { upload } from '../middlwares/file.middleware';
@@ -18,6 +19,7 @@ import { recipePreparations } from '../controllers/preparation.controller';
 const recipeRoutes = Router();
 
 recipeRoutes.get('/', verifyToken, recipes);
+recipeRoutes.get('/feed', verifyToken, recipesFeed);
 recipeRoutes.post(
   '/',
   verifyToken,

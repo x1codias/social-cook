@@ -5,10 +5,28 @@ import {
   createRecipeService,
   deleteRecipesService,
   getRecipeService,
+  getRecipesFeedService,
   getRecipesService,
 } from '../services/recipe.services';
 
 const recipes = async (req: AuthRequest, res: Response) => {
+  try {
+    const search = req.query.search as string;
+
+    const { recipes } = await getRecipesService(search);
+
+    res.status(200).json({
+      recipes,
+    });
+  } catch (error) {
+    errorHandler(error.message, res);
+  }
+};
+
+const recipesFeed = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset =
@@ -17,7 +35,7 @@ const recipes = async (req: AuthRequest, res: Response) => {
 
     console.log(req.query, req.body);
 
-    const { total, recipes } = await getRecipesService(
+    const { total, recipes } = await getRecipesFeedService(
       offset,
       limit,
       search
@@ -104,4 +122,10 @@ const deleteRecipe = async (
   }
 };
 
-export { recipes, recipe, createRecipe, deleteRecipe };
+export {
+  recipes,
+  recipesFeed,
+  recipe,
+  createRecipe,
+  deleteRecipe,
+};

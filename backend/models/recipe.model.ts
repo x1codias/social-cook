@@ -22,7 +22,7 @@ export enum Difficulties {
 }
 
 export type RecipeType = {
-  id?: number;
+  id: number;
   title: string;
   duration?: { hours: number; minutes: number };
   description?: string;
@@ -31,6 +31,7 @@ export type RecipeType = {
   photos?: string[];
   userId: number;
   servings?: number;
+  avgRating?: number;
 };
 
 const Recipe = sequelize.define<Model<RecipeType>>(
