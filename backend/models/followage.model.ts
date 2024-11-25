@@ -7,6 +7,8 @@ export type FollowageType = {
   followerId: number;
   count?: number;
   pending: boolean;
+  followersCount?: number;
+  followingCount?: number;
 };
 
 const Followage = sequelize.define<Model<FollowageType>>(

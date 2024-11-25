@@ -5,15 +5,23 @@ import {
   createRecipeService,
   deleteRecipesService,
   getRecipeService,
-  getRecipesFeedService,
   getRecipesService,
 } from '../services/recipe.services';
 
 const recipes = async (req: AuthRequest, res: Response) => {
   try {
     const search = req.query.search as string;
+    const attributes = [
+      'id',
+      'title',
+      'photos',
+      'category',
+    ];
 
-    const { recipes } = await getRecipesService(search);
+    const { recipes } = await getRecipesService(
+      search,
+      attributes
+    );
 
     res.status(200).json({
       recipes,
@@ -32,13 +40,23 @@ const recipesFeed = async (
     const offset =
       parseInt(req.query.offset as string) || 0;
     const search = req.query.search as string;
+    const attributes = [
+      'id',
+      'title',
+      'photos',
+      'category',
+      'description',
+      'duration',
+      'difficulty',
+      'servings',
+    ];
 
-    console.log(req.query, req.body);
-
-    const { total, recipes } = await getRecipesFeedService(
+    const { total, recipes } = await getRecipesService(
+      search,
+      attributes,
       offset,
       limit,
-      search
+      true
     );
 
     res.status(200).json({

@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import theme from '../../themes/global.theme';
 import Footer from '../../utils/components/footer';
 import { useSelector } from 'react-redux';
-import { getRecipes } from '../../actions/recipe.actions';
+import { getRecipesFeed } from '../../actions/recipe.actions';
 import { Recipe } from '../../utils/types/Recipe';
 import useFetchDataInfinite from '../../utils/hooks/useFetchDataInfinite';
 
@@ -17,7 +17,7 @@ const Feed: React.FC = (): JSX.Element => {
   );
 
   const { initialLoading, infiniteLoading } =
-    useFetchDataInfinite(getRecipes, scrollData);
+    useFetchDataInfinite(getRecipesFeed, scrollData);
 
   const getRandomHeight = () => {
     const minHeight = 300; // Minimum height in pixels

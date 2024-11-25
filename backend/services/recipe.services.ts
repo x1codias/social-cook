@@ -5,8 +5,8 @@ import RecipeIngredient from '../models/recipe-ingedient.model';
 import Recipe from '../models/recipe.model';
 import User from '../models/user.model';
 import { dirname } from 'path';
-import { Model, Op, Sequelize } from 'sequelize';
-import Rating, { RatingType } from '../models/rating.model';
+import { Op, Sequelize } from 'sequelize';
+import Rating from '../models/rating.model';
 
 const moveFile = (
   sourcePath: string,
@@ -23,90 +23,67 @@ const moveFile = (
   renameSync(sourcePath, destinationPath);
 };
 
-const getRecipesService = async (search: string) => {
-  const whereClause = search?.length
-    ? { title: { [Op.like]: `%${search}%` } }
-    : {};
-  const { count, rows } = await Recipe.findAndCountAll({
-    limit: 10,
-    where: whereClause,
-    include: [
-      {
-        model: Rating,
-        as: 'ratings',
-        attributes: [], // We only want to calculate the average, not fetch the ratings
-      },
-    ],
-    attributes: {
-      include: [
-        [
-          Sequelize.fn(
-            'AVG',
-            Sequelize.col('ratings.value')
-          ), // Calculate the average rating
-          'avgRating',
-        ],
-      ],
-    },
-    group: ['Recipe.id', 'User.id'],
-  });
-
-  const recipes = rows.map(row => {
-    const recipe = row.get(); // Extract raw data
-    return {
-      ...recipe,
-      avgRating: recipe.avgRating || null, // Parse avgRating if it exists
-    };
-  });
-
-  return {
-    total: count,
-    recipes,
-  };
-};
-
-const getRecipesFeedService = async (
-  offset: number,
-  limit: number,
-  search: string
+const getRecipesService = async (
+  search: string,
+  attributes: string[],
+  offset?: number,
+  limit?: number,
+  includeUser?: boolean
 ) => {
   const whereClause = search?.length
     ? { title: { [Op.like]: `%${search}%` } }
     : {};
+
+  const user = includeUser
+    ? [
+        {
+          model: User,
+          attributes: ['id', 'username', 'photo'],
+        },
+      ]
+    : [];
+
   const { count, rows } = await Recipe.findAndCountAll({
-    offset,
-    limit,
+    offset: offset || 0,
+    limit: limit || 10,
     where: whereClause,
-    include: [
-      {
-        model: User,
-        attributes: ['id', 'username', 'photo'],
-      },
-      {
-        model: Rating,
-        as: 'ratings',
-        attributes: [], // We only want to calculate the average, not fetch the ratings
-      },
-    ],
-    attributes: {
-      include: [
-        [
-          Sequelize.fn(
-            'AVG',
-            Sequelize.col('ratings.value')
-          ), // Calculate the average rating
-          'avgRating',
-        ],
-      ],
-    },
-    group: ['Recipe.id', 'User.id'],
+    attributes: attributes,
+    include: user,
   });
 
+  // Fetch average ratings grouped by recipeId
+  const recipeRatingsRaw = await Rating.findAll({
+    where: {
+      recipeId: {
+        [Op.in]: rows.map(row => row.get().id), // Collect recipe IDs from the main query
+      },
+    },
+    attributes: [
+      'recipeId', // Group by recipeId
+      [
+        Sequelize.fn('AVG', Sequelize.col('rating')),
+        'avgRating',
+      ], // Calculate the average rating
+    ],
+    group: ['recipeId'],
+  });
+
+  // Convert recipe ratings into a dictionary for fast lookup
+  const recipeRatings = recipeRatingsRaw.reduce(
+    (acc, rating) => {
+      acc[rating.get().recipeId] = rating.get().avgRating;
+
+      return acc;
+    },
+    {} as Record<number, number | null>
+  );
+
+  // Attach avgRating to each recipe
   const recipes = rows.map(row => {
-    const recipe = row.get(); // Extract raw data
+    const recipe = row.get();
     return {
       ...recipe,
-      avgRating: recipe.avgRating || null, // Parse avgRating if it exists
+      avgRating: recipeRatings[recipe.id] || null, // Default to null if no rating exists
     };
   });
 
@@ -118,6 +95,10 @@ const getRecipesFeedService = async (
 
 const getRecipeService = async (id: number) => {
   const recipe = await Recipe.findOne({ where: { id } });
+
+  if (!recipe) {
+    throw new Error(Errors.recipeDoesntExist);
+  }
 
   return {
     recipe: recipe.dataValues,
@@ -311,7 +292,6 @@ const deleteRecipesService = async (id: number) => {
 
 export {
   getRecipesService,
-  getRecipesFeedService,
   getRecipeService,
   createRecipeService,
   editRecipesService,

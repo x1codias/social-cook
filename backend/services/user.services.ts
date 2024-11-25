@@ -1,29 +1,36 @@
-import { Op } from 'sequelize';
+import { Model, Op } from 'sequelize';
 import Followage from '../models/followage.model';
 import User from '../models/user.model';
 import sequelize from '../sequelize';
 import { Errors } from '../controllers/error.controller';
-import Recipe from '../models/recipe.model';
+import Recipe, { RecipeType } from '../models/recipe.model';
 
-const getUsersFeedService = async (
-  offset: number,
-  limit: number,
-  search: string
+const getUsersService = async (
+  search: string,
+  attributes: string[],
+  offset?: number,
+  limit?: number,
+  includeRecipes?: boolean
 ) => {
   const whereClause = search?.length
     ? { username: { [Op.like]: `%${search}%` } }
     : {};
+
   const { count, rows } = await User.findAndCountAll({
-    offset,
-    limit,
+    offset: offset || 0,
+    limit: limit || 10,
     where: whereClause,
+    attributes: attributes,
   });
 
   const userIds = rows.map(row => row.get().id) as number[];
 
-  const followCounts = await Promise.all([
-    // Count followers (users who follow the given users)
-    Followage.findAll({
+  let followersMap: { [key: number]: number } = {};
+  let followingMap: { [key: number]: number } = {};
+
+  if (includeRecipes) {
+    // Only fetch followers count if recipes are included
+    const followersCountData = await Followage.findAll({
       where: {
         userId: { [Op.in]: userIds },
       },
@@ -38,115 +45,100 @@ const getUsersFeedService = async (
         ],
       ],
       group: ['userId'],
-    }),
+    });
 
-    // Count following (users that the given users are following)
-    Followage.findAll({
-      where: {
-        followerId: { [Op.in]: userIds },
-      },
-      attributes: [
-        'followerId',
-        [
-          sequelize.fn('COUNT', sequelize.col('userId')),
-          'followingCount',
+    // Transform results into a map
+    followersCountData.forEach(entry => {
+      const { userId, followersCount } = entry.get({
+        plain: true,
+      });
+      followersMap[userId] = followersCount;
+    });
+  } else {
+    // Fetch both followers and following counts
+    const followCounts = await Promise.all([
+      Followage.findAll({
+        where: {
+          userId: { [Op.in]: userIds },
+        },
+        attributes: [
+          'userId',
+          [
+            sequelize.fn(
+              'COUNT',
+              sequelize.col('followerId')
+            ),
+            'followersCount',
+          ],
         ],
-      ],
-      group: ['followerId'],
-    }),
-  ]);
+        group: ['userId'],
+      }),
 
-  // Transform results into maps for quick lookup
-  const followersMap: { [key: number]: number } = {};
-  followCounts[0].forEach(entry => {
-    const { userId, followersCount } = entry.get({
-      plain: true,
+      Followage.findAll({
+        where: {
+          followerId: { [Op.in]: userIds },
+        },
+        attributes: [
+          'followerId',
+          [
+            sequelize.fn('COUNT', sequelize.col('userId')),
+            'followingCount',
+          ],
+        ],
+        group: ['followerId'],
+      }),
+    ]);
+
+    // Map followers count
+    followCounts[0].forEach(entry => {
+      const { userId, followersCount } = entry.get({
+        plain: true,
+      });
+      followersMap[userId] = followersCount;
     });
-    followersMap[userId] = followersCount;
-  });
 
-  const followingMap: { [key: number]: number } = {};
-  followCounts[1].forEach(entry => {
-    const { followerId, followingCount } = entry.get({
-      plain: true,
+    // Map following count
+    followCounts[1].forEach(entry => {
+      const { followerId, followingCount } = entry.get({
+        plain: true,
+      });
+      followingMap[followerId] = followingCount;
     });
-    followingMap[followerId] = followingCount;
-  });
+  }
 
-  const userRecipes = await Recipe.findAndCountAll({
-    limit: 5,
-    where: {
-      userId: {
-        [Op.in]: userIds,
+  let userRecipes: {
+    rows: Model<RecipeType, RecipeType>[];
+    count: number;
+  } = { rows: [], count: 0 };
+
+  if (includeRecipes) {
+    userRecipes = await Recipe.findAndCountAll({
+      limit: 5,
+      where: {
+        userId: {
+          [Op.in]: userIds,
+        },
       },
-    },
-    attributes: ['id', 'photos'],
-  });
+      attributes: ['id', 'photos'],
+    });
+  }
 
   const formattedUsers = rows.map(row => {
     const userId = row.get().id as number;
     return {
       ...row.get({ plain: true }),
       followersCount: followersMap[userId] || 0,
-      followingCount: followingMap[userId] || 0,
-      recipes: {
-        total: userRecipes.count,
-        data: userRecipes.rows.map(row =>
-          row.get({ plain: true })
-        ),
-      },
-    };
-  });
-
-  return {
-    total: count,
-    users: formattedUsers,
-  };
-};
-
-const getUsersService = async (
-  offset: number,
-  limit: number,
-  search: string
-) => {
-  const whereClause = search?.length
-    ? { username: { [Op.like]: `%${search}%` } }
-    : {};
-  const { count, rows } = await User.findAndCountAll({
-    offset,
-    limit,
-    where: whereClause,
-  });
-
-  const userIds = rows.map(row => row.get().id) as number[];
-
-  const followers = await Followage.findAll({
-    where: {
-      userId: {
-        [Op.in]: userIds,
-      },
-    },
-    attributes: [
-      'userId',
-      [
-        sequelize.fn('COUNT', sequelize.col('userId')),
-        'count',
-      ],
-    ],
-    group: ['userId'],
-  });
-
-  const followersCountMap: { [key: number]: number } = {};
-  followers.map(entry => {
-    followersCountMap[entry.get().userId] =
-      entry.getDataValue('count') as number;
-  });
-
-  const formattedUsers = rows.map(row => {
-    return {
-      ...row.get({ plain: true }),
-      followersCount:
-        followersCountMap[row.get().id as number] || 0,
+      followingCount: includeRecipes
+        ? undefined
+        : followingMap[userId] || 0,
+      recipes: includeRecipes
+        ? {
+            total: userRecipes.count,
+            data: userRecipes.rows.map(row =>
+              row.get({ plain: true })
+            ),
+          }
+        : undefined,
     };
   });
 
@@ -204,7 +196,6 @@ const editUserService = async () => {};
 
 export {
   getUsersService,
-  getUsersFeedService,
   getUserService,
   editUserService,
   getUserRecipesService,

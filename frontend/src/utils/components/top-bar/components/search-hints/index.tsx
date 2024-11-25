@@ -46,11 +46,8 @@ const SearchHints: React.FC<SearchHintsProps> = ({
   const { initialLoading } = useFetchData(
     getFunction,
     searchValue,
-    true,
     searchType
   );
-
-  console.log(users);
 
   return (
     <>

@@ -10,13 +10,9 @@ import { Dispatch } from 'redux';
 
 const useFetchData = (
   getFunction: (
-    limit: number,
-    offset: number,
-    search?: string,
-    searchDropdown?: boolean
+    search?: string
   ) => (dispatch: Dispatch) => Promise<void>,
   searchTerm?: string,
-  searchDropdown?: boolean,
   searchType?: string
 ) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,9 +26,7 @@ const useFetchData = (
     setInitialLoading(true);
 
     try {
-      await dispatch(
-        getFunction(10, 0, searchTerm, searchDropdown)
-      );
+      await dispatch(getFunction(searchTerm));
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
