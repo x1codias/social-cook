@@ -37,11 +37,37 @@ export const getRecipe =
   };
 
 export const getRecipes =
+  (searchTerm?: string) => async (dispatch: Dispatch) => {
+    try {
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
+      const response = await axios.get(
+        import.meta.env.VITE_BACKEND_URL + '/recipes',
+        {
+          params: {
+            search: searchTerm || '',
+          },
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        }
+      );
+
+      dispatch({
+        type: GET_RECIPES_SEARCH_DROPDOWN,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const getRecipesFeed =
   (
     limit: number = 10,
     offset: number = 0,
-    searchTerm?: string,
-    isSearchDropdown?: boolean
+    searchTerm?: string
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -49,7 +75,7 @@ export const getRecipes =
         localStorage.getItem('token') as string
       );
       const response = await axios.get(
-        import.meta.env.VITE_BACKEND_URL + '/recipes',
+        import.meta.env.VITE_BACKEND_URL + '/recipes/feed',
         {
           params: {
             limit: limit,
@@ -63,9 +89,7 @@ export const getRecipes =
       );
 
       dispatch({
-        type: isSearchDropdown
-          ? GET_RECIPES_SEARCH_DROPDOWN
-          : GET_RECIPES,
+        type: GET_RECIPES,
         payload: response.data,
       });
     } catch (error) {
