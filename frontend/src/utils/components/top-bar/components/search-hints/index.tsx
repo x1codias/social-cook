@@ -49,6 +49,8 @@ const SearchHints: React.FC<SearchHintsProps> = ({
     searchType
   );
 
+  console.log(recipes);
+
   return (
     <>
       <div
@@ -164,36 +166,51 @@ const SearchHints: React.FC<SearchHintsProps> = ({
                           }}
                           label={data.title}
                         />
-                        <Rating
-                          defaultValue={3}
-                          readOnly
-                          size={'large'}
-                          sx={{
-                            backgroundColor:
-                              theme.palette.grey?.[300],
-                            padding: '4px',
-                            borderRadius: '20px',
-                          }}
-                          emptyIcon={
-                            <StarRounded
-                              fontSize={'large'}
-                              sx={{
-                                color:
-                                  theme.palette.background
-                                    ?.paper,
-                              }}
-                            />
-                          }
-                          icon={
-                            <StarRounded
-                              fontSize={'large'}
-                              sx={{
-                                color:
-                                  theme.palette.warning,
-                              }}
-                            />
-                          }
-                        />
+                        {data.avgRating ? (
+                          <Rating
+                            defaultValue={data.avgRating}
+                            readOnly
+                            size={'large'}
+                            sx={{
+                              backgroundColor:
+                                theme.palette.grey?.[300],
+                              padding: '4px',
+                              borderRadius: '20px',
+                            }}
+                            emptyIcon={
+                              <StarRounded
+                                fontSize={'large'}
+                                sx={{
+                                  color:
+                                    theme.palette.background
+                                      ?.paper,
+                                }}
+                              />
+                            }
+                            icon={
+                              <StarRounded
+                                fontSize={'large'}
+                                sx={{
+                                  color:
+                                    theme.palette.warning,
+                                }}
+                              />
+                            }
+                          />
+                        ) : (
+                          <Typography
+                            sx={{
+                              backgroundColor:
+                                theme.palette.grey?.[300],
+                              padding: '6px',
+                              borderRadius: '20px',
+                              fontFamily: 'Comfortaa',
+                              fontSize: '14px',
+                            }}
+                          >
+                            {t('noRatingsYet')}
+                          </Typography>
+                        )}
                       </>
                     )}
                   </div>
