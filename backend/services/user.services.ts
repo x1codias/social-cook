@@ -28,7 +28,7 @@ const getUsersService = async (
   let followersMap: { [key: number]: number } = {};
   let followingMap: { [key: number]: number } = {};
 
-  if (includeRecipes) {
+  if (!includeRecipes) {
     // Only fetch followers count if recipes are included
     const followersCountData = await Followage.findAll({
       where: {
@@ -113,28 +113,30 @@ const getUsersService = async (
 
   if (includeRecipes) {
     userRecipes = await Recipe.findAndCountAll({
-      limit: 5,
       where: {
         userId: {
           [Op.in]: userIds,
         },
       },
-      attributes: ['id', 'photos'],
+      attributes: ['id', 'photos', 'userId'],
     });
   }
 
   const formattedUsers = rows.map(row => {
     const userId = row.get().id as number;
+    const filteredRecipes = userRecipes.rows.filter(
+      recipeRow => recipeRow.get().userId === userId
+    );
     return {
       ...row.get({ plain: true }),
       followersCount: followersMap[userId] || 0,
-      followingCount: includeRecipes
+      followingCount: !includeRecipes
         ? undefined
         : followingMap[userId] || 0,
       recipes: includeRecipes
         ? {
-            total: userRecipes.count,
-            data: userRecipes.rows.map(row =>
+            total: filteredRecipes.length,
+            data: filteredRecipes.map(row =>
               row.get({ plain: true })
             ),
           }

@@ -79,5 +79,11 @@
   "followers": "Followers",
   "following": "Following",
   "seeMore": "See more",
-  "noRatingsYet": "No ratings yet"
+  "noRatingsYet": "No ratings yet",
+  "forYou": "For you",
+  "recipes": "Recipes",
+  "users": "Users",
+  "noRecipesYet": "Still cooking up my first recipe. Stay tuned!",
+  "viewProfile": "View profile",
+  "emptyBiography": "Empty biography"
 }
