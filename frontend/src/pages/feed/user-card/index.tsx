@@ -283,20 +283,8 @@ const UserCard: React.FC<UserCardProps> = (
         style={{ padding: '8px', alignSelf: 'flex-end' }}
       >
         <DefaultButton
-          label={
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}
-            >
-              <Typography fontSize={16}>
-                {t('viewProfile')}
-              </Typography>
-              <ArrowForward fontSize={'large'} />
-            </div>
-          }
+          label={t('viewProfile')}
+          iconForward={<ArrowForward fontSize={'large'} />}
           onClick={() => {}}
         />
       </div>

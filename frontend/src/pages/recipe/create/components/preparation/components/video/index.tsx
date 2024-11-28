@@ -150,21 +150,10 @@ const PreparationVideo: React.FC<PreparationVideoProps> = (
       >
         <DefaultButton
           onClick={() => setStepByStepOption()}
-          label={
-            <Typography
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                fontSize: '16px',
-              }}
-            >
-              <FormatListBulletedRounded
-                fontSize={'large'}
-              />
-              {t('stepByStep')}
-            </Typography>
+          icon={
+            <FormatListBulletedRounded fontSize={'large'} />
           }
+          label={t('stepByStep')}
           variant={'outlined'}
         />
         {video && (

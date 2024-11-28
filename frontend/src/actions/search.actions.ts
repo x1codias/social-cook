@@ -10,13 +10,7 @@ import i18n from '../translations/i18n';
 import { toast } from 'react-toastify';
 
 export const getSearchHistory =
-  (
-    limit: number = 10,
-    offset: number = 0,
-    searchTerm?: string,
-    isSearchDropdown?: boolean
-  ) =>
-  async (dispatch: Dispatch) => {
+  () => async (dispatch: Dispatch) => {
     try {
       const userToken = JSON.parse(
         localStorage.getItem('token') as string

@@ -277,35 +277,15 @@ const PreparationSteps: React.FC<PreparationStepsProps> = (
         <DefaultButton
           onClick={() => setVideoOption()}
           variant={'outlined'}
-          label={
-            <Typography
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                fontSize: '16px',
-              }}
-            >
-              <VideoCameraBackRounded fontSize={'large'} />
-              {t('addVideo')}
-            </Typography>
+          icon={
+            <VideoCameraBackRounded fontSize={'large'} />
           }
+          label={t('addVideo')}
         />
         <DefaultButton
           onClick={handleAddStep}
-          label={
-            <Typography
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                fontSize: '16px',
-              }}
-            >
-              <AddRounded fontSize={'large'} />
-              {t('addStep')}
-            </Typography>
-          }
+          icon={<AddRounded fontSize={'large'} />}
+          label={t('addStep')}
         />
       </div>
     </div>

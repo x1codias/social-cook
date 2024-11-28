@@ -39,19 +39,8 @@ const ChooseMethod: React.FC<ChooseMethodProps> = ({
       </Typography>
       <DefaultButton
         onClick={() => setOption('video')}
-        label={
-          <Typography
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '16px',
-            }}
-          >
-            <VideoCameraBackRounded fontSize={'large'} />
-            {t('addingVideo')}
-          </Typography>
-        }
+        icon={<VideoCameraBackRounded fontSize={'large'} />}
+        label={t('addingVideo')}
       />
       <Typography
         sx={{
@@ -66,19 +55,10 @@ const ChooseMethod: React.FC<ChooseMethodProps> = ({
       </Typography>
       <DefaultButton
         onClick={() => setOption('steps')}
-        label={
-          <Typography
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '16px',
-            }}
-          >
-            <FormatListBulletedRounded fontSize={'large'} />
-            {t('stepByStep')}
-          </Typography>
+        icon={
+          <FormatListBulletedRounded fontSize={'large'} />
         }
+        label={t('stepByStep')}
         variant={'outlined'}
       />
     </div>

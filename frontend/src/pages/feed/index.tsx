@@ -158,23 +158,13 @@ const Feed: React.FC = (): JSX.Element => {
                   searchParams.get('type') === label
                 }
                 variant={'outlined'}
-                label={
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                    }}
-                  >
-                    {label === 'recipes' ? (
-                      <Restaurant fontSize={'large'} />
-                    ) : (
-                      <Person fontSize={'large'} />
-                    )}
-                    <Typography fontSize={16}>
-                      {t(label)}
-                    </Typography>
-                  </div>
+                label={t(label)}
+                icon={
+                  label === 'recipes' ? (
+                    <Restaurant fontSize={'large'} />
+                  ) : (
+                    <Person fontSize={'large'} />
+                  )
                 }
                 onClick={() => {
                   resetScrollData();

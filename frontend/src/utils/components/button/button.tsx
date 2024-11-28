@@ -11,6 +11,7 @@ type DefaultButtonProps = {
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => void;
   icon?: JSX.Element;
+  iconForward?: JSX.Element;
   disabled?: boolean;
 };
 
@@ -22,6 +23,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
     type,
     label,
     icon,
+    iconForward,
     onClick,
     customStyles,
     disabled,
@@ -36,8 +38,9 @@ const DefaultButton: React.FC<DefaultButtonProps> = (
       sx={customStyles}
       disabled={disabled}
     >
-      {icon && icon}
+      {icon}
       <Typography fontSize={16}>{label}</Typography>
+      {iconForward}
     </DefaultButton>
   );
 };

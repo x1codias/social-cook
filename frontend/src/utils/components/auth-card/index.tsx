@@ -19,7 +19,6 @@ import { AppDispatch } from '../../../store';
 import { FacebookLoginClient } from '@greatsumini/react-facebook-login';
 import DefaultButton from '../button/button';
 import DefaultInput from '../input/input';
-import ImageInput from '../image-input';
 import {
   validateInput,
   validateRequiredFieldsEmpty,
@@ -288,7 +287,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                 justifyContent: 'space-between',
               }}
             >
-              <ImageInput
+              {/* <ImageInput
                 onDeleteImage={() => {}}
                 onImageChanged={() => {}}
                 customStyles={{
@@ -296,7 +295,7 @@ const AuthCard: React.FC<AuthCardProps> = (
                   maxWidth: '30%',
                 }}
                 customIconSize={30}
-              />
+              /> */}
               <DefaultInput
                 minWidth={'290px'}
                 type={'text'}

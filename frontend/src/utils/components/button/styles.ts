@@ -13,6 +13,7 @@ const styles = {
     width: 'fit-content',
     display: 'flex',
     alignItems: 'center',
+    gap: '6px',
     color:
       variant === 'outlined'
         ? theme.palette.default.primary

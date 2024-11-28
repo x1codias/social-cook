@@ -14,7 +14,10 @@ import { useSelector } from 'react-redux';
 import { getIngredients } from '../../../../../actions/ingredient.actions';
 import DefaultInput from '../../../../../utils/components/input/input';
 import { getUnits } from '../../../../../actions/unit.actions';
-import { DeleteRounded } from '@mui/icons-material';
+import {
+  AddRounded,
+  DeleteRounded,
+} from '@mui/icons-material';
 import { useState } from 'react';
 import { filteredIngredientScrollData } from '../../../../../utils/memoized-selectors';
 import AddIngredientModal from './components/add-ingredient';
@@ -227,7 +230,8 @@ const IngredientsPageModal: React.FC<
         )}
       </div>
       <DefaultButton
-        label={'+ ' + t('addIngredient')}
+        icon={<AddRounded fontSize={'large'} />}
+        label={t('addIngredient')}
         onClick={handleAddNewIngredient}
       />
       <AddIngredientModal

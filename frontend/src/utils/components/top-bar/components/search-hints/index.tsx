@@ -124,24 +124,14 @@ const SearchHints: React.FC<SearchHintsProps> = ({
               }}
               disabled={searchType === label}
               variant={'outlined'}
-              label={
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
-                >
-                  {label === 'recipes' ? (
-                    <Restaurant fontSize={'large'} />
-                  ) : (
-                    <Person fontSize={'large'} />
-                  )}
-                  <Typography fontSize={16}>
-                    {t(label)}
-                  </Typography>
-                </div>
+              icon={
+                label === 'recipes' ? (
+                  <Restaurant fontSize={'large'} />
+                ) : (
+                  <Person fontSize={'large'} />
+                )
               }
+              label={t(label)}
               onClick={() => setSearchType(label)}
             />
           ))}
