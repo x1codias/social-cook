@@ -23,6 +23,11 @@ import { useSelector } from 'react-redux';
 import { RecipeState } from '../../../../../reducers/types/recipe.reducer.types';
 import { UserState } from '../../../../../reducers/types/user.reducer.types';
 import { useLocation, useNavigate } from 'react-router';
+import {
+  RESET_SCROLL_RECIPES_DATA,
+  RESET_SCROLL_USERS_DATA,
+} from '../../../../../actions/types';
+import { useDispatch } from 'react-redux';
 
 type SearchHintsProps = {
   searchValue: string;
@@ -46,6 +51,7 @@ const SearchHints: React.FC<SearchHintsProps> = ({
   );
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const getFunction =
     searchType === 'users' ? getUsers : getRecipes;
@@ -56,7 +62,17 @@ const SearchHints: React.FC<SearchHintsProps> = ({
     searchType
   );
 
+  const resetRecipesScrollData = () => ({
+    type: RESET_SCROLL_RECIPES_DATA,
+  });
+
+  const resetUsersScrollData = () => ({
+    type: RESET_SCROLL_USERS_DATA,
+  });
+
   const updateQueryParams = () => {
+    dispatch(resetRecipesScrollData());
+    dispatch(resetUsersScrollData());
     onClose();
     const searchParams = new URLSearchParams(
       location.search

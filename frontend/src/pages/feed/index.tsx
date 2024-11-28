@@ -185,41 +185,63 @@ const Feed: React.FC = (): JSX.Element => {
             ))}
           </div>
         </div>
-        <ResponsiveMasonry
-          style={{
-            padding: '16px 24px',
-            width: '100%',
-          }}
-          columnsCountBreakPoints={{
-            350: 1,
-            750: 2,
-            1200: 3,
-            1600: 4,
-          }}
-        >
-          <Masonry gutter="14px">
-            {searchParams.get('type') === 'recipes'
-              ? scrollData.recipes.map(
-                  (recipe: Recipe, index: number) => (
-                    <FoodCard
-                      key={index}
-                      height={getRandomHeight()}
-                      recipeData={recipe}
-                      loading={initialLoading} // Pass loading state to FoodCard
-                    />
+        {!scrollData?.users?.length &&
+        !scrollData?.recipes?.length ? (
+          <div
+            style={{
+              flexGrow: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography
+              fontFamily={'Fredoka'}
+              fontSize={30}
+              fontWeight={600}
+            >
+              {searchParams.get('type') === 'recipes'
+                ? t('noRecipesFound')
+                : t('noUsersFound')}
+            </Typography>
+          </div>
+        ) : (
+          <ResponsiveMasonry
+            style={{
+              padding: '16px 24px',
+              width: '100%',
+            }}
+            columnsCountBreakPoints={{
+              350: 1,
+              750: 2,
+              1200: 3,
+              1600: 4,
+            }}
+          >
+            <Masonry gutter="14px">
+              {searchParams.get('type') === 'recipes'
+                ? scrollData.recipes.map(
+                    (recipe: Recipe, index: number) => (
+                      <FoodCard
+                        key={index}
+                        height={getRandomHeight()}
+                        recipeData={recipe}
+                        loading={initialLoading} // Pass loading state to FoodCard
+                      />
+                    )
                   )
-                )
-              : scrollData.users.map(
-                  (user: Account, index: number) => (
-                    <UserCard
-                      key={index}
-                      userData={user}
-                      loading={initialLoading}
-                    />
-                  )
-                )}
-          </Masonry>
-        </ResponsiveMasonry>
+                : scrollData.users.map(
+                    (user: Account, index: number) => (
+                      <UserCard
+                        key={index}
+                        userData={user}
+                        loading={initialLoading}
+                      />
+                    )
+                  )}
+            </Masonry>
+          </ResponsiveMasonry>
+        )}
         {infiniteLoading && (
           <div>Loading more recipes...</div>
         )}{' '}

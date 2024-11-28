@@ -85,5 +85,7 @@
   "users": "Users",
   "noRecipesYet": "Still cooking up my first recipe. Stay tuned!",
   "viewProfile": "View profile",
-  "emptyBiography": "Empty biography"
+  "emptyBiography": "Empty biography",
+  "noRecipesFound": "No recipes found...",
+  "noUsersFound": "No users found..."
 }

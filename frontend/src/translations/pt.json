@@ -85,5 +85,7 @@
   "users": "Utilizadores",
   "noRecipesYet": "A preparar a minha primeira receita. Fica atento!",
   "viewProfile": "Ver perfil",
-  "emptyBiography": "Biografia vazia"
+  "emptyBiography": "Biografia vazia",
+  "noRecipesFound": "Não foram encontradas receitas...",
+  "noUsersFound": "Não foram encontrados utilizadores..."
 }
