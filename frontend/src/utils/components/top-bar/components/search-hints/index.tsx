@@ -1,18 +1,10 @@
-import {
-  Avatar,
-  Chip,
-  List,
-  ListItem,
-  Rating,
-  Typography,
-} from '@mui/material';
+import { List, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import theme from '../../../../../themes/global.theme';
 import {
   ArrowForwardRounded,
   Person,
   Restaurant,
-  StarRounded,
 } from '@mui/icons-material';
 import DefaultButton from '../../../button/button';
 import { useState } from 'react';
@@ -28,6 +20,8 @@ import {
   RESET_SCROLL_USERS_DATA,
 } from '../../../../../actions/types';
 import { useDispatch } from 'react-redux';
+import SearchRecipeItem from './components/search-recipe-item';
+import SearchUserItem from './components/searchUserItem';
 
 type SearchHintsProps = {
   searchValue: string;
@@ -95,213 +89,87 @@ const SearchHints: React.FC<SearchHintsProps> = ({
   };
 
   return (
-    <>
+    <div
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
       <div
-        style={{ display: 'flex', flexDirection: 'column' }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          alignSelf: 'center',
+          padding: '12px 0',
+          gap: '18px',
+        }}
       >
+        {['recipes', 'users'].map(label => (
+          <DefaultButton
+            key={label}
+            customStyles={{
+              padding: '4px 36px',
+              borderRadius: '20px',
+              fontSize: '18px',
+              '&.Mui-disabled': {
+                backgroundColor:
+                  theme.palette.default.primary,
+                color: theme.palette.customText.button,
+                border: `1px solid ${theme.palette.default.primary}`,
+              },
+            }}
+            disabled={searchType === label}
+            variant={'outlined'}
+            icon={
+              label === 'recipes' ? (
+                <Restaurant fontSize={'large'} />
+              ) : (
+                <Person fontSize={'large'} />
+              )
+            }
+            label={t(label)}
+            onClick={() => setSearchType(label)}
+          />
+        ))}
+      </div>
+      <div>
+        <List>
+          {searchType === 'recipes'
+            ? recipes.map((recipe, index) => (
+                <SearchRecipeItem
+                  data={recipe}
+                  index={index}
+                />
+              ))
+            : users.map((user, index) => (
+                <SearchUserItem data={user} index={index} />
+              ))}
+        </List>
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
-            alignSelf: 'center',
+            justifyContent: 'center',
             padding: '12px 0',
-            gap: '18px',
+            width: '100%',
           }}
         >
-          {['recipes', 'users'].map(label => (
-            <DefaultButton
-              key={label}
-              customStyles={{
-                padding: '4px 36px',
-                borderRadius: '20px',
-                fontSize: '18px',
-                '&.Mui-disabled': {
-                  backgroundColor:
-                    theme.palette.default.primary,
-                  color: theme.palette.customText.button,
-                  border: `1px solid ${theme.palette.default.primary}`,
-                },
-              }}
-              disabled={searchType === label}
-              variant={'outlined'}
-              icon={
-                label === 'recipes' ? (
-                  <Restaurant fontSize={'large'} />
-                ) : (
-                  <Person fontSize={'large'} />
-                )
-              }
-              label={t(label)}
-              onClick={() => setSearchType(label)}
-            />
-          ))}
-        </div>
-        <div>
-          <List>
-            {(searchType === 'users' ? users : recipes).map(
-              (data, index) => (
-                <ListItem
-                  key={index}
-                  sx={{
-                    padding: '12px 24px',
-                    display: 'flex',
-                    width: '100%',
-                    gap: '26px',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      backgroundColor:
-                        theme.palette.customBackground
-                          .default,
-                    },
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '26px',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Avatar
-                      sx={{ width: 54, height: 54 }}
-                      src={
-                        searchType === 'users'
-                          ? data.photo
-                          : data.photos[0]
-                      }
-                    />
-                    {searchType === 'users' ? (
-                      <>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Roboto',
-                            fontSize: '16px',
-                            fontWeight: 500,
-                            color:
-                              theme.palette.text?.primary,
-                          }}
-                        >
-                          {data.username}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Roboto',
-                            fontSize: '16px',
-                            fontWeight: 500,
-                            color:
-                              theme.palette.text?.primary,
-                          }}
-                        >
-                          {'(' +
-                            data.followersCount +
-                            ' ' +
-                            t('followers') +
-                            ')'}
-                        </Typography>
-                      </>
-                    ) : (
-                      <>
-                        <Chip
-                          sx={{
-                            fontFamily: 'Comfortaa',
-                            fontSize: '16px',
-                            fontWeight: 500,
-                            color:
-                              theme.palette.text?.primary,
-                            backgroundColor:
-                              theme.palette.categories[
-                                data.category
-                              ],
-                          }}
-                          label={data.title}
-                        />
-                        {data.avgRating ? (
-                          <Rating
-                            defaultValue={data.avgRating}
-                            readOnly
-                            size={'large'}
-                            sx={{
-                              backgroundColor:
-                                theme.palette.grey?.[300],
-                              padding: '4px',
-                              borderRadius: '20px',
-                            }}
-                            emptyIcon={
-                              <StarRounded
-                                fontSize={'large'}
-                                sx={{
-                                  color:
-                                    theme.palette.background
-                                      ?.paper,
-                                }}
-                              />
-                            }
-                            icon={
-                              <StarRounded
-                                fontSize={'large'}
-                                sx={{
-                                  color:
-                                    theme.palette.warning,
-                                }}
-                              />
-                            }
-                          />
-                        ) : (
-                          <Typography
-                            sx={{
-                              backgroundColor:
-                                theme.palette.grey?.[300],
-                              padding: '6px',
-                              borderRadius: '20px',
-                              fontFamily: 'Comfortaa',
-                              fontSize: '14px',
-                            }}
-                          >
-                            {t('noRatingsYet')}
-                          </Typography>
-                        )}
-                      </>
-                    )}
-                  </div>
-                  <ArrowForwardRounded
-                    sx={{ justifySelf: 'flex-end' }}
-                    fontSize={'large'}
-                  />
-                </ListItem>
-              )
-            )}
-          </List>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              padding: '12px 0',
-              width: '100%',
-            }}
-          >
-            <DefaultButton
-              onClick={updateQueryParams}
-              label={
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
-                >
-                  <Typography fontSize={18}>
-                    {t('seeMore')}
-                  </Typography>
-                  <ArrowForwardRounded fontSize={'large'} />
-                </div>
-              }
-            />
-          </div>
+          <DefaultButton
+            onClick={updateQueryParams}
+            label={
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <Typography fontSize={18}>
+                  {t('seeMore')}
+                </Typography>
+                <ArrowForwardRounded fontSize={'large'} />
+              </div>
+            }
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
