@@ -59,7 +59,10 @@ export const getUsersFeed =
 
       dispatch({
         type: GET_USERS,
-        payload: response.data,
+        payload: {
+          ...response.data,
+          search: !!searchTerm?.length,
+        },
       });
     } catch (error) {
       console.log(error);

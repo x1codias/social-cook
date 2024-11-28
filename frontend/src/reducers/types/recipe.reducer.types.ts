@@ -7,6 +7,7 @@ import {
   CLOSE_CREATE_RECIPE_MODAL,
   CHANGE_CREATE_RECIPE_STEP,
   GET_RECIPES_SEARCH_DROPDOWN,
+  RESET_SCROLL_RECIPES_DATA,
 } from '../../actions/types';
 import { Recipe } from '../../utils/types/Recipe';
 
@@ -28,6 +29,7 @@ export interface RecipeState {
 export interface RecipePayload {
   recipes: Recipe[] | [];
   total: number;
+  search: boolean;
 }
 
 interface GetRecipesAction {
@@ -67,6 +69,9 @@ interface ChangeCreateRecipeStep {
   type: typeof CHANGE_CREATE_RECIPE_STEP;
   payload: { step: number };
 }
+interface ResetScrollDataAction {
+  type: typeof RESET_SCROLL_RECIPES_DATA;
+}
 
 export type RecipeActionTypes =
   | GetRecipeAction
@@ -76,4 +81,5 @@ export type RecipeActionTypes =
   | DeleteRecipeAction
   | OpenCreateRecipeModalAction
   | CloseCreateRecipeModalAction
-  | ChangeCreateRecipeStep;
+  | ChangeCreateRecipeStep
+  | ResetScrollDataAction;

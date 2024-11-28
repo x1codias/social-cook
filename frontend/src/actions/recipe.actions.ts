@@ -90,7 +90,10 @@ export const getRecipesFeed =
 
       dispatch({
         type: GET_RECIPES,
-        payload: response.data,
+        payload: {
+          ...response.data,
+          search: !!searchTerm?.length,
+        },
       });
     } catch (error) {
       console.log(error);

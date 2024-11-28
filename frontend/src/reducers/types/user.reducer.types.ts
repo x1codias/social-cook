@@ -1,6 +1,7 @@
 import {
   GET_USERS,
   GET_USERS_SEARCH_DROPDOWN,
+  RESET_SCROLL_USERS_DATA,
 } from '../../actions/types';
 import { Account } from '../../utils/types/Account';
 
@@ -20,6 +21,7 @@ export interface UserState {
 export interface UserPayload {
   users: Account[] | [];
   total: number;
+  search: boolean;
 }
 
 interface GetUsersAction {
@@ -31,7 +33,11 @@ interface GetUsersSearchDropdownAction {
   type: typeof GET_USERS_SEARCH_DROPDOWN;
   payload: UserPayload;
 }
+interface ResetScrollDataAction {
+  type: typeof RESET_SCROLL_USERS_DATA;
+}
 
 export type UserActionTypes =
   | GetUsersAction
-  | GetUsersSearchDropdownAction;
+  | GetUsersSearchDropdownAction
+  | ResetScrollDataAction;

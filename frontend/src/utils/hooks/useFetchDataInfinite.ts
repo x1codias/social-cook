@@ -12,9 +12,11 @@ import useInfiniteLoading from './useInfiniteLoading';
 const useFetchDataInfinite = (
   getFunction: (
     limit: number,
-    offset: number
+    offset: number,
+    searchTerm?: string
   ) => (dispatch: Dispatch) => Promise<void>,
-  scrollData: any
+  scrollData: any,
+  search?: string
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   const [initialLoading, setInitialLoading] =
@@ -28,7 +30,11 @@ const useFetchDataInfinite = (
 
     try {
       await dispatch(
-        getFunction(scrollData.limit, scrollData.offset)
+        getFunction(
+          scrollData.limit,
+          scrollData.offset,
+          search
+        )
       );
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -36,7 +42,7 @@ const useFetchDataInfinite = (
       setInitialLoading(false);
       isFetchingRef.current = false;
     }
-  }, [dispatch, scrollData]);
+  }, [dispatch, scrollData, search]);
 
   // Effect for fetching data on mount
   useEffect(() => {

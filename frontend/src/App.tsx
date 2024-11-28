@@ -46,7 +46,9 @@ const App: React.FC = (): JSX.Element => {
         <Route
           path="*"
           element={
-            <Navigate to={userToken ? '/' : '/login'} />
+            <Navigate
+              to={userToken ? '/?type=recipes' : '/login'}
+            />
           }
         />
       </Routes>

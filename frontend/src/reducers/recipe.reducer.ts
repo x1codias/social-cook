@@ -7,6 +7,7 @@ import {
   CLOSE_CREATE_RECIPE_MODAL,
   CHANGE_CREATE_RECIPE_STEP,
   GET_RECIPES_SEARCH_DROPDOWN,
+  RESET_SCROLL_RECIPES_DATA,
 } from '../actions/types';
 import {
   RecipeState,
@@ -37,6 +38,18 @@ const recipeReducer = (
       return {
         ...state,
         recipe: action.payload.recipe,
+      };
+    case RESET_SCROLL_RECIPES_DATA:
+      return {
+        ...state,
+        scrollData: {
+          ...state.scrollData,
+          recipes: [], // Reset recipes list
+          offset: 0, // Reset offset
+          total: 0, // Reset total
+          hasMore: true, // Reset hasMore to allow new fetches
+          page: 0, // Reset page count
+        },
       };
     case GET_RECIPES:
       const { recipes, total } = action.payload;

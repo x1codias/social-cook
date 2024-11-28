@@ -1,6 +1,7 @@
 import {
   GET_USERS,
   GET_USERS_SEARCH_DROPDOWN,
+  RESET_SCROLL_USERS_DATA,
 } from '../actions/types';
 import {
   UserActionTypes,
@@ -51,6 +52,18 @@ const userReducer = (
         searchDropdownUsers: users,
       };
     }
+    case RESET_SCROLL_USERS_DATA:
+      return {
+        ...state,
+        scrollData: {
+          ...state.scrollData,
+          users: [], // Reset recipes list
+          offset: 0, // Reset offset
+          total: 0, // Reset total
+          hasMore: true, // Reset hasMore to allow new fetches
+          page: 0, // Reset page count
+        },
+      };
     default:
       return state;
   }

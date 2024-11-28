@@ -21,7 +21,10 @@ import { useNavigate } from 'react-router';
 import { IoClose, IoStar } from 'react-icons/io5';
 import SearchHistory from './components/search-history';
 import SearchHints from './components/search-hints';
-import { OPEN_CREATE_RECIPE_MODAL } from '../../../actions/types';
+import {
+  OPEN_CREATE_RECIPE_MODAL,
+  RESET_SCROLL_RECIPES_DATA,
+} from '../../../actions/types';
 import { useDispatch } from 'react-redux';
 
 const TopBar: React.FC = (): JSX.Element => {
@@ -40,10 +43,15 @@ const TopBar: React.FC = (): JSX.Element => {
   const menuRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
+  const [isClosing, setIsClosing] = useState(false); // New lock flag
   const searchRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
+
+  const resetScrollData = () => ({
+    type: RESET_SCROLL_RECIPES_DATA,
+  });
 
   const handleOpenCreateRecipeModal = () =>
     dispatch({
@@ -51,7 +59,9 @@ const TopBar: React.FC = (): JSX.Element => {
     });
 
   const handleFocus = () => {
-    setIsFocused(true); // Open the popover when input is focused
+    if (!isClosing) {
+      setIsFocused(true); // Open the popover only if not closing
+    }
   };
 
   const handleBlur = (
@@ -59,20 +69,24 @@ const TopBar: React.FC = (): JSX.Element => {
       HTMLInputElement | HTMLTextAreaElement
     >
   ) => {
-    // Check if focus moved outside the input and the popover
     if (
       searchRef.current &&
       popoverRef.current &&
       !searchRef.current.contains(event.relatedTarget) &&
       !popoverRef.current.contains(event.relatedTarget)
     ) {
-      setIsFocused(false); // Close popover only if focus moves outside
+      setIsFocused(false);
     }
   };
 
   return (
     <AppBar position={'fixed'}>
-      <AppTitle onClick={() => navigate('/')}>
+      <AppTitle
+        onClick={() => {
+          dispatch(resetScrollData());
+          navigate('/?type=recipes');
+        }}
+      >
         SocialCook
       </AppTitle>
       <Search
@@ -203,7 +217,6 @@ const TopBar: React.FC = (): JSX.Element => {
         ref={popoverRef}
         onClose={() => setIsFocused(false)}
         disableAutoFocus
-        disableEnforceFocus
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -223,7 +236,13 @@ const TopBar: React.FC = (): JSX.Element => {
           {!searchValue.length ? (
             <SearchHistory />
           ) : (
-            <SearchHints searchValue={searchValue} />
+            <SearchHints
+              searchValue={searchValue}
+              onClose={() => {
+                setIsClosing(true); // Lock state
+                setIsFocused(false);
+              }}
+            />
           )}
         </div>
       </Popover>

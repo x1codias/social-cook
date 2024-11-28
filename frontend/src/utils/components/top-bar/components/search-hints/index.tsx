@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import theme from '../../../../../themes/global.theme';
 import {
   ArrowForwardRounded,
+  Person,
+  Restaurant,
   StarRounded,
 } from '@mui/icons-material';
 import DefaultButton from '../../../button/button';
@@ -20,17 +22,20 @@ import useFetchData from '../../../../hooks/useFetchData';
 import { useSelector } from 'react-redux';
 import { RecipeState } from '../../../../../reducers/types/recipe.reducer.types';
 import { UserState } from '../../../../../reducers/types/user.reducer.types';
+import { useLocation, useNavigate } from 'react-router';
 
 type SearchHintsProps = {
   searchValue: string;
+  onClose: () => void;
 };
 
 const SearchHints: React.FC<SearchHintsProps> = ({
   searchValue,
+  onClose,
 }): JSX.Element => {
   const { t } = useTranslation();
   const [searchType, setSearchType] =
-    useState<string>('recipe');
+    useState<string>('recipes');
   const recipes = useSelector(
     (state: { recipe: RecipeState }) =>
       state.recipe.searchDropdownRecipes
@@ -39,9 +44,11 @@ const SearchHints: React.FC<SearchHintsProps> = ({
     (state: { user: UserState }) =>
       state.user.searchDropdownUsers
   );
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const getFunction =
-    searchType === 'user' ? getUsers : getRecipes;
+    searchType === 'users' ? getUsers : getRecipes;
 
   const { initialLoading } = useFetchData(
     getFunction,
@@ -49,7 +56,27 @@ const SearchHints: React.FC<SearchHintsProps> = ({
     searchType
   );
 
-  console.log(recipes);
+  const updateQueryParams = () => {
+    onClose();
+    const searchParams = new URLSearchParams(
+      location.search
+    );
+
+    // Add or update query params
+    Object.entries({
+      search: searchValue,
+      type: searchType,
+    }).forEach(([key, value]) => {
+      if (value === null || value === undefined) {
+        searchParams.delete(key); // Remove param if value is null/undefined
+      } else {
+        searchParams.set(key, value);
+      }
+    });
+
+    // Navigate to the same path with updated query params
+    navigate(`/?${searchParams.toString()}`);
+  };
 
   return (
     <>
@@ -65,8 +92,9 @@ const SearchHints: React.FC<SearchHintsProps> = ({
             gap: '18px',
           }}
         >
-          {['recipe', 'user'].map(label => (
+          {['recipes', 'users'].map(label => (
             <DefaultButton
+              key={label}
               customStyles={{
                 padding: '4px 36px',
                 borderRadius: '20px',
@@ -80,14 +108,31 @@ const SearchHints: React.FC<SearchHintsProps> = ({
               }}
               disabled={searchType === label}
               variant={'outlined'}
-              label={t(label)}
+              label={
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  {label === 'recipes' ? (
+                    <Restaurant fontSize={'large'} />
+                  ) : (
+                    <Person fontSize={'large'} />
+                  )}
+                  <Typography fontSize={16}>
+                    {t(label)}
+                  </Typography>
+                </div>
+              }
               onClick={() => setSearchType(label)}
             />
           ))}
         </div>
         <div>
           <List>
-            {(searchType === 'user' ? users : recipes).map(
+            {(searchType === 'users' ? users : recipes).map(
               (data, index) => (
                 <ListItem
                   key={index}
@@ -116,12 +161,12 @@ const SearchHints: React.FC<SearchHintsProps> = ({
                     <Avatar
                       sx={{ width: 54, height: 54 }}
                       src={
-                        searchType === 'user'
+                        searchType === 'users'
                           ? data.photo
                           : data.photos[0]
                       }
                     />
-                    {searchType === 'user' ? (
+                    {searchType === 'users' ? (
                       <>
                         <Typography
                           sx={{
@@ -231,6 +276,7 @@ const SearchHints: React.FC<SearchHintsProps> = ({
             }}
           >
             <DefaultButton
+              onClick={updateQueryParams}
               label={
                 <div
                   style={{
