@@ -11,17 +11,20 @@ import { Account } from '../../../../../../types/Account';
 type SearchUserItemProps = {
   index: number;
   data: Account;
+  navigateToUser: () => void;
 };
 
 const SearchUserItem: React.FC<SearchUserItemProps> = ({
   index,
   data,
+  navigateToUser,
 }) => {
   const { t } = useTranslation();
 
   return (
     <ListItem
       key={index}
+      onClick={navigateToUser}
       sx={{
         padding: '12px 24px',
         display: 'flex',

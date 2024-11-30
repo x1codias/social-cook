@@ -136,10 +136,21 @@ const SearchHints: React.FC<SearchHintsProps> = ({
                 <SearchRecipeItem
                   data={recipe}
                   index={index}
+                  navigateToRecipe={() => {
+                    onClose();
+                    navigate(`/recipes/${recipe.id}`);
+                  }}
                 />
               ))
             : users.map((user, index) => (
-                <SearchUserItem data={user} index={index} />
+                <SearchUserItem
+                  data={user}
+                  index={index}
+                  navigateToUser={() => {
+                    onClose();
+                    navigate(`/users/${user.id}`);
+                  }}
+                />
               ))}
         </List>
         <div

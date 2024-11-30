@@ -16,17 +16,20 @@ import { useTranslation } from 'react-i18next';
 type SearchRecipeItemProps = {
   index: number;
   data: Recipe;
+  navigateToRecipe: () => void;
 };
 
 const SearchRecipeItem: React.FC<SearchRecipeItemProps> = ({
   index,
   data,
+  navigateToRecipe,
 }) => {
   const { t } = useTranslation();
 
   return (
     <ListItem
       key={index}
+      onClick={navigateToRecipe}
       sx={{
         padding: '12px 24px',
         display: 'flex',

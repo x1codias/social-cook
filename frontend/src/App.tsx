@@ -6,6 +6,7 @@ import Feed from './pages/feed';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CreateRecipeModal from './pages/recipe/create/modal';
+import RecipePage from './pages/recipe';
 
 const App: React.FC = (): JSX.Element => {
   const userToken = JSON.parse(
@@ -50,6 +51,10 @@ const App: React.FC = (): JSX.Element => {
               to={userToken ? '/?type=recipes' : '/login'}
             />
           }
+        />
+        <Route
+          path="/recipes/:id"
+          element={<RecipePage />}
         />
       </Routes>
       {userToken && <CreateRecipeModal />}
