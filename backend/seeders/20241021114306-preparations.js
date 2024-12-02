@@ -1,23 +1,103 @@
 'use strict';
 
-const preparationSteps = [
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
-  'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-  'It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
-  'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
-  "If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.",
-];
+const generatePreparation = (
+  recipeId,
+  prepVideo,
+  steps
+) => ({
+  recipeId,
+  prepVideo,
+  steps,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+});
 
-const preparations = Array.from(
-  { length: 10 },
-  (_, index) => ({
-    recipeId: index + 1, // Assuming recipe IDs are 1 to 12
-    prepVideo: null, // Set a video URL or null
-    steps: preparationSteps, // Array of steps
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  })
-);
+const preparations = [
+  generatePreparation(
+    1,
+    'https://www.youtube.com/watch?v=v2WqcHH65NQ',
+    null
+  ),
+  generatePreparation(2, null, [
+    'Wash and chop the romaine lettuce.',
+    'Prepare Caesar dressing in a bowl or use store-bought.',
+    'Mix lettuce with dressing and top with croutons and Parmesan cheese.',
+  ]),
+  generatePreparation(
+    3,
+    'https://www.youtube.com/watch?v=jwyge5daKUQ',
+    null
+  ),
+  generatePreparation(4, null, [
+    'In a mixing bowl, combine flour, sugar, baking powder, and salt.',
+    'Add milk, eggs, and melted butter. Whisk until smooth.',
+    'Pour batter onto a hot greased skillet and cook until golden on both sides.',
+  ]),
+  generatePreparation(
+    5,
+    'https://www.youtube.com/watch?v=EaljSnLrJW8',
+    null
+  ),
+  generatePreparation(6, null, [
+    'Butter two slices of bread on one side each.',
+    'Place cheese between the unbuttered sides and close the sandwich.',
+    'Heat a pan and grill the sandwich until crispy on both sides.',
+  ]),
+  generatePreparation(
+    7,
+    'https://www.youtube.com/watch?v=7r3dlmYUf4s',
+    null
+  ),
+  generatePreparation(8, null, [
+    'Toast the bread slices.',
+    'Mash avocado with a fork, adding salt and pepper to taste.',
+    'Spread mashed avocado on toast and sprinkle red pepper flakes.',
+  ]),
+  generatePreparation(
+    9,
+    'https://www.youtube.com/watch?v=7lX2EhqsdkA',
+    null
+  ),
+  generatePreparation(10, null, [
+    'Marinate pork slices in a mixture of chili peppers, vinegar, and pineapple juice.',
+    'Cook marinated pork in a skillet until tender.',
+    'Serve pork on warmed corn tortillas with pineapple chunks and fresh cilantro.',
+  ]),
+  generatePreparation(
+    11,
+    'https://www.youtube.com/watch?v=kLzDztWY9HQ',
+    null
+  ),
+  generatePreparation(12, null, [
+    'Preheat the oven and line a baking sheet with parchment paper.',
+    'Mix flour, baking soda, and salt in a bowl.',
+    'In another bowl, cream butter and sugars, then add eggs and vanilla.',
+    'Combine dry and wet ingredients and stir in chocolate chips.',
+    'Scoop onto the baking sheet and bake until golden brown.',
+  ]),
+  generatePreparation(
+    13,
+    'https://www.youtube.com/watch?v=t-xM807ZV6w',
+    null
+  ),
+  generatePreparation(14, null, [
+    'Heat oil in a pan and add minced garlic and ginger.',
+    'Add chopped vegetables and stir-fry on high heat.',
+    'Mix soy sauce and cornstarch into a slurry and pour over vegetables.',
+    'Stir until vegetables are coated and serve hot.',
+  ]),
+  generatePreparation(
+    15,
+    'https://www.youtube.com/watch?v=PtL6nsAbchA',
+    null
+  ),
+  generatePreparation(16, null, [
+    'Preheat oven and roll out the pizza dough on a baking sheet.',
+    'Spread tomato sauce on the dough and top with fresh mozzarella.',
+    'Bake until the crust is golden and cheese is bubbly.',
+    'Add fresh basil leaves before serving.',
+  ]),
+];
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

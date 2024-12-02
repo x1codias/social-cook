@@ -8,16 +8,16 @@ const generateUnits = (name, symbol) => ({
 });
 
 const units = [
-  generateUnits('Unit', 'uni'),
-  generateUnits('Kilogram', 'kg'),
-  generateUnits('Gram', 'g'),
-  generateUnits('Miligram', 'mg'),
-  generateUnits('Litre', 'l'),
-  generateUnits('Mililitre', 'ml'),
-  generateUnits('Table Spoon', 'table sp.'),
-  generateUnits('Tea Spoon', 'tea sp.'),
-  generateUnits('Cup', 'cup'),
-  generateUnits('Pinch', 'pinch'),
+  generateUnits('unit', 'uni'),
+  generateUnits('kilogram', 'kg'),
+  generateUnits('gram', 'g'),
+  generateUnits('miligram', 'mg'),
+  generateUnits('litre', 'l'),
+  generateUnits('mililitre', 'ml'),
+  generateUnits('tableSpoon', 'table sp.'),
+  generateUnits('teaSpoon', 'tea sp.'),
+  generateUnits('cup', 'cup'),
+  generateUnits('pinch', 'pinch'),
 ];
 
 /** @type {import('sequelize-cli').Migration} */
