@@ -11,23 +11,15 @@ import {
 const chatRoomRoutes = Router();
 
 chatRoomRoutes.get('/', verifyToken, chatRooms);
-chatRoomRoutes.put(
-  '/{chatRoomId}',
-  verifyToken,
-  editChatRoom
-);
-chatRoomRoutes.delete(
-  '/{chatRoomId}',
-  verifyToken,
-  deleteChatRoom
-);
+chatRoomRoutes.put('/:id', verifyToken, editChatRoom);
+chatRoomRoutes.delete('/:id', verifyToken, deleteChatRoom);
 chatRoomRoutes.get(
-  '/{chatRoomId}/messages',
+  '/:id/messages',
   verifyToken,
   chatRoomMessages
 );
 chatRoomRoutes.get(
-  '/{chatRoomId}/participants',
+  '/:id/participants',
   verifyToken,
   chatRoomParticipants
 );

@@ -30,7 +30,7 @@ const styles = {
         height: '100%',
         backgroundColor: `rgba(0, 0, 0, 0.3)`, // Semi-transparent black overlay
         opacity: 0, // Initially hidden
-        transition: 'opacity 0.3s ease', // Smooth fade-in effect
+        transition: 'all 0.3s ease', // Smooth fade-in effect
       },
 
       // Hover effect to show overlay

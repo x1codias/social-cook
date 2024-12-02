@@ -7,15 +7,7 @@ import {
 
 const commentRoutes = Router();
 
-commentRoutes.patch(
-  '/{commentId}',
-  verifyToken,
-  editComment
-);
-commentRoutes.delete(
-  '/{commentId}',
-  verifyToken,
-  deleteComment
-);
+commentRoutes.patch('/:id', verifyToken, editComment);
+commentRoutes.delete('/:id', verifyToken, deleteComment);
 
 export default commentRoutes;

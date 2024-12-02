@@ -13,11 +13,9 @@ const getRecipeIngredientsService = async (
     include: [
       {
         model: Unit,
-        as: 'unit',
       },
       {
         model: Ingredient,
-        as: 'ingredient',
       },
     ],
   });

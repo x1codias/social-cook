@@ -22,7 +22,7 @@ export type Recipe = {
   id?: number;
   title: string;
   ingredients: Ingredient[];
-  preperation: string;
+  preperation: Preparation;
   category: RecipeCategories;
   tags?: string[];
   photos: string[];
@@ -33,11 +33,13 @@ export type Recipe = {
     hours: number;
     minutes: number;
   };
-  User: {
+  servings?: number;
+  user: {
     id: number;
     username: string;
     photo: string;
   };
+  createdAt: Date;
 };
 
 export type RecipeInput = {

@@ -22,7 +22,7 @@ searchRoutes.get(
 );
 
 searchRoutes.delete(
-  '/search-history/{searchId}',
+  '/search-history/:id',
   verifyToken,
   removeFromSearchHistory
 );

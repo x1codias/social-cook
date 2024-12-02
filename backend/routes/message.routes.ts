@@ -7,11 +7,7 @@ import {
 
 const messageRoutes = Router();
 
-messageRoutes.put('/{messageId}', verifyToken, editMessage);
-messageRoutes.delete(
-  '/{messageId}',
-  verifyToken,
-  deleteMessage
-);
+messageRoutes.put('/:id', verifyToken, editMessage);
+messageRoutes.delete('/:id', verifyToken, deleteMessage);
 
 export default messageRoutes;

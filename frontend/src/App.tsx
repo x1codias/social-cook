@@ -27,35 +27,31 @@ const App: React.FC = (): JSX.Element => {
       <ToastContainer />
       {userToken && <TopBar />}
       <Routes>
-        <Route
-          path="/"
-          element={
-            userToken ? <Feed /> : <Navigate to="/login" />
-          }
-        />
-        {!userToken ? (
+        {userToken ? (
+          <>
+            <Route path="/" element={<Feed />} />
+            <Route
+              path="/recipes/:id"
+              element={<RecipePage />}
+            />
+            <Route
+              path="*"
+              element={<Navigate to="/?type=recipes" />}
+            />
+          </>
+        ) : (
           <>
             <Route path="/login" element={<Login />} />
             <Route
               path="/register"
               element={<Register />}
             />
-          </>
-        ) : (
-          <></>
-        )}
-        <Route
-          path="*"
-          element={
-            <Navigate
-              to={userToken ? '/?type=recipes' : '/login'}
+            <Route
+              path="*"
+              element={<Navigate to="/login" />}
             />
-          }
-        />
-        <Route
-          path="/recipes/:id"
-          element={<RecipePage />}
-        />
+          </>
+        )}
       </Routes>
       {userToken && <CreateRecipeModal />}
     </div>

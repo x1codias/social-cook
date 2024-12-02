@@ -29,32 +29,57 @@ Token.belongsTo(User, { foreignKey: 'userId' });
 Recipe.belongsToMany(Ingredient, {
   through: RecipeIngredient,
   foreignKey: 'recipeId',
+  otherKey: 'ingredientId',
+  as: 'ingredients', // Alias for the many-to-many relationship
 });
 Ingredient.belongsToMany(Recipe, {
   through: RecipeIngredient,
   foreignKey: 'ingredientId',
+  otherKey: 'recipeId',
+  as: 'recipes', // Alias for the many-to-many relationship
+});
+
+RecipeIngredient.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+  as: 'recipe', // Alias for clarity
+});
+
+RecipeIngredient.belongsTo(Ingredient, {
+  foreignKey: 'ingredientId',
+  as: 'ingredient', // Alias for clarity
+});
+
+RecipeIngredient.belongsTo(Unit, {
+  foreignKey: 'unitId',
+  as: 'unit', // Alias for clarity
 });
 
 // Unit with RecipeIngredient relations
 Unit.hasMany(RecipeIngredient, {
   foreignKey: 'unitId',
-  onDelete: 'CASCADE',
+  as: 'recipeIngredients',
 });
-RecipeIngredient.belongsTo(Unit, { foreignKey: 'unitId' });
 
 // User with Recipes relations
 User.hasMany(Recipe, {
   foreignKey: 'userId',
   onDelete: 'CASCADE',
+  as: 'recipes',
 });
-Recipe.belongsTo(User, { foreignKey: 'userId' });
+Recipe.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user',
+});
 
 // Recipe with Preperations relations
 Recipe.hasOne(Preperation, {
   foreignKey: 'recipeId',
-  onDelete: 'CASCADE',
+  as: 'preparation', // Alias for clarity
 });
-Preperation.belongsTo(Recipe, { foreignKey: 'recipeId' });
+Preperation.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+  as: 'recipe', // Alias for clarity
+});
 
 // User with SearchHistory relations
 User.hasMany(SearchHistory, {

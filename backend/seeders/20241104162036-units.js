@@ -16,6 +16,8 @@ const units = [
   generateUnits('Mililitre', 'ml'),
   generateUnits('Table Spoon', 'table sp.'),
   generateUnits('Tea Spoon', 'tea sp.'),
+  generateUnits('Cup', 'cup'),
+  generateUnits('Pinch', 'pinch'),
 ];
 
 /** @type {import('sequelize-cli').Migration} */

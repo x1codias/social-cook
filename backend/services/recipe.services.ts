@@ -7,6 +7,8 @@ import User from '../models/user.model';
 import { dirname } from 'path';
 import { Op, Sequelize } from 'sequelize';
 import Rating from '../models/rating.model';
+import Ingredient from '../models/ingredient.model';
+import Unit from '../models/unit.model';
 
 const moveFile = (
   sourcePath: string,
@@ -38,6 +40,7 @@ const getRecipesService = async (
     ? [
         {
           model: User,
+          as: 'user',
           attributes: ['id', 'username', 'photo'],
         },
       ]
@@ -94,14 +97,39 @@ const getRecipesService = async (
 };
 
 const getRecipeService = async (id: number) => {
-  const recipe = await Recipe.findOne({ where: { id } });
+  const recipe = await Recipe.findOne({
+    where: { id },
+    include: [
+      { model: Preperation, as: 'preparation' },
+      {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'username', 'photo'],
+      },
+    ],
+  });
 
   if (!recipe) {
     throw new Error(Errors.recipeDoesntExist);
   }
 
+  const recipeIngredients = await RecipeIngredient.findAll({
+    where: { recipeId: id },
+    include: [
+      { model: Ingredient, as: 'ingredient' },
+      { model: Unit, as: 'unit' },
+    ],
+  });
+
+  const formattedRecipe = {
+    ...recipe.dataValues,
+    ingredients: recipeIngredients.map(recipeIngredient =>
+      recipeIngredient.get({ plain: true })
+    ),
+  };
+
   return {
-    recipe: recipe.dataValues,
+    recipe: formattedRecipe,
   };
 };
 

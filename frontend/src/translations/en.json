@@ -87,5 +87,7 @@
   "viewProfile": "View profile",
   "emptyBiography": "Empty biography",
   "noRecipesFound": "No recipes found...",
-  "noUsersFound": "No users found..."
+  "noUsersFound": "No users found...",
+  "postedOn": "Posted on",
+  "at": "at"
 }

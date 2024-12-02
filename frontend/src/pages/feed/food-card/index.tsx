@@ -94,8 +94,8 @@ const FoodCard: React.FC<FoodCardProps> = (
               gap: '8px',
             }}
           >
-            <Avatar src={recipeData.User.photo}>
-              {recipeData.User.username}
+            <Avatar src={recipeData.user.photo}>
+              {recipeData.user.username}
             </Avatar>
             <Typography
               style={{
@@ -105,7 +105,7 @@ const FoodCard: React.FC<FoodCardProps> = (
                 color: theme.palette.text?.primary,
               }}
             >
-              {recipeData.User.username}
+              {recipeData.user.username}
             </Typography>
             <DefaultButton
               label={'More details'}

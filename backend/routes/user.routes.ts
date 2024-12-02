@@ -26,40 +26,24 @@ const userRoutes = Router();
 
 userRoutes.get('/', verifyToken, users);
 userRoutes.get('/feed', verifyToken, usersFeed);
-userRoutes.get('/{id}', verifyToken, user);
+userRoutes.get('/:id', verifyToken, user);
 userRoutes.patch(
-  '/{id}',
+  '/:id',
   verifyToken,
   upload.single('photo'),
   editUser
 );
-userRoutes.get(
-  '/{userId}/favorites',
-  verifyToken,
-  favorites
-);
-userRoutes.post(
-  '/{userId}/favorites',
-  verifyToken,
-  addFavorite
-);
+userRoutes.get('/:id/favorites', verifyToken, favorites);
+userRoutes.post('/:id/favorites', verifyToken, addFavorite);
 userRoutes.delete(
-  '/{userId}/favorites/{favoriteId}',
+  '/:userId/favorites/:favoriteId',
   verifyToken,
   removeFromFavorites
 );
-userRoutes.get(
-  '/{userId}/recipes',
-  verifyToken,
-  userRecipes
-);
-userRoutes.post('/{userId}/follow', verifyToken, follow);
-userRoutes.post(
-  '/{userId}/unfollow',
-  verifyToken,
-  unfollow
-);
-userRoutes.post('/{userId}/block', verifyToken, block);
-userRoutes.post('/{userId}/unblock', verifyToken, unblock);
+userRoutes.get('/:id/recipes', verifyToken, userRecipes);
+userRoutes.post('/:id/follow', verifyToken, follow);
+userRoutes.post('/:id/unfollow', verifyToken, unfollow);
+userRoutes.post('/:id/block', verifyToken, block);
+userRoutes.post('/:id/unblock', verifyToken, unblock);
 
 export default userRoutes;

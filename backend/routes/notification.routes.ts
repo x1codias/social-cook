@@ -9,7 +9,7 @@ const notificationRoutes = Router();
 
 notificationRoutes.get('/', verifyToken, notifications);
 notificationRoutes.delete(
-  '/{notificationId}',
+  '/:id',
   verifyToken,
   deleteNotification
 );

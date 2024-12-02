@@ -75,6 +75,14 @@ const insertDefaultUnits = async () => {
       name: 'Tea Spoon',
       symbol: 'tea sp.',
     },
+    {
+      name: 'Cup',
+      symbol: 'cup',
+    },
+    {
+      name: 'Pinch',
+      symbol: 'pinch',
+    },
   ];
 
   for (const unit of defaultUnits) {

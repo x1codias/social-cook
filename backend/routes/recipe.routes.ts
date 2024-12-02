@@ -31,49 +31,37 @@ recipeRoutes.post(
   createRecipe
 );
 recipeRoutes.delete('/{id}', verifyToken, deleteRecipe);
-recipeRoutes.get('/{id}', verifyToken, recipe);
-recipeRoutes.get(
-  '/{recipeId}/comments',
-  verifyToken,
-  comments
-);
+recipeRoutes.get('/:id', verifyToken, recipe);
+recipeRoutes.get('/:id/comments', verifyToken, comments);
 recipeRoutes.patch(
-  '/{recipeId}/comments/{commentId}',
+  '/:recipeId/comments/:commentId',
   verifyToken,
   editComment
 );
 recipeRoutes.delete(
-  '/{recipeId}/comments/{commentId}',
+  '/:recipeId/comments/:commentId',
   verifyToken,
   deleteComment
 );
 recipeRoutes.get(
-  '/{recipeId}/ingredients',
+  '/:id/ingredients',
   verifyToken,
   recipeIngredients
 );
 recipeRoutes.get(
-  '/{recipeId}/preparations',
+  '/:id/preparations',
   verifyToken,
   recipePreparations
 );
-recipeRoutes.get(
-  '/{recipeId}/comments',
-  verifyToken,
-  comments
-);
-recipeRoutes.post(
-  '/{recipeId}/comments',
-  verifyToken,
-  comments
-);
+recipeRoutes.get('/:id/comments', verifyToken, comments);
+recipeRoutes.post('/:id/comments', verifyToken, comments);
 recipeRoutes.patch(
-  '/{recipeId}/comments/{commentId}',
+  '/:recipeId/comments/:commentId',
   verifyToken,
   editComment
 );
 recipeRoutes.delete(
-  '/{recipeId}/comments/{commentId}',
+  '/:recipeId/comments/:commentId',
   verifyToken,
   deleteComment
 );

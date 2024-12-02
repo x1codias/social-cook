@@ -8,12 +8,12 @@ import {
 const participantRoutes = Router();
 
 participantRoutes.put(
-  '/{participantId}',
+  '/:id',
   verifyToken,
   editChatParticipant
 );
 participantRoutes.delete(
-  '/{participantId}',
+  '/:id',
   verifyToken,
   deleteChatParticipant
 );

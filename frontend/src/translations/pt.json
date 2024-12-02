@@ -87,5 +87,7 @@
   "viewProfile": "Ver perfil",
   "emptyBiography": "Biografia vazia",
   "noRecipesFound": "Não foram encontradas receitas...",
-  "noUsersFound": "Não foram encontrados utilizadores..."
+  "noUsersFound": "Não foram encontrados utilizadores...",
+  "postedOn": "Postado a",
+  "at": "às"
 }
