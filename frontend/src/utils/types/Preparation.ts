@@ -4,6 +4,6 @@ export type PreparationStep = {
 };
 
 export type Preparation = {
-  video?: File;
+  prepVideo?: string;
   steps: PreparationStep[];
 };

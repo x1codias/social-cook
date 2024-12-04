@@ -271,7 +271,7 @@ const createRecipeService = async (
   ) {
     preparationRecipe = await Preperation.create({
       recipeId: recipe.get().id,
-      steps: preparationStepsDescription.map(
+      steps: preparationStepsDescription?.map(
         (description, index) => ({
           description,
           photo: files.preparationStepsPhotos[index],

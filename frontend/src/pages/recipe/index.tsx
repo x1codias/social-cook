@@ -2,8 +2,6 @@ import {
   Avatar,
   Chip,
   Divider,
-  ImageList,
-  ImageListItem,
   Typography,
 } from '@mui/material';
 import theme from '../../themes/global.theme';
@@ -26,6 +24,8 @@ import moment from 'moment';
 import DefaultButton from '../../utils/components/button/button';
 import RecipePreparation from './preparation';
 import RecipeIngredients from './ingredients';
+import { Box } from '@mui/system';
+import { encodeForCSS } from '../../utils/functions/encodeUrl';
 
 const RecipePage: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
@@ -47,6 +47,69 @@ const RecipePage: React.FC = (): JSX.Element => {
   useEffect(() => {
     getRecipeData();
   }, [getRecipeData]);
+
+  const generateStylesForPhotos = (
+    photos,
+    containerHeight
+  ) => {
+    const randomHeight = () =>
+      Math.floor(Math.random() * (containerHeight / 2)) +
+      containerHeight / 4;
+    const styles = [];
+
+    switch (photos.length) {
+      case 1:
+        styles.push({
+          gridRow: `span 2`,
+          gridColumn: `span 2`,
+          height: `${containerHeight}px`,
+        });
+        break;
+      case 2:
+        const firstHeight = randomHeight();
+        styles.push({ height: `${firstHeight}px` });
+        styles.push({
+          height: `${containerHeight - firstHeight}px`,
+        });
+        break;
+      case 3:
+        const randomThird = randomHeight();
+        styles.push({ height: `${randomThird}px` });
+        styles.push({
+          height: `${containerHeight - randomThird}px`,
+        });
+        styles.push({
+          gridRow: `span 2`,
+          gridColumn: `span 2`,
+          height: `${containerHeight}px`,
+        });
+        break;
+      case 4:
+        for (let i = 0; i < 4; i++) {
+          styles.push({ height: `${randomHeight()}px` });
+        }
+        break;
+      case 5:
+        for (let i = 0; i < 4; i++) {
+          styles.push({ height: `${randomHeight()}px` });
+        }
+        styles.push({
+          gridRow: `span 2`,
+          gridColumn: `span 2`,
+          height: `${containerHeight}px`,
+        });
+        break;
+      case 6:
+        for (let i = 0; i < 6; i++) {
+          styles.push({ height: `${randomHeight()}px` });
+        }
+        break;
+      default:
+        console.warn('Unsupported number of photos');
+    }
+
+    return styles;
+  };
 
   return recipe ? (
     <div
@@ -270,38 +333,42 @@ const RecipePage: React.FC = (): JSX.Element => {
           width: '100%',
         }}
       >
-        <ImageList
-          variant={'masonry'}
-          gap={8}
-          cols={Math.floor(recipe.photos.length / 2)}
+        <Box
           sx={{
-            backgroundColor: theme.palette.default.light,
-            maxHeight: '900px',
-            maxWidth: '900px',
-            padding: '8px',
-            borderRadius: '20px',
+            display: 'grid',
+            gridTemplateColumns:
+              recipe.photos.length <= 2
+                ? '1fr 1fr'
+                : '1fr 1fr 1fr',
+            gridAutoRows: 'auto',
+            gap: '8px',
+            maxHeight: `900px`,
+            minWidth: '600px',
             overflow: 'hidden',
-            boxSizing: 'border-box', // Include padding in size calculations
+            borderRadius: '20px',
+            padding: '8px',
+            backgroundColor: theme.palette.default.light,
           }}
         >
           {recipe.photos.map((photo, index) => (
-            <ImageListItem
+            <Box
               key={index}
-              style={{ marginBottom: 0 }}
-            >
-              <img
-                src={photo}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  maxHeight: 'calc(900px - 16px)', // Account for padding (8px * 2)
-                  objectFit: 'contain',
-                  borderRadius: '20px',
-                }}
-              />
-            </ImageListItem>
+              sx={{
+                borderRadius: '20px',
+                backgroundImage: `url(${encodeForCSS(
+                  photo
+                )})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                ...generateStylesForPhotos(
+                  recipe.photos,
+                  884
+                )[index],
+              }}
+            />
           ))}
-        </ImageList>
+        </Box>
         <div
           style={{
             flexGrow: 1,
@@ -354,7 +421,9 @@ const RecipePage: React.FC = (): JSX.Element => {
             ))}
           </div>
           {ingredientsPreparation === 'preparation' ? (
-            <RecipePreparation />
+            <RecipePreparation
+              prepData={recipe.preparation}
+            />
           ) : (
             <RecipeIngredients
               ingredients={recipe.ingredients}

@@ -1,4 +1,8 @@
-import { Ingredient, IngredientItem } from './Ingredient';
+import {
+  Ingredient,
+  IngredientItem,
+  RecipeIngredient,
+} from './Ingredient';
 import { Preparation } from './Preparation';
 
 export enum RecipeCategories {
@@ -21,8 +25,8 @@ export enum Difficulties {
 export type Recipe = {
   id?: number;
   title: string;
-  ingredients: Ingredient[];
-  preperation: Preparation;
+  ingredients: RecipeIngredient[];
+  preparation: Preparation;
   category: RecipeCategories;
   tags?: string[];
   photos: string[];

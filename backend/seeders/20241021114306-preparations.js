@@ -7,7 +7,14 @@ const generatePreparation = (
 ) => ({
   recipeId,
   prepVideo,
-  steps,
+  steps: steps
+    ? JSON.stringify(
+        steps.map(step => ({
+          description: step, // Assuming step is just a string, it will be the description
+          photo: null, // Optional photo, you can add a URL if needed
+        }))
+      )
+    : null, // In case steps is null, we keep it as null
   createdAt: new Date(),
   updatedAt: new Date(),
 });
@@ -102,11 +109,15 @@ const preparations = [
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert(
-      'preperations',
-      preparations,
-      {}
-    );
+    try {
+      await queryInterface.bulkInsert(
+        'preperations',
+        preparations,
+        {}
+      );
+    } catch (error) {
+      console.error('Error during bulk insert:', error);
+    }
   },
 
   async down(queryInterface, Sequelize) {
