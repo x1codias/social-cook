@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { RecipeIngredient } from '../../../utils/types/Ingredient';
-import { List, ListItem, Typography } from '@mui/material';
+import { ListItem, Typography } from '@mui/material';
 import {
   FaSpoon,
   FaDroplet,
@@ -22,10 +22,17 @@ const RecipeIngredients: React.FC<
 
   const ingredientIcon = (unit: string) => {
     switch (true) {
-      case unit.includes('spoon'):
+      case unit.includes('table'):
         return (
           <FaSpoon
             fontSize={28}
+            color={theme.palette.customText.button}
+          />
+        );
+      case unit.includes('tea'):
+        return (
+          <FaSpoon
+            fontSize={20}
             color={theme.palette.customText.button}
           />
         );
@@ -70,21 +77,33 @@ const RecipeIngredients: React.FC<
   return (
     <div
       style={{
-        flexGrow: 1,
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
+        padding: '12px',
+        backgroundColor: theme.palette.background?.default,
+        borderRadius: '20px',
+        gap: '24px',
+        height: '100%',
+        maxWidth: '600px',
+        minWidth: '500px',
       }}
     >
+      <Typography
+        fontSize={46}
+        fontFamily={'Lobster'}
+        color={theme.palette.customText.primary}
+        fontStyle={'italic'}
+      >
+        {t('ingredients')}
+      </Typography>
       <div
         style={{
-          padding: '12px',
-          backgroundColor:
-            theme.palette.background?.default,
-          borderRadius: '20px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '12px',
+          gap: '14px',
+          overflowY: 'auto',
         }}
       >
         {ingredients.map((ingredient, index) => (
@@ -94,7 +113,7 @@ const RecipeIngredients: React.FC<
               display: 'flex',
               alignItems: 'center',
               gap: '16px',
-              padding: '12px',
+              padding: '12px 24px',
               backgroundColor:
                 theme.palette.default.primary,
               borderRadius: '50px',
@@ -107,31 +126,39 @@ const RecipeIngredients: React.FC<
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: '16px',
               }}
             >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <Typography
+                  fontFamily={'Fredoka'}
+                  fontSize={20}
+                  fontWeight={600}
+                  color={theme.palette.customText.button}
+                >
+                  {ingredient.quantity}
+                </Typography>
+                <Typography
+                  fontFamily={'Fredoka'}
+                  fontSize={20}
+                  fontWeight={600}
+                  color={theme.palette.customText.button}
+                >
+                  {ingredient.unit.symbol}
+                </Typography>
+              </div>
               <Typography
                 fontFamily={'Fredoka'}
                 fontSize={20}
-                fontWeight={600}
                 color={theme.palette.customText.button}
               >
-                {ingredient.quantity}
-              </Typography>
-              <Typography
-                fontFamily={'Fredoka'}
-                fontSize={20}
-                fontWeight={600}
-                color={theme.palette.customText.button}
-              >
-                {ingredient.unit.symbol}
-              </Typography>
-              <Typography
-                fontFamily={'Fredoka'}
-                fontSize={20}
-                color={theme.palette.customText.button}
-              >
-                {ingredient.ingredient.name}
+                {t(ingredient.ingredient.name)}
               </Typography>
             </div>
           </ListItem>

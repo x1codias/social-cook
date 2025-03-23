@@ -15,9 +15,6 @@ import { useNavigate } from 'react-router';
 import { Recipe } from '../../../utils/types/Recipe';
 import { encodeForCSS } from '../../../utils/functions/encodeUrl';
 import { capitalizeFirstLetter } from '../../../utils/functions/capitalizeFirstLetter';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import { getRecipe } from '../../../actions/recipe.actions';
 
 type FoodCardExpandedProps = {
   recipeId: boolean;
@@ -30,7 +27,6 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
 ): JSX.Element => {
   const { recipeId, onClose, recipeData } = props;
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <Dialog

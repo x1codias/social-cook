@@ -153,9 +153,7 @@ const TopBar: React.FC = (): JSX.Element => {
           }
           placement="bottom"
         >
-          <IconButton
-            onClick={() => navigate('/recipes/create')}
-          >
+          <IconButton>
             <IoStar
               size={30}
               fill={theme.palette.grey?.[500]}

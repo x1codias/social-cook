@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import DefaultButton from '../../../utils/components/button/button';
 import styles from './styles';
 import { ArrowForward } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
 
 type UserCardProps = {
   loading?: boolean;
@@ -22,6 +23,7 @@ const UserCard: React.FC<UserCardProps> = (
 ): JSX.Element => {
   const { loading, userData } = props;
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { RecipeImage } = styles;
 
   const recipeGrid = () => {
@@ -139,6 +141,9 @@ const UserCard: React.FC<UserCardProps> = (
                 key={index}
                 columnSpan={columnSpan}
                 recipeImage={photoUrl}
+                onClick={() =>
+                  navigate(`/recipes/${recipe.id}`)
+                }
               >
                 {!photoUrl && (
                   <Typography
