@@ -1,4 +1,8 @@
-import { Divider, Typography } from '@mui/material';
+import {
+  Divider,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { Account } from '../../../../types/Account';
 import { useNavigate } from 'react-router';
@@ -36,17 +40,23 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = (
       onClose={() => setOpen(null)}
       anchorEl={open}
     >
-      <Typography
-        style={{
-          fontFamily: 'Fredoka',
-          fontSize: '16px',
-          fontWeight: 600,
-          color: theme.palette.default.dark,
-          padding: '12px',
-        }}
-      >
-        {user.username}
-      </Typography>
+      <Tooltip title={user.username} placement="top">
+        <Typography
+          style={{
+            fontFamily: 'Fredoka',
+            fontSize: '16px',
+            fontWeight: 600,
+            color: theme.palette.default.dark,
+            padding: '12px',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap', // Prevents text from wrapping
+            overflow: 'hidden', // Ensures overflow is clipped
+            maxWidth: '240px',
+          }}
+        >
+          {user.username}
+        </Typography>
+      </Tooltip>
       <Divider style={{ width: '100%' }} />
       <ProfileMenuItem>{'Profile'}</ProfileMenuItem>
       <ProfileMenuItem onClick={handleLogout}>

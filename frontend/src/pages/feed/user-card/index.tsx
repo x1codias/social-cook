@@ -2,6 +2,7 @@ import {
   Avatar,
   Divider,
   Skeleton,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import React from 'react';
@@ -266,14 +267,25 @@ const UserCard: React.FC<UserCardProps> = (
             alignItems: 'flex-start',
           }}
         >
-          <Typography
-            fontFamily={'Fredoka'}
-            fontSize={20}
-            fontWeight={700}
-            color={theme.palette.default.dark}
+          <Tooltip
+            title={userData.username}
+            placement="top"
           >
-            {userData.username}
-          </Typography>
+            <Typography
+              fontFamily={'Fredoka'}
+              fontSize={20}
+              fontWeight={700}
+              color={theme.palette.default.dark}
+              style={{
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap', // Prevents text from wrapping
+                overflow: 'hidden', // Ensures overflow is clipped
+                maxWidth: '240px',
+              }}
+            >
+              {userData.username}
+            </Typography>
+          </Tooltip>
           <Typography
             fontFamily={'Comfortaa'}
             fontSize={14}

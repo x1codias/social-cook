@@ -2,6 +2,7 @@ import {
   Avatar,
   Dialog,
   Divider,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import theme from '../../../themes/global.theme';
@@ -213,16 +214,25 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                 <Avatar src={recipeData.user.photo}>
                   {recipeData.user.username}
                 </Avatar>
-                <Typography
-                  style={{
-                    fontFamily: 'Roboto',
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    color: theme.palette.text?.primary,
-                  }}
+                <Tooltip
+                  title={recipeData.user.username}
+                  placement="bottom"
                 >
-                  {recipeData.user.username}
-                </Typography>
+                  <Typography
+                    style={{
+                      fontFamily: 'Roboto',
+                      fontSize: '16px',
+                      fontWeight: 500,
+                      color: theme.palette.text?.primary,
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap', // Prevents text from wrapping
+                      overflow: 'hidden', // Ensures overflow is clipped
+                      maxWidth: '200px',
+                    }}
+                  >
+                    {recipeData.user.username}
+                  </Typography>
+                </Tooltip>
               </div>
               <Divider
                 orientation={'vertical'}

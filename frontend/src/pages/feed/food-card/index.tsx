@@ -1,6 +1,7 @@
 import {
   Avatar,
   Skeleton,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
@@ -92,21 +93,31 @@ const FoodCard: React.FC<FoodCardProps> = (
               justifyContent: 'flex-start',
               width: '100%',
               gap: '8px',
+              maxHeight: '64px',
             }}
           >
             <Avatar src={recipeData.user.photo}>
               {recipeData.user.username}
             </Avatar>
-            <Typography
-              style={{
-                fontFamily: 'Roboto',
-                fontSize: '16px',
-                fontWeight: 500,
-                color: theme.palette.text?.primary,
-              }}
+            <Tooltip
+              title={recipeData.user.username}
+              placement="top"
             >
-              {recipeData.user.username}
-            </Typography>
+              <Typography
+                style={{
+                  fontFamily: 'Roboto',
+                  fontSize: '16px',
+                  fontWeight: 500,
+                  color: theme.palette.text?.primary,
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap', // Prevents text from wrapping
+                  overflow: 'hidden', // Ensures overflow is clipped
+                  maxWidth: '200px',
+                }}
+              >
+                {recipeData.user.username}
+              </Typography>
+            </Tooltip>
             <DefaultButton
               label={'More details'}
               customStyles={{
