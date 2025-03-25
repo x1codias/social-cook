@@ -2,6 +2,7 @@ import {
   Avatar,
   Chip,
   Divider,
+  Rating,
   Typography,
 } from '@mui/material';
 import theme from '../../themes/global.theme';
@@ -11,6 +12,7 @@ import {
   AccessTimeRounded,
   LocalDiningRounded,
   PeopleRounded,
+  StarRounded,
 } from '@mui/icons-material';
 import { useCallback, useEffect, useState } from 'react';
 import { Recipe } from '../../utils/types/Recipe';
@@ -91,43 +93,88 @@ const RecipePage: React.FC = (): JSX.Element => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '20px',
+          gap: '18px',
         }}
       >
-        <Avatar src={recipe.user.photo}>
-          {recipe.user.username}
-        </Avatar>
-        <Typography
+        <div
           style={{
-            fontFamily: 'Fredoka',
-            fontSize: '22px',
-            fontWeight: 500,
-            color: theme.palette.text?.primary,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '4px',
           }}
         >
-          {recipe.user.username}
-        </Typography>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+            }}
+          >
+            <Avatar src={recipe.user.photo}>
+              {recipe.user.username}
+            </Avatar>
+            <Typography
+              style={{
+                fontFamily: 'Fredoka',
+                fontSize: '22px',
+                fontWeight: 500,
+                color: theme.palette.text?.primary,
+              }}
+            >
+              {recipe.user.username}
+            </Typography>
+          </div>
+          <Typography
+            style={{
+              fontFamily: 'Comfortaa',
+              fontSize: '16px',
+              fontWeight: 500,
+              color: theme.palette.text?.secondary,
+              textAlign: 'center',
+            }}
+          >
+            {'(' +
+              t('postedOn') +
+              ' ' +
+              moment(recipe.createdAt).format(
+                'DD/MM/YYYY'
+              ) +
+              ' ' +
+              t('at') +
+              ' ' +
+              moment(recipe.createdAt).format('hh:mm') +
+              ')'}
+          </Typography>
+        </div>
+        {recipe.avgRating && (
+          <Rating
+            defaultValue={recipe.avgRating}
+            readOnly
+            size={'large'}
+            sx={{
+              backgroundColor: theme.palette.grey?.[300],
+              padding: '4px',
+              borderRadius: '20px',
+            }}
+            emptyIcon={
+              <StarRounded
+                fontSize={'large'}
+                sx={{
+                  color: theme.palette.background?.paper,
+                }}
+              />
+            }
+            icon={
+              <StarRounded
+                fontSize={'large'}
+                sx={{
+                  color: theme.palette.warning,
+                }}
+              />
+            }
+          />
+        )}
       </div>
-      <Typography
-        style={{
-          fontFamily: 'Comfortaa',
-          fontSize: '16px',
-          fontWeight: 500,
-          color: theme.palette.text?.secondary,
-          textAlign: 'center',
-        }}
-      >
-        {'(' +
-          t('postedOn') +
-          ' ' +
-          moment(recipe.createdAt).format('DD/MM/YYYY') +
-          ' ' +
-          t('at') +
-          ' ' +
-          moment(recipe.createdAt).format('hh:mm') +
-          ')'}
-      </Typography>
       <div
         style={{
           display: 'flex',
@@ -264,7 +311,7 @@ const RecipePage: React.FC = (): JSX.Element => {
           gap: '32px',
           flexGrow: 1,
           width: '100%',
-          maxHeight: '950px',
+          maxHeight: '900px',
         }}
       >
         <ImageContainer recipe={recipe} />
