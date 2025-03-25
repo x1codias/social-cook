@@ -59,9 +59,11 @@ const TopBar: React.FC = (): JSX.Element => {
     });
 
   const handleFocus = () => {
-    if (!isClosing) {
-      setIsFocused(true); // Open the popover only if not closing
+    if (isClosing) {
+      setTimeout(() => setIsClosing(false), 300); // Reset lock after a short delay
     }
+
+    setIsFocused(true);
   };
 
   const handleBlur = (
@@ -237,7 +239,7 @@ const TopBar: React.FC = (): JSX.Element => {
             <SearchHints
               searchValue={searchValue}
               onClose={() => {
-                setIsClosing(true); // Lock state
+                setIsClosing(true); // Lock state to prevent instant reopening
                 setIsFocused(false);
               }}
             />
