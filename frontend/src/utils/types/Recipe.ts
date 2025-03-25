@@ -1,5 +1,4 @@
 import {
-  Ingredient,
   IngredientItem,
   RecipeIngredient,
 } from './Ingredient';
@@ -43,6 +42,7 @@ export type Recipe = {
     username: string;
     photo: string;
   };
+  avgRating?: number;
   createdAt: Date;
 };
 

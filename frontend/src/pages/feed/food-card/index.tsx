@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Rating,
   Skeleton,
   Tooltip,
   Typography,
@@ -10,6 +11,7 @@ import styles from './styles';
 import DefaultButton from '../../../utils/components/button/button';
 import FoodCardExpanded from '../food-card-expanded';
 import { Recipe } from '../../../utils/types/Recipe';
+import { StarRounded } from '@mui/icons-material';
 
 type FoodCardProps = {
   height: number;
@@ -71,6 +73,9 @@ const FoodCard: React.FC<FoodCardProps> = (
                   recipeData.category
                 ],
               padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
             }}
           >
             <Typography
@@ -82,6 +87,36 @@ const FoodCard: React.FC<FoodCardProps> = (
             >
               {recipeData.title}
             </Typography>
+            {recipeData.avgRating && (
+              <Rating
+                defaultValue={recipeData.avgRating}
+                readOnly
+                size={'large'}
+                sx={{
+                  backgroundColor:
+                    theme.palette.grey?.[300],
+                  padding: '4px',
+                  borderRadius: '20px',
+                }}
+                emptyIcon={
+                  <StarRounded
+                    fontSize={'large'}
+                    sx={{
+                      color:
+                        theme.palette.background?.paper,
+                    }}
+                  />
+                }
+                icon={
+                  <StarRounded
+                    fontSize={'large'}
+                    sx={{
+                      color: theme.palette.warning,
+                    }}
+                  />
+                }
+              />
+            )}
           </div>
           <div
             style={{

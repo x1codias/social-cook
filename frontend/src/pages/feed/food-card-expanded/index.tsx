@@ -2,6 +2,7 @@ import {
   Avatar,
   Dialog,
   Divider,
+  Rating,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -9,6 +10,7 @@ import theme from '../../../themes/global.theme';
 import {
   AccessTimeRounded,
   PeopleRounded,
+  StarRounded,
 } from '@mui/icons-material';
 import { LuChefHat } from 'react-icons/lu';
 import DefaultButton from '../../../utils/components/button/button';
@@ -93,6 +95,36 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
             >
               {capitalizeFirstLetter(recipeData.category)}
             </Typography>
+            {recipeData.avgRating && (
+              <Rating
+                defaultValue={recipeData.avgRating}
+                readOnly
+                size={'large'}
+                sx={{
+                  backgroundColor:
+                    theme.palette.grey?.[300],
+                  padding: '4px',
+                  borderRadius: '20px',
+                }}
+                emptyIcon={
+                  <StarRounded
+                    fontSize={'large'}
+                    sx={{
+                      color:
+                        theme.palette.background?.paper,
+                    }}
+                  />
+                }
+                icon={
+                  <StarRounded
+                    fontSize={'large'}
+                    sx={{
+                      color: theme.palette.warning,
+                    }}
+                  />
+                }
+              />
+            )}
             <div
               style={{
                 padding: '8px',
