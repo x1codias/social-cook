@@ -26,49 +26,49 @@ const RecipeIngredients: React.FC<
         return (
           <FaSpoon
             fontSize={28}
-            color={theme.palette.customText.button}
+            color={theme.palette.default.primary}
           />
         );
       case unit.includes('tea'):
         return (
           <FaSpoon
             fontSize={20}
-            color={theme.palette.customText.button}
+            color={theme.palette.default.primary}
           />
         );
       case unit.includes('gram'):
         return (
           <MdScale
             fontSize={28}
-            color={theme.palette.customText.button}
+            color={theme.palette.default.primary}
           />
         );
       case unit.includes('litre'):
         return (
           <FaDroplet
             fontSize={28}
-            color={theme.palette.customText.button}
+            color={theme.palette.default.primary}
           />
         );
       case unit.includes('cup'):
         return (
           <BsCupFill
             fontSize={28}
-            color={theme.palette.customText.button}
+            color={theme.palette.default.primary}
           />
         );
       case unit.includes('pinch'):
         return (
           <IoSparkles
             fontSize={28}
-            color={theme.palette.customText.button}
+            color={theme.palette.default.primary}
           />
         );
       default:
         return (
           <FaPlus
             fontSize={28}
-            color={theme.palette.customText.button}
+            color={theme.palette.default.primary}
           />
         );
     }
@@ -87,6 +87,8 @@ const RecipeIngredients: React.FC<
         height: '100%',
         maxWidth: '600px',
         minWidth: '500px',
+        border:
+          '2px solid ' + theme.palette.default.primary,
       }}
     >
       <Typography
@@ -104,6 +106,7 @@ const RecipeIngredients: React.FC<
           alignItems: 'center',
           gap: '14px',
           overflowY: 'auto',
+          width: '100%',
         }}
       >
         {ingredients.map((ingredient, index) => (
@@ -114,9 +117,9 @@ const RecipeIngredients: React.FC<
               alignItems: 'center',
               gap: '16px',
               padding: '12px 24px',
-              backgroundColor:
+              borderBottom:
+                '2px solid ' +
                 theme.palette.default.primary,
-              borderRadius: '50px',
             }}
           >
             {ingredientIcon(
@@ -127,6 +130,8 @@ const RecipeIngredients: React.FC<
                 display: 'flex',
                 alignItems: 'center',
                 gap: '16px',
+                flexGrow: 1,
+                justifyContent: 'space-between',
               }}
             >
               <div
@@ -140,7 +145,7 @@ const RecipeIngredients: React.FC<
                   fontFamily={'Fredoka'}
                   fontSize={20}
                   fontWeight={600}
-                  color={theme.palette.customText.button}
+                  color={theme.palette.customText.primary}
                 >
                   {ingredient.quantity}
                 </Typography>
@@ -148,7 +153,7 @@ const RecipeIngredients: React.FC<
                   fontFamily={'Fredoka'}
                   fontSize={20}
                   fontWeight={600}
-                  color={theme.palette.customText.button}
+                  color={theme.palette.customText.primary}
                 >
                   {ingredient.unit.symbol}
                 </Typography>
@@ -156,7 +161,7 @@ const RecipeIngredients: React.FC<
               <Typography
                 fontFamily={'Fredoka'}
                 fontSize={20}
-                color={theme.palette.customText.button}
+                color={theme.palette.customText.primary}
               >
                 {t(ingredient.ingredient.name)}
               </Typography>

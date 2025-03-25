@@ -71,10 +71,7 @@ const RecipePreparation: React.FC<
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent:
-                  index % 2 === 0
-                    ? 'flex-start'
-                    : 'flex-end', // Start right, then alternate
+                justifyContent: 'flex-start', // Start right, then alternate
                 gap: '16px',
                 width: '100%',
               }}
@@ -123,11 +120,8 @@ const RecipePreparation: React.FC<
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '16px',
-                  width: '60%',
-                  alignSelf:
-                    index % 2 === 0
-                      ? 'flex-end'
-                      : 'flex-start', // Start right, then alternate
+                  width: '100%',
+                  alignSelf: 'flex-start', // Start right, then alternate
                 }}
               >
                 <CardContent>

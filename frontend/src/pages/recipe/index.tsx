@@ -108,26 +108,26 @@ const RecipePage: React.FC = (): JSX.Element => {
         >
           {recipe.user.username}
         </Typography>
-        <Typography
-          style={{
-            fontFamily: 'Comfortaa',
-            fontSize: '16px',
-            fontWeight: 500,
-            color: theme.palette.text?.secondary,
-            textAlign: 'center',
-          }}
-        >
-          {'(' +
-            t('postedOn') +
-            ' ' +
-            moment(recipe.createdAt).format('DD/MM/YYYY') +
-            ' ' +
-            t('at') +
-            ' ' +
-            moment(recipe.createdAt).format('hh:mm') +
-            ')'}
-        </Typography>
       </div>
+      <Typography
+        style={{
+          fontFamily: 'Comfortaa',
+          fontSize: '16px',
+          fontWeight: 500,
+          color: theme.palette.text?.secondary,
+          textAlign: 'center',
+        }}
+      >
+        {'(' +
+          t('postedOn') +
+          ' ' +
+          moment(recipe.createdAt).format('DD/MM/YYYY') +
+          ' ' +
+          t('at') +
+          ' ' +
+          moment(recipe.createdAt).format('hh:mm') +
+          ')'}
+      </Typography>
       <div
         style={{
           display: 'flex',
