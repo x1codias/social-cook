@@ -6,6 +6,7 @@ import {
   GET_RECIPE,
   GET_RECIPES,
   GET_RECIPES_SEARCH_DROPDOWN,
+  RATE_RECIPE,
 } from './types';
 import i18n from '../translations/i18n';
 import { toast } from 'react-toastify';
@@ -148,6 +149,32 @@ export const deleteRecipe =
       dispatch({
         type: DELETE_RECIPE,
         payload: { id: recipeId },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const rateRecipe =
+  (recipeId: number, rating: number) =>
+  async (dispatch: Dispatch) => {
+    try {
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL +
+          `/recipes/${recipeId}/rate`,
+        { rating },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        }
+      );
+      dispatch({
+        type: RATE_RECIPE,
+        payload: { avgRating: response },
       });
     } catch (error) {
       console.log(error);

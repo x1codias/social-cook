@@ -19,7 +19,10 @@ import { Recipe } from '../../utils/types/Recipe';
 import { useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { getRecipe } from '../../actions/recipe.actions';
+import {
+  getRecipe,
+  rateRecipe,
+} from '../../actions/recipe.actions';
 import moment from 'moment';
 import RecipePreparation from './preparation';
 import RecipeIngredients from './ingredients';
@@ -28,6 +31,7 @@ import ImageContainer from './image-container';
 const RecipePage: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   const [recipe, setRecipe] = useState<Recipe>(null);
+  const [recipeRating, setRecipeRating] = useState(0);
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
   /* const [
@@ -40,11 +44,21 @@ const RecipePage: React.FC = (): JSX.Element => {
       getRecipe(location.pathname.split('/')[2])
     );
     setRecipe(recipeData.recipe);
+    setRecipeRating(recipeData.recipe.userRating);
   }, [dispatch, location]);
 
   useEffect(() => {
     getRecipeData();
   }, [getRecipeData]);
+
+  const onRatingChange = async (
+    newValue: number | null
+  ) => {
+    if (newValue && recipe.id) {
+      setRecipeRating(newValue);
+      await dispatch(rateRecipe(recipe.id, newValue));
+    }
+  };
 
   return recipe ? (
     <div
@@ -151,16 +165,11 @@ const RecipePage: React.FC = (): JSX.Element => {
             defaultValue={recipe.avgRating}
             readOnly
             size={'large'}
-            sx={{
-              backgroundColor: theme.palette.grey?.[300],
-              padding: '4px',
-              borderRadius: '20px',
-            }}
             emptyIcon={
               <StarRounded
-                fontSize={'large'}
                 sx={{
-                  color: theme.palette.background?.paper,
+                  color: theme.palette.grey?.[400],
+                  fontSize: '28px',
                 }}
               />
             }
@@ -169,6 +178,7 @@ const RecipePage: React.FC = (): JSX.Element => {
                 fontSize={'large'}
                 sx={{
                   color: theme.palette.warning,
+                  fontSize: '28px',
                 }}
               />
             }
@@ -213,8 +223,9 @@ const RecipePage: React.FC = (): JSX.Element => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'space-between', // changed to space-between
           gap: '16px',
+          width: '100%',
         }}
       >
         <div
@@ -304,7 +315,49 @@ const RecipePage: React.FC = (): JSX.Element => {
             {t(recipe?.difficulty)}
           </Typography>
         </div>
+        <div
+          style={{
+            marginLeft: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '18px',
+          }}
+        >
+          <Typography
+            fontSize={18}
+            fontFamily={'Comfortaa'}
+          >
+            {t('rateRecipe')}
+          </Typography>
+          <Rating
+            defaultValue={recipeRating}
+            size={'large'}
+            onChange={(e, value) => onRatingChange(value)}
+            sx={{
+              backgroundColor: theme.palette.grey?.[300],
+              padding: '4px 12px',
+              borderRadius: '20px',
+            }}
+            emptyIcon={
+              <StarRounded
+                sx={{
+                  color: theme.palette.background?.paper,
+                  fontSize: '28px',
+                }}
+              />
+            }
+            icon={
+              <StarRounded
+                sx={{
+                  color: theme.palette.warning,
+                  fontSize: '28px',
+                }}
+              />
+            }
+          />
+        </div>
       </div>
+
       <div
         style={{
           display: 'flex',

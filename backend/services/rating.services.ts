@@ -1,3 +1,4 @@
+import { col, fn } from 'sequelize';
 import { Errors } from '../controllers/error.controller';
 import { NotificationContext } from '../models/notification.model';
 import Rating from '../models/rating.model';
@@ -9,42 +10,49 @@ const rateEditRecipeService = async (
   recipeId: number,
   rating: number
 ) => {
-  const [newRating, created] = await Rating.findOrCreate({
-    where: {
-      userId,
-      recipeId: recipeId,
-    },
-    defaults: {
-      userId,
-      recipeId: recipeId,
-      rating,
-    },
+  // Find or create a rating entry
+  const [ratingEntry, created] = await Rating.findOrCreate({
+    where: { userId, recipeId },
+    defaults: { userId, recipeId, rating },
   });
 
-  if (created) {
-    await newRating.update({
-      rating,
-    });
-
-    await newRating.save();
-
-    return { created };
+  // If rating already exists, update it
+  if (!created) {
+    await ratingEntry.update({ rating });
   }
 
+  // Get the recipe to notify its owner
   const recipe = await Recipe.findOne({
     where: { id: recipeId },
   });
-
   if (!recipe) {
     throw new Error(Errors.recipeDoesntExist);
   }
 
-  await createNotification(
-    recipe.get().userId,
-    userId,
-    NotificationContext.rating,
-    rating
-  );
+  // Notify the recipe owner (only if rating was updated)
+  if (!created || ratingEntry.get().rating !== rating) {
+    await createNotification(
+      recipe.get().userId,
+      userId,
+      NotificationContext.rating,
+      rating
+    );
+  }
+
+  // Fetch the updated average rating for the recipe (this is what you were asking)
+  const avgRatingResult = await Rating.findOne({
+    where: { recipeId },
+    attributes: [
+      [fn('AVG', col('rating')), 'avgRating'], // Calculate the average rating
+    ],
+  });
+
+  const avgRating = avgRatingResult
+    ? avgRatingResult.get().avgRating
+    : null;
+
+  // Return the response with the avgRating included
+  return { created, avgRating };
 };
 
 const undoRatingService = async (

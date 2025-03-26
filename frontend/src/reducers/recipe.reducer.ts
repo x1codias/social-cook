@@ -8,6 +8,7 @@ import {
   CHANGE_CREATE_RECIPE_STEP,
   GET_RECIPES_SEARCH_DROPDOWN,
   RESET_SCROLL_RECIPES_DATA,
+  RATE_RECIPE,
 } from '../actions/types';
 import {
   RecipeState,
@@ -109,6 +110,27 @@ const recipeReducer = (
       return {
         ...state,
         createRecipeStep: action.payload.step,
+      };
+    case RATE_RECIPE:
+      const newAvgRating =
+        action.payload.avgRating.data.avgRating;
+
+      return {
+        ...state,
+        recipe: {
+          ...state.recipe,
+          avgRating: newAvgRating,
+        },
+        scrollData: {
+          ...state.scrollData,
+          recipes: state.scrollData.recipes.map(recipe => {
+            if (recipe.id === state.recipe?.id) {
+              return { ...recipe, avgRating: newAvgRating };
+            }
+
+            return recipe;
+          }),
+        },
       };
     default:
       return state;

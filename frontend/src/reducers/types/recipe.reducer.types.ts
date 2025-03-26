@@ -8,6 +8,7 @@ import {
   CHANGE_CREATE_RECIPE_STEP,
   GET_RECIPES_SEARCH_DROPDOWN,
   RESET_SCROLL_RECIPES_DATA,
+  RATE_RECIPE,
 } from '../../actions/types';
 import { Recipe } from '../../utils/types/Recipe';
 
@@ -73,6 +74,11 @@ interface ResetScrollDataAction {
   type: typeof RESET_SCROLL_RECIPES_DATA;
 }
 
+interface RateRecipeAction {
+  type: typeof RATE_RECIPE;
+  payload: { avgRating: number };
+}
+
 export type RecipeActionTypes =
   | GetRecipeAction
   | GetRecipesAction
@@ -82,4 +88,5 @@ export type RecipeActionTypes =
   | OpenCreateRecipeModalAction
   | CloseCreateRecipeModalAction
   | ChangeCreateRecipeStep
-  | ResetScrollDataAction;
+  | ResetScrollDataAction
+  | RateRecipeAction;

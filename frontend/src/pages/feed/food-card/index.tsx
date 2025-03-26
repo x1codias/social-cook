@@ -92,18 +92,12 @@ const FoodCard: React.FC<FoodCardProps> = (
                 defaultValue={recipeData.avgRating}
                 readOnly
                 size={'large'}
-                sx={{
-                  backgroundColor:
-                    theme.palette.grey?.[300],
-                  padding: '4px',
-                  borderRadius: '20px',
-                }}
                 emptyIcon={
                   <StarRounded
                     fontSize={'large'}
                     sx={{
-                      color:
-                        theme.palette.background?.paper,
+                      color: theme.palette.grey?.[400],
+                      fontSize: '28px',
                     }}
                   />
                 }
@@ -112,6 +106,7 @@ const FoodCard: React.FC<FoodCardProps> = (
                     fontSize={'large'}
                     sx={{
                       color: theme.palette.warning,
+                      fontSize: '28px',
                     }}
                   />
                 }

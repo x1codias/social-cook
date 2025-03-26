@@ -96,7 +96,10 @@ const getRecipesService = async (
   };
 };
 
-const getRecipeService = async (id: number) => {
+const getRecipeService = async (
+  id: number,
+  userId: number
+) => {
   const recipe = await Recipe.findOne({
     where: { id },
     include: [
@@ -121,11 +124,37 @@ const getRecipeService = async (id: number) => {
     ],
   });
 
+  // Fetch average rating for the recipe
+  const recipeRatingsRaw = await Rating.findOne({
+    where: { recipeId: id },
+    attributes: [
+      'recipeId',
+      [
+        Sequelize.fn('AVG', Sequelize.col('rating')),
+        'avgRating',
+      ],
+    ],
+    group: ['recipeId'],
+  });
+
+  const userRating = await Rating.findOne({
+    where: {
+      recipeId: id,
+      userId,
+    },
+  });
+
+  const avgRating = recipeRatingsRaw
+    ? recipeRatingsRaw?.get().avgRating
+    : null;
+
   const formattedRecipe = {
     ...recipe.dataValues,
     ingredients: recipeIngredients.map(recipeIngredient =>
       recipeIngredient.get({ plain: true })
     ),
+    avgRating,
+    userRating: userRating ? userRating.get().rating : null,
   };
 
   return {

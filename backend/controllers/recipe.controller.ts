@@ -71,8 +71,12 @@ const recipesFeed = async (
 const recipe = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
+    const { userId } = req.user;
 
-    const { recipe } = await getRecipeService(parseInt(id));
+    const { recipe } = await getRecipeService(
+      parseInt(id),
+      userId
+    );
 
     res.status(200).json({
       recipe,

@@ -43,6 +43,7 @@ export type Recipe = {
     photo: string;
   };
   avgRating?: number;
+  userRating?: number;
   createdAt: Date;
 };
 

@@ -15,6 +15,7 @@ import {
 } from '../controllers/comment.controller';
 import { recipeIngredients } from '../controllers/ingredient.controller';
 import { recipePreparations } from '../controllers/preparation.controller';
+import { rateEditRecipe } from '../controllers/rating.controller';
 
 const recipeRoutes = Router();
 
@@ -52,6 +53,11 @@ recipeRoutes.get(
   '/:id/preparations',
   verifyToken,
   recipePreparations
+);
+recipeRoutes.post(
+  '/:recipeId/rate',
+  verifyToken,
+  rateEditRecipe
 );
 recipeRoutes.get('/:id/comments', verifyToken, comments);
 recipeRoutes.post('/:id/comments', verifyToken, comments);

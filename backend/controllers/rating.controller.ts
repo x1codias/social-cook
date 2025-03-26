@@ -15,14 +15,16 @@ const rateEditRecipe = async (
     const { recipeId } = req.params;
     const { rating } = req.body;
 
-    await rateEditRecipeService(
-      userId,
-      parseInt(recipeId),
-      rating
-    );
+    const { created, avgRating } =
+      await rateEditRecipeService(
+        userId,
+        parseInt(recipeId),
+        rating
+      );
 
     res.status(200).json({
-      message: 'newRating',
+      message: created ? 'Rating added' : 'Rating updated',
+      avgRating,
     });
   } catch (error) {
     errorHandler(error.message, res);
