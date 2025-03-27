@@ -27,6 +27,7 @@ import moment from 'moment';
 import RecipePreparation from './preparation';
 import RecipeIngredients from './ingredients';
 import ImageContainer from './image-container';
+import RecipeRating from '../../utils/components/rating';
 
 const RecipePage: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
@@ -161,27 +162,9 @@ const RecipePage: React.FC = (): JSX.Element => {
           </Typography>
         </div>
         {recipe.avgRating && (
-          <Rating
-            defaultValue={recipe.avgRating}
+          <RecipeRating
+            rating={recipe.avgRating}
             readOnly
-            size={'large'}
-            emptyIcon={
-              <StarRounded
-                sx={{
-                  color: theme.palette.grey?.[400],
-                  fontSize: '28px',
-                }}
-              />
-            }
-            icon={
-              <StarRounded
-                fontSize={'large'}
-                sx={{
-                  color: theme.palette.warning,
-                  fontSize: '28px',
-                }}
-              />
-            }
           />
         )}
       </div>
@@ -323,37 +306,9 @@ const RecipePage: React.FC = (): JSX.Element => {
             gap: '18px',
           }}
         >
-          <Typography
-            fontSize={18}
-            fontFamily={'Comfortaa'}
-          >
-            {t('rateRecipe')}
-          </Typography>
-          <Rating
-            defaultValue={recipeRating}
-            size={'large'}
-            onChange={(e, value) => onRatingChange(value)}
-            sx={{
-              backgroundColor: theme.palette.grey?.[300],
-              padding: '4px 12px',
-              borderRadius: '20px',
-            }}
-            emptyIcon={
-              <StarRounded
-                sx={{
-                  color: theme.palette.background?.paper,
-                  fontSize: '28px',
-                }}
-              />
-            }
-            icon={
-              <StarRounded
-                sx={{
-                  color: theme.palette.warning,
-                  fontSize: '28px',
-                }}
-              />
-            }
+          <RecipeRating
+            rating={recipeRating}
+            onRatingChange={onRatingChange}
           />
         </div>
       </div>

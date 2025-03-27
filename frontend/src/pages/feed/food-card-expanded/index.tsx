@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router';
 import { Recipe } from '../../../utils/types/Recipe';
 import { encodeForCSS } from '../../../utils/functions/encodeUrl';
 import { capitalizeFirstLetter } from '../../../utils/functions/capitalizeFirstLetter';
+import RecipeRating from '../../../utils/components/rating';
 
 type FoodCardExpandedProps = {
   recipeId: boolean;
@@ -96,28 +97,9 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
               {capitalizeFirstLetter(recipeData.category)}
             </Typography>
             {recipeData.avgRating && (
-              <Rating
-                defaultValue={recipeData.avgRating}
+              <RecipeRating
                 readOnly
-                size={'large'}
-                emptyIcon={
-                  <StarRounded
-                    fontSize={'large'}
-                    sx={{
-                      color: theme.palette.grey?.[400],
-                      fontSize: '28px',
-                    }}
-                  />
-                }
-                icon={
-                  <StarRounded
-                    fontSize={'large'}
-                    sx={{
-                      color: theme.palette.warning,
-                      fontSize: '28px',
-                    }}
-                  />
-                }
+                rating={recipeData.avgRating}
               />
             )}
             <div
