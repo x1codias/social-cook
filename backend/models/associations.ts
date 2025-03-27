@@ -29,34 +29,57 @@ Token.belongsTo(User, { foreignKey: 'userId' });
 Recipe.belongsToMany(Ingredient, {
   through: RecipeIngredient,
   foreignKey: 'recipeId',
-  onDelete: 'CASCADE',
+  otherKey: 'ingredientId',
+  as: 'ingredients', // Alias for the many-to-many relationship
 });
 Ingredient.belongsToMany(Recipe, {
   through: RecipeIngredient,
   foreignKey: 'ingredientId',
-  onDelete: 'CASCADE',
+  otherKey: 'recipeId',
+  as: 'recipes', // Alias for the many-to-many relationship
+});
+
+RecipeIngredient.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+  as: 'recipe', // Alias for clarity
+});
+
+RecipeIngredient.belongsTo(Ingredient, {
+  foreignKey: 'ingredientId',
+  as: 'ingredient', // Alias for clarity
+});
+
+RecipeIngredient.belongsTo(Unit, {
+  foreignKey: 'unitId',
+  as: 'unit', // Alias for clarity
 });
 
 // Unit with RecipeIngredient relations
 Unit.hasMany(RecipeIngredient, {
   foreignKey: 'unitId',
-  onDelete: 'CASCADE',
+  as: 'recipeIngredients',
 });
-RecipeIngredient.belongsTo(Unit, { foreignKey: 'unitId' });
 
 // User with Recipes relations
 User.hasMany(Recipe, {
   foreignKey: 'userId',
   onDelete: 'CASCADE',
+  as: 'recipes',
 });
-Recipe.belongsTo(User, { foreignKey: 'userId' });
+Recipe.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user',
+});
 
 // Recipe with Preperations relations
 Recipe.hasOne(Preperation, {
   foreignKey: 'recipeId',
-  onDelete: 'CASCADE',
+  as: 'preparation', // Alias for clarity
 });
-Preperation.belongsTo(Recipe, { foreignKey: 'recipeId' });
+Preperation.belongsTo(Recipe, {
+  foreignKey: 'recipeId',
+  as: 'recipe', // Alias for clarity
+});
 
 // User with SearchHistory relations
 User.hasMany(SearchHistory, {
@@ -93,14 +116,12 @@ User.belongsToMany(User, {
   as: 'followers',
   foreignKey: 'userId',
   otherKey: 'followerId',
-  onDelete: 'CASCADE',
 });
 User.belongsToMany(User, {
   through: Followage,
   as: 'following',
   foreignKey: 'followerId',
   otherKey: 'userId',
-  onDelete: 'CASCADE',
 });
 
 // User with User regarding Blockage
@@ -109,14 +130,12 @@ User.belongsToMany(User, {
   as: 'blockedUsers',
   foreignKey: 'userId',
   otherKey: 'blockedUserId',
-  onDelete: 'CASCADE',
 });
 User.belongsToMany(User, {
   through: Blockage,
   as: 'blockedBy',
   foreignKey: 'blockedUserId',
   otherKey: 'userId',
-  onDelete: 'CASCADE',
 });
 
 // User with Comment relation
@@ -137,7 +156,6 @@ Recipe.hasMany(Comment, {
 });
 Comment.belongsTo(Recipe, {
   foreignKey: 'recipeId',
-  onDelete: 'CASCADE',
 });
 
 // User with Chatroom relation
@@ -201,13 +219,13 @@ ChatParticipant.belongsTo(ChatRoom, {
 });
 
 // User with Message relation
-User.hasMany(Message, {
-  foreignKey: 'userId',
+ChatParticipant.hasMany(Message, {
+  foreignKey: 'participantId',
   as: 'messages',
   onDelete: 'CASCADE',
 });
-Message.belongsTo(User, {
-  foreignKey: 'userId',
+Message.belongsTo(ChatParticipant, {
+  foreignKey: 'participantId',
 });
 
 // ChatRoom with Message relation

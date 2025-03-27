@@ -15,7 +15,7 @@ export const verifyToken = (
 
   // Check if the Authorization header is present
   if (!authHeader) {
-    return errorHandler(401, Errors.tokenMissing, res);
+    return errorHandler(Errors.tokenMissing, res);
   }
 
   // Extract the token from the header (assuming Bearer <token> format)
@@ -27,8 +27,9 @@ export const verifyToken = (
     token,
     process.env.JWT_KEY as string,
     (err, user) => {
+      console.log(err);
       if (err) {
-        return errorHandler(401, Errors.tokenInvalid, res);
+        return errorHandler(Errors.tokenInvalid, res);
       }
       (req as AuthRequest).user = user as {
         userId: number;

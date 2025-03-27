@@ -17,7 +17,7 @@ const RecipeIngredient = sequelize.define<
   'RecipeIngredient',
   {
     quantity: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
         notEmpty: true,

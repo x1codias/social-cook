@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import { editUserSettingsService } from '../services/settings.services';
 
@@ -11,18 +11,13 @@ const editSettings = async (
     const { lang, isPrivate } = req.body;
     const { userId } = req.user;
 
-    await editUserSettingsService(
-      userId,
-      res,
-      lang,
-      isPrivate
-    );
+    await editUserSettingsService(userId, lang, isPrivate);
 
     res.status(200).json({
       message: 'settingsUpdated',
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

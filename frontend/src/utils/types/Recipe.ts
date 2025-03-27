@@ -1,4 +1,7 @@
-import { Ingredient } from './Ingredient';
+import {
+  IngredientItem,
+  RecipeIngredient,
+} from './Ingredient';
 import { Preparation } from './Preparation';
 
 export enum RecipeCategories {
@@ -21,12 +24,27 @@ export enum Difficulties {
 export type Recipe = {
   id?: number;
   title: string;
-  ingredients: Ingredient[];
-  preperation: string;
+  ingredients: RecipeIngredient[];
+  preparation: Preparation;
   category: RecipeCategories;
   tags?: string[];
-  photos?: string[];
+  photos: string[];
   userId: number;
+  difficulty: Difficulties;
+  description: string;
+  duration: {
+    hours: number;
+    minutes: number;
+  };
+  servings?: number;
+  user: {
+    id: number;
+    username: string;
+    photo: string;
+  };
+  avgRating?: number;
+  userRating?: number;
+  createdAt: Date;
 };
 
 export type RecipeInput = {
@@ -35,14 +53,11 @@ export type RecipeInput = {
     hours: number | undefined;
     minutes: number | undefined;
   };
-  category: RecipeCategories | '';
-  difficulty: Difficulties | '';
+  servings: number;
+  category: RecipeCategories | string;
+  difficulty: Difficulties | string;
   description: string;
-  images: File[];
-  ingredients: {
-    name: number;
-    quantity: number;
-    unit: number;
-  }[];
+  photos: (string | File)[];
+  ingredients: IngredientItem[];
   preparation: Preparation;
 };

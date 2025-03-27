@@ -5,7 +5,7 @@ import {
 } from '@mui/icons-material';
 import styles from './styles';
 import {
-  capitalize,
+  InputLabel,
   MenuItem,
   TextField,
   Typography,
@@ -13,23 +13,23 @@ import {
 import { Unit } from '../../types/Unit';
 import { Ingredient } from '../../types/Ingredient';
 import theme from '../../../themes/global.theme';
+import { useTranslation } from 'react-i18next';
 
 type DefaultSelectProps<
   T extends string | Ingredient | Unit
 > = {
   value: string | number;
   options: T[];
-  onChange: (
-    val: string | number,
-    valToChange: string
-  ) => void;
-  label: string;
-  minWidth: number;
+  onChange: (val: string | number) => void;
+  onChangeSearch?: (val: string) => void;
+  placeholder: string;
+  minWidth?: string;
   onOpen?: () => void;
   onClose?: () => void;
   search?: boolean;
   addBtnLbl?: string;
   onAddClick?: () => void;
+  label?: string;
 };
 
 const DefaultSelect = <
@@ -41,15 +41,18 @@ const DefaultSelect = <
     value,
     options,
     onChange,
-    label,
+    placeholder,
     minWidth,
     onOpen,
     onClose,
     search,
     addBtnLbl,
     onAddClick,
+    label,
+    onChangeSearch,
   } = props;
   const { SelectField, SelectItem, AddBtn } = styles;
+  const { t } = useTranslation();
 
   const formattedOptions = () => {
     return options.map((option, index) => {
@@ -60,7 +63,7 @@ const DefaultSelect = <
               key={index}
               value={option as string}
             >
-              {capitalize(String(option))}
+              {t(option)}
             </SelectItem>
           );
         case 'object':
@@ -69,9 +72,7 @@ const DefaultSelect = <
               key={index}
               value={(option as Ingredient | Unit).id}
             >
-              {capitalize(
-                (option as Ingredient | Unit).name
-              ) + '(s)'}
+              {t((option as Ingredient | Unit).name)}
             </SelectItem>
           );
         default:
@@ -95,7 +96,9 @@ const DefaultSelect = <
             e.stopPropagation();
           }}
           onKeyDown={e => e.stopPropagation()}
-          onChange={e => onChange(e.target.value, 'search')}
+          onChange={e =>
+            onChangeSearch && onChangeSearch(e.target.value)
+          }
           sx={{
             padding: '8px',
             backgroundColor:
@@ -159,41 +162,58 @@ const DefaultSelect = <
       style={{ display: 'none' }}
       disabled
     >
-      {label}
+      {placeholder}
     </MenuItem>,
     // Add all formatted options as children
     ...formattedOptions(),
   ].filter(Boolean); // Filter out any `false` elements if `search` or `addBtnLbl` are not provided
 
   return (
-    <SelectField
-      defaultValue={value}
-      displayEmpty
-      IconComponent={props => (
-        <ExpandMore {...props} fontSize={'large'} />
-      )}
-      minWidth={minWidth}
-      onChange={e => {
-        onChange(
-          e.target.value as string | number,
-          'value'
-        );
-      }}
-      onOpen={onOpen}
-      onClose={onClose}
-      MenuProps={{
-        PaperProps: {
-          sx: {
-            maxHeight: '220px',
-            '& .MuiList-root': {
-              padding: 0, // Remove padding from the list items
-            },
-          },
-        },
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        width: '100%',
       }}
     >
-      {selectChildren}
-    </SelectField>
+      {label && (
+        <InputLabel
+          sx={{
+            fontSize: '16px',
+            fontFamily: 'Comfortaa',
+            fontWeight: 700,
+          }}
+        >
+          {label}:
+        </InputLabel>
+      )}
+      <SelectField
+        defaultValue={value}
+        displayEmpty
+        IconComponent={props => (
+          <ExpandMore {...props} fontSize={'large'} />
+        )}
+        minWidth={minWidth ? minWidth : '100px'}
+        onChange={e => {
+          onChange(e.target.value as string | number);
+        }}
+        onOpen={onOpen}
+        onClose={onClose}
+        MenuProps={{
+          PaperProps: {
+            sx: {
+              maxHeight: '220px',
+              '& .MuiList-root': {
+                padding: 0, // Remove padding from the list items
+              },
+            },
+          },
+        }}
+      >
+        {selectChildren}
+      </SelectField>
+    </div>
   );
 };
 

@@ -6,21 +6,17 @@ import Setting, {
 import NotificationSetting from '../models/notification-setting.model';
 import { generateToken } from './token.service';
 import { Op } from 'sequelize';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
-import { Response } from 'express';
+import { Errors } from '../controllers/error.controller';
 import sequelize from '../sequelize';
 import Token from '../models/token.model';
+import { v4 } from 'uuid';
 
 const registerService = async (
   username: string,
   email: string,
   password: string,
   biography: string,
-  photoFileName: string,
-  res: Response
+  photoFileName: string
 ) => {
   const salt = await genSalt(12); // Increase salt length for security.
   const encryptedPassword = await hash(password, salt);
@@ -39,33 +35,35 @@ const registerService = async (
   });
 
   if (!created) {
-    return errorHandler(409, Errors.userExists, res);
+    throw new Error(Errors.userExists);
   }
 
-  await sequelize.transaction(async t => {
-    await Setting.create(
-      {
-        userId: newUser.get().id,
-        lang: SettingLangs.en,
-        isPrivate: true,
-      },
-      { transaction: t }
-    );
+  const transaction = await sequelize.transaction();
+  await Setting.create(
+    {
+      userId: newUser.get().id,
+      lang: SettingLangs.en,
+      isPrivate: true,
+    },
+    { transaction }
+  );
 
-    await NotificationSetting.create(
-      {
-        userId: newUser.get().id,
-        follow: true,
-        comment: true,
-        rating: true,
-        likeComment: true,
-        mention: true,
-      },
-      { transaction: t }
-    );
-  });
+  await NotificationSetting.create(
+    {
+      userId: newUser.get().id,
+      follow: true,
+      comment: true,
+      rating: true,
+      likeComment: true,
+      mention: true,
+      favorite: true,
+    },
+    { transaction }
+  );
 
-  const token = await generateToken(newUser);
+  const token = await generateToken(newUser, transaction);
+
+  await transaction.commit();
 
   return {
     user: {
@@ -94,8 +92,7 @@ const registerService = async (
 
 const loginService = async (
   identifier: string,
-  password: string,
-  res: Response
+  password: string
 ) => {
   const user = await User.findOne({
     where: {
@@ -106,8 +103,7 @@ const loginService = async (
     },
   });
 
-  if (!user)
-    return errorHandler(401, Errors.emailPassword, res);
+  if (!user) throw new Error(Errors.emailPassword);
 
   const isValidPassword = await compare(
     password,
@@ -115,7 +111,7 @@ const loginService = async (
   );
 
   if (!isValidPassword)
-    return errorHandler(401, Errors.emailPassword, res);
+    throw new Error(Errors.emailPassword);
 
   const token = await generateToken(user);
   await user.save();
@@ -130,20 +126,17 @@ const loginService = async (
         user.get().photo
       }`,
     },
-    token: token.get().token,
+    token,
   };
 };
 
-const logoutService = async (
-  userId: number,
-  res: Response
-) => {
+const logoutService = async (userId: number) => {
   const user = await User.findOne({
     where: { id: userId },
   });
 
   if (!user) {
-    return errorHandler(404, Errors.userNotFound, res);
+    throw new Error(Errors.userNotFound);
   }
 
   await Token.destroy({
@@ -154,16 +147,15 @@ const logoutService = async (
 };
 
 const googleAuthService = async (
-  authorizationHeader: string,
-  res: Response
+  authorizationHeader: string
 ) => {
   if (!authorizationHeader) {
-    return errorHandler(401, Errors.tokenMissing, res);
+    throw new Error(Errors.tokenMissing);
   }
 
   const accessToken = authorizationHeader.split(' ')[1];
   if (!accessToken) {
-    return errorHandler(401, Errors.tokenInvalid, res);
+    throw new Error(Errors.tokenInvalid);
   }
 
   const response = await fetch(
@@ -177,6 +169,9 @@ const googleAuthService = async (
 
   const data = await response.json();
 
+  const baseUsername = data.email.split('@')[0];
+  const uniqueUsername = `${baseUsername}-${v4()}`;
+
   const [newUser, created] = await User.findOrCreate({
     where: {
       [Op.or]: [
@@ -185,7 +180,7 @@ const googleAuthService = async (
       ],
     },
     defaults: {
-      username: data.email.split('@')[0],
+      username: uniqueUsername,
       email: data.email,
       googleId: data.sub,
       photo: data.picture,
@@ -202,22 +197,21 @@ const googleAuthService = async (
       biography: newUser.dataValues.biography,
       photo: newUser.dataValues.photo,
     },
-    token: token.dataValues.token,
+    token,
     created,
   };
 };
 
 const facebookAuthService = async (
-  authorizationHeader: string,
-  res: Response
+  authorizationHeader: string
 ) => {
   if (!authorizationHeader) {
-    return errorHandler(401, Errors.tokenMissing, res);
+    throw new Error(Errors.tokenMissing);
   }
 
   const accessToken = authorizationHeader.split(' ')[1];
   if (!accessToken) {
-    return errorHandler(401, Errors.tokenInvalid, res);
+    throw new Error(Errors.tokenInvalid);
   }
 
   const response = await fetch(
@@ -225,6 +219,9 @@ const facebookAuthService = async (
   );
 
   const data = await response.json();
+
+  const baseUsername = data.email.split('@')[0];
+  const uniqueUsername = `${baseUsername}-${v4()}`;
 
   const [newUser, created] = await User.findOrCreate({
     where: {
@@ -234,7 +231,7 @@ const facebookAuthService = async (
       ],
     },
     defaults: {
-      username: data.email.split('@')[0],
+      username: uniqueUsername,
       email: data.email,
       facebookId: data.id,
       photo: data.picture.data.url,
@@ -252,7 +249,7 @@ const facebookAuthService = async (
       biography: newUser.dataValues.biography,
       photo: newUser.dataValues.photo,
     },
-    token: token.dataValues.token,
+    token,
     created,
   };
 };

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
   followService,
@@ -11,13 +11,13 @@ const follow = async (req: AuthRequest, res: Response) => {
     const { userId } = req.user;
     const { targetId } = req.params;
 
-    await followService(parseInt(targetId), userId, res);
+    await followService(parseInt(targetId), userId);
 
     res.status(200).json({
       message: 'followSuccessfull',
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 
@@ -29,13 +29,13 @@ const unfollow = async (
     const { userId } = req.user;
     const { targetId } = req.params;
 
-    await unFollowService(parseInt(targetId), userId, res);
+    await unFollowService(parseInt(targetId), userId);
 
     res.status(200).json({
       message: 'unfollowSuccessfull',
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 

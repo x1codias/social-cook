@@ -2,14 +2,15 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/auth/login/login';
 import Register from './pages/auth/register/register';
 import TopBar from './utils/components/top-bar';
-import { useSelector } from 'react-redux';
 import Feed from './pages/feed';
-import CreateRecipe from './pages/recipe/create';
-import Recipe from './pages/recipe';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import CreateRecipeModal from './pages/recipe/create/modal';
+import RecipePage from './pages/recipe';
 
 const App: React.FC = (): JSX.Element => {
-  const userToken = useSelector(
-    (state: { auth: { token: string } }) => state.auth.token
+  const userToken = JSON.parse(
+    (localStorage.getItem('token') as string) || 'null'
   );
 
   return (
@@ -23,35 +24,36 @@ const App: React.FC = (): JSX.Element => {
         justifyContent: userToken ? 'flex-start' : 'center',
       }}
     >
+      <ToastContainer />
       {userToken && <TopBar />}
       <Routes>
-        <Route
-          path="/"
-          element={
-            userToken ? <Feed /> : <Navigate to="/login" />
-          }
-        />
-        {!userToken ? (
+        {userToken ? (
+          <>
+            <Route path="/" element={<Feed />} />
+            <Route
+              path="/recipes/:id"
+              element={<RecipePage />}
+            />
+            <Route
+              path="*"
+              element={<Navigate to="/?type=recipes" />}
+            />
+          </>
+        ) : (
           <>
             <Route path="/login" element={<Login />} />
             <Route
               path="/register"
               element={<Register />}
             />
-          </>
-        ) : (
-          <>
             <Route
-              path="/recipes/create"
-              element={<CreateRecipe />}
-            />
-            <Route
-              path="/recipes/:id"
-              element={<Recipe />}
+              path="*"
+              element={<Navigate to="/login" />}
             />
           </>
         )}
       </Routes>
+      {userToken && <CreateRecipeModal />}
     </div>
   );
 };

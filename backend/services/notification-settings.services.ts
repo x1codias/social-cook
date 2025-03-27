@@ -1,8 +1,4 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import NotificationSetting from '../models/notification-setting.model';
 
 export const editNotificationSettingsService = async (
@@ -14,8 +10,7 @@ export const editNotificationSettingsService = async (
     likeComment: boolean;
     mention: boolean;
     favorite: boolean;
-  },
-  res: Response
+  }
 ) => {
   const {
     follow,
@@ -31,11 +26,7 @@ export const editNotificationSettingsService = async (
     });
 
   if (!notificationSettingToUpdate) {
-    return errorHandler(
-      404,
-      Errors.noNotificationSettings,
-      res
-    );
+    throw new Error(Errors.noNotificationSettings);
   }
 
   await notificationSettingToUpdate.update({

@@ -11,6 +11,7 @@ export interface IngredientState {
     limit: number;
     offset: number;
     hasMore: boolean;
+    page: number;
   };
 }
 

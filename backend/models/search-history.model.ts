@@ -5,14 +5,13 @@ import User from './user.model';
 
 export enum SearchHistoryContext {
   recipe = 'recipe',
-  category = 'category',
   user = 'user',
 }
 
 export type SearchHistoryType = {
   id?: number;
   context: SearchHistoryContext;
-  value: string | RecipeCategories;
+  value: number;
   userId: number;
 };
 
@@ -36,24 +35,10 @@ const SearchHistory = sequelize.define<
       },
     },
     value: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
-        isValidValue() {
-          if (
-            typeof this.value !== 'string' &&
-            this.context ===
-              SearchHistoryContext.category &&
-            !Object.values(RecipeCategories).includes(
-              this.value as RecipeCategories
-            )
-          ) {
-            throw new Error(
-              'Value must be a string or a valid RecipeCategories value'
-            );
-          }
-        },
       },
     },
     userId: {
@@ -69,6 +54,35 @@ const SearchHistory = sequelize.define<
     tableName: 'search_history',
     timestamps: true,
     paranoid: true, // Enables the `deletedAt` field for soft deletes
+  }
+);
+
+SearchHistory.addHook(
+  'beforeValidate',
+  async searchHistory => {
+    if (
+      searchHistory.get().context ===
+      SearchHistoryContext.recipe
+    ) {
+      const recipeExists =
+        await sequelize.models.Recipe.findByPk(
+          searchHistory.get().value
+        );
+      if (!recipeExists) {
+        throw new Error('Invalid recipe ID');
+      }
+    } else if (
+      searchHistory.get().context ===
+      SearchHistoryContext.user
+    ) {
+      const userExists =
+        await sequelize.models.User.findByPk(
+          searchHistory.get().value
+        );
+      if (!userExists) {
+        throw new Error('Invalid user ID');
+      }
+    }
   }
 );
 

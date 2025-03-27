@@ -8,12 +8,12 @@ const styles = {
         ? theme.palette.background?.paper
         : theme.palette.default.primary,
     cursor: 'pointer',
-    padding: '8px 14px',
-    fontSize: '16px',
+    padding: '8px 20px',
     borderRadius: '20px',
     width: 'fit-content',
     display: 'flex',
     alignItems: 'center',
+    gap: '6px',
     color:
       variant === 'outlined'
         ? theme.palette.default.primary
@@ -34,6 +34,9 @@ const styles = {
         variant === 'outlined'
           ? theme.palette.default.primary
           : theme.palette.default.dark,
+    },
+    '&.Mui-disabled': {
+      backgroundColor: theme.palette.customBackground.input,
     },
   })),
 };

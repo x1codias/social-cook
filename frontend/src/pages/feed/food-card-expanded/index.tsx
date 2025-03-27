@@ -2,27 +2,34 @@ import {
   Avatar,
   Dialog,
   Divider,
+  Rating,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import foodImage from '../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import theme from '../../../themes/global.theme';
 import {
   AccessTimeRounded,
   PeopleRounded,
+  StarRounded,
 } from '@mui/icons-material';
 import { LuChefHat } from 'react-icons/lu';
 import DefaultButton from '../../../utils/components/button/button';
 import { useNavigate } from 'react-router';
+import { Recipe } from '../../../utils/types/Recipe';
+import { encodeForCSS } from '../../../utils/functions/encodeUrl';
+import { capitalizeFirstLetter } from '../../../utils/functions/capitalizeFirstLetter';
+import RecipeRating from '../../../utils/components/rating';
 
 type FoodCardExpandedProps = {
   recipeId: boolean;
   onClose: () => void;
+  recipeData: Recipe;
 };
 
 const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
   props
 ): JSX.Element => {
-  const { recipeId, onClose } = props;
+  const { recipeId, onClose, recipeData } = props;
   const navigate = useNavigate();
 
   return (
@@ -40,7 +47,11 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
         <div style={{ display: 'flex' }}>
           <div
             style={{
-              backgroundImage: `url(${foodImage})`,
+              backgroundImage: `url(${
+                recipeData.photos
+                  ? encodeForCSS(recipeData.photos[0])
+                  : ''
+              })`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
@@ -68,20 +79,29 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                 borderBottom: `2px solid ${theme.palette.grey?.[400]}`,
               }}
             >
-              {'Cesar Salad'}
+              {recipeData.title}
             </Typography>
             <Typography
               style={{
                 fontFamily: 'Fredoka',
                 fontSize: '18px',
-                backgroundColor: 'lightgreen',
+                backgroundColor:
+                  theme.palette.categories[
+                    recipeData.category
+                  ],
                 padding: '4px 16px',
                 borderRadius: '20px',
                 textAlign: 'center',
               }}
             >
-              {'Salad'}
+              {capitalizeFirstLetter(recipeData.category)}
             </Typography>
+            {recipeData.avgRating && (
+              <RecipeRating
+                readOnly
+                rating={recipeData.avgRating}
+              />
+            )}
             <div
               style={{
                 padding: '8px',
@@ -114,9 +134,9 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                     border: `1px solid ${theme.palette.default.dark}`,
                   }}
                 >
-                  {'1 '}
+                  {`${recipeData.duration.hours} `}
                   <span>{'H'}</span>
-                  {' : 20 '}
+                  {` : ${recipeData.duration.minutes} `}
                   <span>{'M'}</span>
                 </Typography>
               </div>
@@ -169,11 +189,15 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                     padding: '4px 8px',
                     color: theme.palette.customText.button,
                     backgroundColor:
-                      theme.palette.difficulty.easy,
+                      theme.palette.difficulty[
+                        recipeData.difficulty
+                      ],
                     borderRadius: '20px',
                   }}
                 >
-                  {'Easy'}
+                  {capitalizeFirstLetter(
+                    recipeData.difficulty
+                  )}
                 </Typography>
               </div>
             </div>
@@ -196,17 +220,28 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                   minWidth: 'fit-content',
                 }}
               >
-                <Avatar>{'J'}</Avatar>
-                <Typography
-                  style={{
-                    fontFamily: 'Roboto',
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    color: theme.palette.text?.primary,
-                  }}
+                <Avatar src={recipeData.user.photo}>
+                  {recipeData.user.username}
+                </Avatar>
+                <Tooltip
+                  title={recipeData.user.username}
+                  placement="bottom"
                 >
-                  {'Jane Doe'}
-                </Typography>
+                  <Typography
+                    style={{
+                      fontFamily: 'Roboto',
+                      fontSize: '16px',
+                      fontWeight: 500,
+                      color: theme.palette.text?.primary,
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap', // Prevents text from wrapping
+                      overflow: 'hidden', // Ensures overflow is clipped
+                      maxWidth: '200px',
+                    }}
+                  >
+                    {recipeData.user.username}
+                  </Typography>
+                </Tooltip>
               </div>
               <Divider
                 orientation={'vertical'}
@@ -223,15 +258,15 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                   fontSize: '14px',
                 }}
               >
-                {
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged"
-                }
+                {recipeData.description}
               </Typography>
             </div>
             <DefaultButton
               variant={'text'}
               label={'Full Recipe'}
-              onClick={() => navigate('/recipes/1')}
+              onClick={() => {
+                navigate(`/recipes/${recipeData.id}`);
+              }}
             />
           </div>
         </div>

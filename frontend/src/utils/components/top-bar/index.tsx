@@ -17,10 +17,15 @@ import { useSelector } from 'react-redux';
 import { Account } from '../../types/Account';
 import ProfileDropdown from './components/profile-dropdown';
 import { useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { IoClose, IoStar } from 'react-icons/io5';
 import SearchHistory from './components/search-history';
 import SearchHints from './components/search-hints';
+import {
+  OPEN_CREATE_RECIPE_MODAL,
+  RESET_SCROLL_RECIPES_DATA,
+} from '../../../actions/types';
+import { useDispatch } from 'react-redux';
 
 const TopBar: React.FC = (): JSX.Element => {
   const { AppBar, AppTitle, Search } = styles;
@@ -29,18 +34,36 @@ const TopBar: React.FC = (): JSX.Element => {
       (state: { auth: { user: Account } }) =>
         state.auth.user
     ) || JSON.parse(localStorage.getItem('user') as string);
+  const openCreateRecipe = useSelector(
+    (state: { recipe: { openCreateRecipe: boolean } }) =>
+      state.recipe.openCreateRecipe
+  );
   const [openMenu, setOpenMenu] =
     useState<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
-  const location = useLocation();
   const [isFocused, setIsFocused] = useState(false);
+  const [isClosing, setIsClosing] = useState(false); // New lock flag
   const searchRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState('');
+  const dispatch = useDispatch();
+
+  const resetScrollData = () => ({
+    type: RESET_SCROLL_RECIPES_DATA,
+  });
+
+  const handleOpenCreateRecipeModal = () =>
+    dispatch({
+      type: OPEN_CREATE_RECIPE_MODAL,
+    });
 
   const handleFocus = () => {
-    setIsFocused(true); // Open the popover when input is focused
+    if (isClosing) {
+      setTimeout(() => setIsClosing(false), 300); // Reset lock after a short delay
+    }
+
+    setIsFocused(true);
   };
 
   const handleBlur = (
@@ -48,20 +71,24 @@ const TopBar: React.FC = (): JSX.Element => {
       HTMLInputElement | HTMLTextAreaElement
     >
   ) => {
-    // Check if focus moved outside the input and the popover
     if (
       searchRef.current &&
       popoverRef.current &&
       !searchRef.current.contains(event.relatedTarget) &&
       !popoverRef.current.contains(event.relatedTarget)
     ) {
-      setIsFocused(false); // Close popover only if focus moves outside
+      setIsFocused(false);
     }
   };
 
   return (
     <AppBar position={'fixed'}>
-      <AppTitle onClick={() => navigate('/')}>
+      <AppTitle
+        onClick={() => {
+          dispatch(resetScrollData());
+          navigate('/?type=recipes');
+        }}
+      >
         SocialCook
       </AppTitle>
       <Search
@@ -108,14 +135,12 @@ const TopBar: React.FC = (): JSX.Element => {
           placement="bottom"
         >
           <IconButton
-            onClick={() => navigate('/recipes/create')}
+            onClick={() => handleOpenCreateRecipeModal()}
           >
             <IoIosAddCircle
               size={30}
               fill={
-                location.pathname.includes(
-                  '/recipes/create'
-                )
+                openCreateRecipe
                   ? theme.palette.default.primary
                   : theme.palette.grey?.[500]
               }
@@ -130,9 +155,7 @@ const TopBar: React.FC = (): JSX.Element => {
           }
           placement="bottom"
         >
-          <IconButton
-            onClick={() => navigate('/recipes/create')}
-          >
+          <IconButton>
             <IoStar
               size={30}
               fill={theme.palette.grey?.[500]}
@@ -194,7 +217,6 @@ const TopBar: React.FC = (): JSX.Element => {
         ref={popoverRef}
         onClose={() => setIsFocused(false)}
         disableAutoFocus
-        disableEnforceFocus
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -214,7 +236,13 @@ const TopBar: React.FC = (): JSX.Element => {
           {!searchValue.length ? (
             <SearchHistory />
           ) : (
-            <SearchHints />
+            <SearchHints
+              searchValue={searchValue}
+              onClose={() => {
+                setIsClosing(true); // Lock state to prevent instant reopening
+                setIsFocused(false);
+              }}
+            />
           )}
         </div>
       </Popover>

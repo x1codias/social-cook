@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthRequest } from './auth.controller';
-import { errorHandler, Errors } from './error.controller';
+import { errorHandler } from './error.controller';
 import {
   rateEditRecipeService,
   undoRatingService,
@@ -15,18 +15,19 @@ const rateEditRecipe = async (
     const { recipeId } = req.params;
     const { rating } = req.body;
 
-    await rateEditRecipeService(
-      userId,
-      parseInt(recipeId),
-      rating,
-      res
-    );
+    const { created, avgRating } =
+      await rateEditRecipeService(
+        userId,
+        parseInt(recipeId),
+        rating
+      );
 
     res.status(200).json({
-      message: 'newRating',
+      message: created ? 'Rating added' : 'Rating updated',
+      avgRating,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -44,7 +45,7 @@ const undoRating = async (
       message: 'ratingUndone',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

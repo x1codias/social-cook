@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
   addFavoriteService,
@@ -23,7 +23,7 @@ const favorites = async (
       favoriteRecipes,
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -35,13 +35,13 @@ const addFavorite = async (
     const { recipeId } = req.body;
     const { userId } = req.user;
 
-    await addFavoriteService(recipeId, userId, res);
+    await addFavoriteService(recipeId, userId);
 
     res.status(200).json({
       message: 'addedToFavorites',
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -59,7 +59,7 @@ const removeFromFavorites = async (
       message: 'removedFromFavorites',
     });
   } catch (error) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

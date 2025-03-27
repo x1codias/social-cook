@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
   blockService,
@@ -11,13 +11,13 @@ const block = async (req: AuthRequest, res: Response) => {
     const { userId } = req.user;
     const { targetId } = req.params;
 
-    await blockService(userId, parseInt(targetId), res);
+    await blockService(userId, parseInt(targetId));
 
     res.status(200).json({
       message: 'blockSuccessfull',
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 
@@ -26,13 +26,13 @@ const unblock = async (req: AuthRequest, res: Response) => {
     const { userId } = req.user;
     const { targetId } = req.params;
 
-    await unBlockService(userId, parseInt(targetId), res);
+    await unBlockService(userId, parseInt(targetId));
 
     res.status(200).json({
       message: 'unblockSuccessfull',
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 

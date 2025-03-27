@@ -5,8 +5,9 @@ import User from './user.model';
 
 export type RatingType = {
   rating: number;
-  userId?: number;
-  recipeId?: number;
+  userId: number;
+  recipeId: number;
+  avgRating?: number;
 };
 
 const Rating = sequelize.define<Model<RatingType>>(

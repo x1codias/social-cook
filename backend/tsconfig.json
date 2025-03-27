@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "rootDir": "src",
+    "esModuleInterop": true, // Enable compatibility with CommonJS
+    "allowSyntheticDefaultImports": true // Allow synthetic default imports
+  },
+  "include": ["backend/*"],
+  "exclude": ["node_modules"]
+}

@@ -1,24 +1,29 @@
 import {
   Avatar,
+  Rating,
   Skeleton,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import foodImage from '../../../assets/e77ef6d4207c6da257384b67b10efc67.jpeg';
 import theme from '../../../themes/global.theme';
 import styles from './styles';
 import DefaultButton from '../../../utils/components/button/button';
 import FoodCardExpanded from '../food-card-expanded';
+import { Recipe } from '../../../utils/types/Recipe';
+import { StarRounded } from '@mui/icons-material';
+import RecipeRating from '../../../utils/components/rating';
 
 type FoodCardProps = {
   height: number;
   loading?: boolean;
+  recipeData: Recipe;
 };
 
 const FoodCard: React.FC<FoodCardProps> = (
   props
 ): JSX.Element => {
-  const { height, loading } = props;
+  const { height, loading, recipeData } = props;
   const { RecipeImage } = styles;
   const [openRecipeDialog, setOpenRecipeDialog] =
     useState(false);
@@ -57,11 +62,21 @@ const FoodCard: React.FC<FoodCardProps> = (
             width: '100%',
           }}
         >
-          <RecipeImage foodImage={foodImage} />
+          <RecipeImage
+            foodImage={
+              recipeData.photos ? recipeData.photos[0] : ''
+            }
+          />
           <div
             style={{
-              backgroundColor: 'lightgreen',
+              backgroundColor:
+                theme.palette.categories[
+                  recipeData.category
+                ],
               padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
             }}
           >
             <Typography
@@ -71,8 +86,14 @@ const FoodCard: React.FC<FoodCardProps> = (
                 fontSize: '16px',
               }}
             >
-              {'Cesar Salad'}
+              {recipeData.title}
             </Typography>
+            {recipeData.avgRating && (
+              <RecipeRating
+                readOnly
+                rating={recipeData.avgRating}
+              />
+            )}
           </div>
           <div
             style={{
@@ -84,19 +105,31 @@ const FoodCard: React.FC<FoodCardProps> = (
               justifyContent: 'flex-start',
               width: '100%',
               gap: '8px',
+              maxHeight: '64px',
             }}
           >
-            <Avatar>{'J'}</Avatar>
-            <Typography
-              style={{
-                fontFamily: 'Roboto',
-                fontSize: '16px',
-                fontWeight: 500,
-                color: theme.palette.text?.primary,
-              }}
+            <Avatar src={recipeData.user.photo}>
+              {recipeData.user.username}
+            </Avatar>
+            <Tooltip
+              title={recipeData.user.username}
+              placement="top"
             >
-              {'Jane Doe'}
-            </Typography>
+              <Typography
+                style={{
+                  fontFamily: 'Roboto',
+                  fontSize: '16px',
+                  fontWeight: 500,
+                  color: theme.palette.text?.primary,
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap', // Prevents text from wrapping
+                  overflow: 'hidden', // Ensures overflow is clipped
+                  maxWidth: '200px',
+                }}
+              >
+                {recipeData.user.username}
+              </Typography>
+            </Tooltip>
             <DefaultButton
               label={'More details'}
               customStyles={{
@@ -110,6 +143,7 @@ const FoodCard: React.FC<FoodCardProps> = (
       <FoodCardExpanded
         recipeId={openRecipeDialog}
         onClose={() => setOpenRecipeDialog(false)}
+        recipeData={recipeData}
       />
     </>
   );

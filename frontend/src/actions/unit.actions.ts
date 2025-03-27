@@ -6,7 +6,9 @@ export const getUnits =
   (limit: number, offset: number) =>
   async (dispatch: Dispatch) => {
     try {
-      const userToken = localStorage.getItem('token');
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + '/units',
         {
@@ -15,7 +17,7 @@ export const getUnits =
             offset: offset.toString(),
           },
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken.token}`,
           },
         }
       );

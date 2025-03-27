@@ -1,5 +1,5 @@
 import { DefaultEventsMap, Socket } from 'socket.io';
-import { logger } from '../app';
+import logger from '../logger';
 
 export const notificationChannel = (
   socket: Socket<
@@ -13,6 +13,6 @@ export const notificationChannel = (
     logger.info(
       `User ${userId} joined their notification channel`
     );
-    socket.join(`user_${userId}`);
+    socket.join(`notifications_${userId}`);
   });
 };

@@ -1,14 +1,9 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import Blockage from '../models/blockage.model';
 
 const blockService = async (
   userId: number,
-  targetId: number,
-  res: Response
+  targetId: number
 ) => {
   const existingBlock = await Blockage.findOne({
     where: {
@@ -18,7 +13,7 @@ const blockService = async (
   });
 
   if (existingBlock) {
-    return errorHandler(409, Errors.duplicateBlock, res);
+    throw new Error(Errors.duplicateBlock);
   }
 
   await Blockage.create({
@@ -29,8 +24,7 @@ const blockService = async (
 
 const unBlockService = async (
   userId: number,
-  targetId: number,
-  res: Response
+  targetId: number
 ) => {
   const existingBlock = await Blockage.findOne({
     where: {
@@ -40,7 +34,7 @@ const unBlockService = async (
   });
 
   if (!existingBlock) {
-    return errorHandler(404, Errors.noBlock, res);
+    throw new Error(Errors.noBlock);
   }
 
   await Blockage.destroy({

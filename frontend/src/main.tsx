@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import store from './store.ts';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './translations/i18n.ts';
+import '@xyflow/react/dist/style.css'; // Add here for global use
 
 ReactDOM.createRoot(
   document.getElementById('root')!

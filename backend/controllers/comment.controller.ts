@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthRequest } from './auth.controller';
-import { errorHandler, Errors } from './error.controller';
+import { errorHandler } from './error.controller';
 import {
   createCommentService,
   deleteCommentService,
@@ -28,7 +28,7 @@ const comments = async (
       comments,
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 
@@ -50,7 +50,7 @@ const comment = async (req: AuthRequest, res: Response) => {
       subComments,
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 
@@ -63,12 +63,11 @@ const createComment = async (
     const { recipeId } = req.params;
     const { content, parentCommentId } = req.body;
 
-    const { comment } = createCommentService(
+    const { comment } = await createCommentService(
       userId,
       parseInt(recipeId),
       content,
-      parentCommentId,
-      res
+      parentCommentId
     );
 
     res.status(200).json({
@@ -76,7 +75,7 @@ const createComment = async (
       comment,
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 
@@ -88,17 +87,13 @@ const editComment = async (
     const { commentId } = req.params;
     const { content } = req.body;
 
-    await editCommentService(
-      parseInt(commentId),
-      content,
-      res
-    );
+    await editCommentService(parseInt(commentId), content);
 
     res.status(200).json({
       message: 'commentUpdatedSuccefully',
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 
@@ -115,7 +110,7 @@ const deleteComment = async (
       message: 'commentDeleted',
     });
   } catch (err) {
-    return errorHandler(500, Errors.serverError, res);
+    errorHandler(err.message, res);
   }
 };
 

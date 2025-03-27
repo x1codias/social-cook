@@ -11,6 +11,8 @@ export enum RecipeCategories {
   breakfast = 'breakfast',
   fingerFood = 'fingerFood',
   desserts = 'desserts',
+  soups = 'soups',
+  pizzas = 'pizzas',
 }
 
 export enum Difficulties {
@@ -20,15 +22,16 @@ export enum Difficulties {
 }
 
 export type RecipeType = {
-  id?: number;
+  id: number;
   title: string;
   duration?: { hours: number; minutes: number };
   description?: string;
   difficulty: Difficulties;
   category: RecipeCategories;
-  tags?: string[];
   photos?: string[];
   userId: number;
+  servings?: number;
+  avgRating?: number;
 };
 
 const Recipe = sequelize.define<Model<RecipeType>>(
@@ -48,7 +51,7 @@ const Recipe = sequelize.define<Model<RecipeType>>(
     },
     duration: {
       type: DataTypes.JSON,
-      allowNull: true,
+      allowNull: false,
     },
     description: {
       type: DataTypes.TEXT,
@@ -73,13 +76,17 @@ const Recipe = sequelize.define<Model<RecipeType>>(
         notEmpty: true,
       },
     },
-    // tags: {
-    //   type: DataTypes.JSON,
-    //   allowNull: true,
-    // },
+    servings: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     photos: {
       type: DataTypes.JSON,
       allowNull: true,
+      defaultValue: [],
     },
     userId: {
       type: DataTypes.INTEGER,

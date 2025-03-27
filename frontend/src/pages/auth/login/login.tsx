@@ -1,7 +1,9 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { login } from '../../../actions/auth.actions';
 import { useNavigate } from 'react-router';
-import AuthCard from '../../../utils/components/auth-card';
+import AuthCard, {
+  InputTypes,
+} from '../../../utils/components/auth-card';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store';
 
@@ -18,15 +20,17 @@ const Login: React.FC = (): JSX.Element => {
   const loginInputs = [
     {
       placeholder: 'Username or Email',
-      type: 'text',
+      type: InputTypes.text,
       name: 'identifier',
       value: formData.identifier,
+      required: true,
     },
     {
       placeholder: 'Password',
-      type: 'password',
+      type: InputTypes.password,
       name: 'password',
       value: formData.password,
+      required: true,
     },
   ];
 

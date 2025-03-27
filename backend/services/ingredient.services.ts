@@ -1,9 +1,29 @@
-import { Response } from 'express';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import Ingredient from '../models/ingredient.model';
+import RecipeIngredient from '../models/recipe-ingedient.model';
+import Unit from '../models/unit.model';
+
+const getRecipeIngredientsService = async (
+  recipeId: number
+) => {
+  const ingredients = await RecipeIngredient.findAll({
+    where: {
+      recipeId,
+    },
+    include: [
+      {
+        model: Unit,
+      },
+      {
+        model: Ingredient,
+      },
+    ],
+  });
+
+  return {
+    ingredients: ingredients.map(row => row.get()),
+  };
+};
 
 const getIngredientsService = async (
   offset: number,
@@ -20,10 +40,7 @@ const getIngredientsService = async (
   };
 };
 
-const createIngredientService = async (
-  name: string,
-  res: Response
-) => {
+const createIngredientService = async (name: string) => {
   const [newIngredient, created] =
     await Ingredient.findOrCreate({
       where: {
@@ -35,10 +52,14 @@ const createIngredientService = async (
     });
 
   if (!created) {
-    return errorHandler(409, Errors.ingredientExists, res);
+    throw new Error(Errors.ingredientExists);
   }
 
   return { newIngredient };
 };
 
-export { getIngredientsService, createIngredientService };
+export {
+  getIngredientsService,
+  createIngredientService,
+  getRecipeIngredientsService,
+};

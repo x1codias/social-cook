@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import {
   createRecipeService,
@@ -10,12 +10,53 @@ import {
 
 const recipes = async (req: AuthRequest, res: Response) => {
   try {
-    const limit = parseInt(req.query.limit as string);
-    const offset = parseInt(req.query.offset as string);
+    const search = req.query.search as string;
+    const attributes = [
+      'id',
+      'title',
+      'photos',
+      'category',
+    ];
+
+    const { recipes } = await getRecipesService(
+      search,
+      attributes
+    );
+
+    res.status(200).json({
+      recipes,
+    });
+  } catch (error) {
+    errorHandler(error.message, res);
+  }
+};
+
+const recipesFeed = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const limit = parseInt(req.query.limit as string) || 10;
+    const offset =
+      parseInt(req.query.offset as string) || 0;
+    const search = req.query.search as string;
+    const attributes = [
+      'id',
+      'title',
+      'photos',
+      'category',
+      'description',
+      'duration',
+      'difficulty',
+      'servings',
+    ];
 
     const { total, recipes } = await getRecipesService(
+      search,
+      attributes,
       offset,
-      limit
+      limit,
+      true
     );
 
     res.status(200).json({
@@ -23,23 +64,25 @@ const recipes = async (req: AuthRequest, res: Response) => {
       recipes,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
 const recipe = async (req: AuthRequest, res: Response) => {
   try {
-    const { recipeId } = req.params;
+    const { id } = req.params;
+    const { userId } = req.user;
 
     const { recipe } = await getRecipeService(
-      parseInt(recipeId)
+      parseInt(id),
+      userId
     );
 
     res.status(200).json({
       recipe,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
@@ -55,37 +98,30 @@ const createRecipe = async (
       difficulty,
       description,
       ingredients,
-      preparation,
+      preparationStepsDescription,
+      servings,
     } = req.body;
     const { userId } = req.user;
 
-    if (!req.files) {
-      return errorHandler(400, Errors.imageNotFound, res);
-    }
-
-    const photoFileNames = (
-      req.files as Express.Multer.File[]
-    ).map(file => file.filename);
-
-    const { recipe } = await createRecipeService(
+    await createRecipeService(
       title,
       userId,
-      preparation,
+      preparationStepsDescription,
       duration,
       ingredients,
       category,
       difficulty,
       description,
-      photoFileNames,
-      res
+      parseInt(servings),
+      req.files
     );
 
     res.status(200).json({
       message: 'recipeCreated',
-      recipe,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    console.log(error);
+    errorHandler(error.message, res);
   }
 };
 
@@ -102,8 +138,14 @@ const deleteRecipe = async (
       message: 'recipeDeleted',
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 
-export { recipes, recipe, createRecipe, deleteRecipe };
+export {
+  recipes,
+  recipesFeed,
+  recipe,
+  createRecipe,
+  deleteRecipe,
+};

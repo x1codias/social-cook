@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Errors, errorHandler } from './error.controller';
+import { errorHandler } from './error.controller';
 import { AuthRequest } from './auth.controller';
 import { getUnitsService } from '../services/unit.services';
 
@@ -18,7 +18,7 @@ const units = async (req: AuthRequest, res: Response) => {
       units,
     });
   } catch (error) {
-    errorHandler(500, Errors.serverError, res);
+    errorHandler(error.message, res);
   }
 };
 

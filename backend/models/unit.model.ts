@@ -16,7 +16,7 @@ const Unit = sequelize.define<Model<UnitType>>(
       autoIncrement: true, // Enable auto-increment for the ID field
     },
     name: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
@@ -24,7 +24,7 @@ const Unit = sequelize.define<Model<UnitType>>(
       },
     },
     symbol: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -40,40 +40,48 @@ const Unit = sequelize.define<Model<UnitType>>(
 const insertDefaultUnits = async () => {
   const defaultUnits = [
     {
-      name: 'Unit',
+      name: 'unit',
       symbol: 'uni',
     },
     {
-      name: 'Kilogram',
+      name: 'kilogram',
       symbol: 'kg',
     },
     {
-      name: 'Gram',
+      name: 'gram',
       symbol: 'g',
     },
     {
-      name: 'Miligram',
+      name: 'miligram',
       symbol: 'mg',
     },
     {
-      name: 'Kilogram',
+      name: 'kilogram',
       symbol: 'kg',
     },
     {
-      name: 'Litre',
+      name: 'litre',
       symbol: 'l',
     },
     {
-      name: 'Mililitre',
+      name: 'mililitre',
       symbol: 'ml',
     },
     {
-      name: 'Table Spoon',
+      name: 'tableSpoon',
       symbol: 'table sp.',
     },
     {
-      name: 'Tea Spoon',
+      name: 'teaSpoon',
       symbol: 'tea sp.',
+    },
+    {
+      name: 'cup',
+      symbol: 'cup',
+    },
+    {
+      name: 'pinch',
+      symbol: 'pinch',
     },
   ];
 

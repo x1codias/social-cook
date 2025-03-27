@@ -8,6 +8,7 @@ export enum ChatRoomContext {
 
 export type ChatRoomType = {
   id?: number;
+  name?: string;
   context: ChatRoomContext;
 };
 
@@ -18,6 +19,10 @@ const ChatRoom = sequelize.define<Model<ChatRoomType>>(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true, // Enable auto-increment for the ID field
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     context: {
       type: DataTypes.ENUM(

@@ -2,13 +2,9 @@ import { Op } from 'sequelize';
 import Comment from '../models/comment.model';
 import User from '../models/user.model';
 import Recipe from '../models/recipe.model';
-import {
-  errorHandler,
-  Errors,
-} from '../controllers/error.controller';
+import { Errors } from '../controllers/error.controller';
 import { createNotification } from './notification.service';
 import { NotificationContext } from '../models/notification.model';
-import { Response } from 'express';
 
 const getCommentService = async (
   commentId: number,
@@ -72,8 +68,7 @@ const createCommentService = async (
   userId: number,
   recipeId: number,
   content: string,
-  parentCommentId: number,
-  res: Response
+  parentCommentId: number
 ) => {
   const newComment = await Comment.create({
     userId,
@@ -85,7 +80,7 @@ const createCommentService = async (
   const targetRecipe = await Recipe.findByPk(recipeId);
 
   if (!targetRecipe) {
-    return errorHandler(404, Errors.recipeDoesntExist, res);
+    throw new Error(Errors.recipeDoesntExist);
   }
 
   await createNotification(
@@ -101,13 +96,12 @@ const createCommentService = async (
 
 const editCommentService = async (
   commentId: number,
-  content: string,
-  res: Response
+  content: string
 ) => {
   const commentToEdit = await Comment.findByPk(commentId);
 
   if (!commentToEdit) {
-    return errorHandler(404, Errors.recipeDoesntExist, res);
+    throw new Error(Errors.recipeDoesntExist);
   }
 
   commentToEdit?.update({ content });

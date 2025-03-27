@@ -5,7 +5,10 @@ import sequelize from '../sequelize';
 export type PreperationType = {
   id?: number;
   prepVideo?: string;
-  steps?: string[];
+  steps?: {
+    photo?: string;
+    description: string;
+  }[];
   recipeId: number;
 };
 
@@ -24,7 +27,7 @@ const Preperation = sequelize.define<
       allowNull: true,
     },
     steps: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       allowNull: true,
     },
     recipeId: {

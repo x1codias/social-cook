@@ -7,12 +7,12 @@ import { Account } from '../../utils/types/Account';
 
 export interface AuthState {
   user: Account | null;
-  token: string | null;
+  token: { token: string } | null;
 }
 
 export interface AuthPayload {
   user: Account;
-  token: string;
+  token: { token: string };
 }
 
 interface LoginAction {

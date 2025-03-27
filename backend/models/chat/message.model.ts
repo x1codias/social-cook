@@ -1,11 +1,11 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../../sequelize';
-import User from '../user.model';
 import ChatRoom from './chat-room.model';
+import ChatParticipant from './chat-participant.model';
 
 export type MessageType = {
   id?: number;
-  userId: number;
+  participantId: number;
   chatRoomId: number;
   content: string;
 };
@@ -18,11 +18,11 @@ const Message = sequelize.define<Model<MessageType>>(
       primaryKey: true,
       autoIncrement: true, // Enable auto-increment for the ID field
     },
-    userId: {
+    participantId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: User,
+        model: ChatParticipant,
         key: 'id',
       },
     },
