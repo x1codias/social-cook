@@ -18,7 +18,7 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({
 
   return (
     <>
-      {readOnly && (
+      {!readOnly && (
         <Typography fontSize={18} fontFamily={'Comfortaa'}>
           {t('rateRecipe')}
         </Typography>
