@@ -41,6 +41,7 @@ const addFavorite = async (
       message: 'addedToFavorites',
     });
   } catch (error) {
+    console.log(error);
     errorHandler(error.message, res);
   }
 };

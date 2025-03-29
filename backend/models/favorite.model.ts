@@ -37,7 +37,6 @@ const Favorite = sequelize.define<Model<FavoriteType>>(
   {
     tableName: 'favorites',
     timestamps: true,
-    paranoid: true, // Enables the `deletedAt` field for soft deletes
   }
 );
 
