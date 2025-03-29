@@ -372,3 +372,5 @@
 {"level":"info","message":"Database & tables created!","timestamp":"2025-03-29T14:08:16.560Z"}
 {"level":"info","message":"Server started on port 3001","timestamp":"2025-03-29T14:09:14.513Z"}
 {"level":"info","message":"Database & tables created!","timestamp":"2025-03-29T14:09:14.602Z"}
+{"level":"info","message":"Server started on port 3001","timestamp":"2025-03-29T14:12:22.332Z"}
+{"level":"info","message":"Database & tables created!","timestamp":"2025-03-29T14:12:22.420Z"}

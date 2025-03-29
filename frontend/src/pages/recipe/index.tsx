@@ -13,8 +13,7 @@ import {
   LocalDiningRounded,
   PeopleRounded,
 } from '@mui/icons-material';
-import { useCallback, useEffect, useState } from 'react';
-import { Recipe } from '../../utils/types/Recipe';
+import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
@@ -30,13 +29,17 @@ import RecipeIngredients from './ingredients';
 import ImageContainer from './image-container';
 import RecipeRating from '../../utils/components/rating';
 import { RiHeart3Fill } from 'react-icons/ri';
+import { useSelector } from 'react-redux';
+import { RecipeState } from '../../reducers/types/recipe.reducer.types';
 
 const RecipePage: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
-  const [recipe, setRecipe] = useState<Recipe>(null);
-  const [recipeRating, setRecipeRating] = useState(0);
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
+
+  const recipe = useSelector(
+    (state: { recipe: RecipeState }) => state.recipe.recipe
+  );
 
   const getRecipeData = useCallback(async () => {
     const recipeData = await dispatch(
@@ -54,7 +57,6 @@ const RecipePage: React.FC = (): JSX.Element => {
     newValue: number | null
   ) => {
     if (newValue && recipe.id) {
-      setRecipeRating(newValue);
       await dispatch(rateRecipe(recipe.id, newValue));
     }
   };
@@ -338,7 +340,7 @@ const RecipePage: React.FC = (): JSX.Element => {
           }}
         >
           <RecipeRating
-            rating={recipeRating}
+            rating={recipe.userRating}
             onRatingChange={onRatingChange}
           />
         </div>
