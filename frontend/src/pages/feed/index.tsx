@@ -7,88 +7,165 @@ import theme from '../../themes/global.theme';
 import Footer from '../../utils/components/footer';
 import { useSelector } from 'react-redux';
 import { getRecipesFeed } from '../../actions/recipe.actions';
-import { Recipe } from '../../utils/types/Recipe';
 import useFetchDataInfinite from '../../utils/hooks/useFetchDataInfinite';
 import { useTranslation } from 'react-i18next';
 import DefaultButton from '../../utils/components/button/button';
 import { useCallback, useEffect, useMemo } from 'react';
-import { getUsersFeed } from '../../actions/user.actions';
+import {
+  getFavoriteRecipes,
+  getUsersFeed,
+} from '../../actions/user.actions';
 import { RecipeState } from '../../reducers/types/recipe.reducer.types';
 import { UserState } from '../../reducers/types/user.reducer.types';
-import { Account } from '../../utils/types/Account';
 import UserCard from './user-card';
 import { Person, Restaurant } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import {
+  RESET_SCROLL_FAVORITES_DATA,
   RESET_SCROLL_RECIPES_DATA,
   RESET_SCROLL_USERS_DATA,
 } from '../../actions/types';
 
-const Feed: React.FC = (): JSX.Element => {
-  const recipesScrollData = useSelector(
-    (state: { recipe: RecipeState }) =>
-      state.recipe.scrollData
-  );
-  const usersScrollData = useSelector(
-    (state: { user: UserState }) => state.user.scrollData
-  );
-  const { t } = useTranslation();
+type FeedProps = {
+  favorites?: boolean;
+};
+
+const Feed: React.FC<FeedProps> = ({
+  favorites,
+}): JSX.Element => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const searchParams = useMemo(
     () => new URLSearchParams(location.search),
     [location]
   );
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const resetScrollData = useCallback(
-    () => ({
-      type:
-        searchParams.get('type') === 'users'
-          ? RESET_SCROLL_RECIPES_DATA
-          : RESET_SCROLL_USERS_DATA,
-    }),
-    [searchParams]
+
+  const recipesScrollData = useSelector(
+    (state: { recipe: RecipeState }) =>
+      state.recipe.scrollData
+  );
+  const favoritesScrollData = useSelector(
+    (state: { recipe: RecipeState }) =>
+      state.recipe.favorites
+  );
+  const usersScrollData = useSelector(
+    (state: { user: UserState }) => state.user.scrollData
   );
 
-  const getFunction =
-    searchParams.get('type') === 'recipes'
-      ? getRecipesFeed
-      : getUsersFeed;
-
-  const scrollData =
-    searchParams.get('type') === 'recipes'
-      ? recipesScrollData
-      : usersScrollData;
-
-  useEffect(() => {
-    dispatch(resetScrollData());
-  }, [searchParams, resetScrollData, dispatch]);
-
-  useEffect(() => {
-    if (!searchParams.get('type')) {
-      searchParams.set('type', 'recipes');
-      navigate(`/?${searchParams.toString()}`);
+  const resetScrollData = useCallback(() => {
+    let action: string;
+    switch (searchParams.get('type')) {
+      case 'users':
+        action = RESET_SCROLL_USERS_DATA;
+        break;
+      case 'recipes':
+        action = RESET_SCROLL_RECIPES_DATA;
+        break;
+      default:
+        action = RESET_SCROLL_FAVORITES_DATA;
     }
-  }, [searchParams, navigate]);
 
+    dispatch({
+      type: action,
+    });
+  }, [searchParams, dispatch]);
+
+  useEffect(() => {
+    resetScrollData();
+  }, [searchParams, resetScrollData]);
+
+  const getRandomHeight = useCallback(() => {
+    const isRecipeType =
+      searchParams.get('type') === 'recipes';
+    return (
+      Math.floor(
+        Math.random() *
+          ((isRecipeType ? 800 : 900) -
+            (isRecipeType ? 300 : 500) +
+            1)
+      ) + (isRecipeType ? 300 : 500)
+    );
+  }, [searchParams]);
+
+  // Fetch data before constructing feedData
   const { initialLoading, infiniteLoading } =
     useFetchDataInfinite(
-      getFunction,
-      scrollData,
+      searchParams.get('type') === 'recipes'
+        ? getRecipesFeed
+        : searchParams.get('type') === 'users'
+        ? getUsersFeed
+        : getFavoriteRecipes,
+      searchParams.get('type') === 'recipes'
+        ? recipesScrollData
+        : searchParams.get('type') === 'users'
+        ? usersScrollData
+        : favoritesScrollData,
       searchParams.get('search')
     );
 
-  const getRandomHeight = () => {
-    const minHeight =
-      searchParams.get('type') === 'recipes' ? 300 : 500; // Minimum height in pixels
-    const maxHeight =
-      searchParams.get('type') === 'recipes' ? 800 : 900; // Maximum height in pixels
-    return (
-      Math.floor(
-        Math.random() * (maxHeight - minHeight + 1)
-      ) + minHeight
-    );
+  const feedData = useMemo(() => {
+    switch (searchParams.get('type')) {
+      case 'recipes':
+        return {
+          scrollData: recipesScrollData,
+          cards: recipesScrollData.recipes.map(
+            (recipe, index) => (
+              <FoodCard
+                key={index}
+                height={getRandomHeight()}
+                recipeData={recipe}
+                loading={initialLoading}
+              />
+            )
+          ),
+          empty: recipesScrollData.recipes.length === 0,
+        };
+      case 'users':
+        return {
+          scrollData: usersScrollData,
+          cards: usersScrollData.users.map(
+            (user, index) => (
+              <UserCard
+                key={index}
+                userData={user}
+                loading={initialLoading}
+              />
+            )
+          ),
+          empty: usersScrollData.users.length === 0,
+        };
+      default:
+        return {
+          scrollData: favoritesScrollData,
+          cards: favoritesScrollData.recipes.map(
+            (recipe, index) => (
+              <FoodCard
+                key={index}
+                height={getRandomHeight()}
+                recipeData={recipe}
+                loading={initialLoading}
+              />
+            )
+          ),
+          empty: favoritesScrollData.recipes.length === 0,
+        };
+    }
+  }, [
+    searchParams,
+    recipesScrollData,
+    usersScrollData,
+    favoritesScrollData,
+    initialLoading,
+    getRandomHeight,
+  ]);
+
+  const feedTitle = () => {
+    if (searchParams.get('search'))
+      return searchParams.get('search');
+    return favorites ? t('favoriteFeast') : t('forYou');
   };
 
   return (
@@ -127,56 +204,58 @@ const Feed: React.FC = (): JSX.Element => {
               borderBottom: `2px solid ${theme.palette.grey?.[400]}`,
             }}
           >
-            {searchParams.get('search')?.length
-              ? searchParams.get('search')
-              : t('forYou')}
+            {feedTitle()}
           </Typography>
-          <div
-            style={{
-              position: 'absolute',
-              right: 30,
-              top: 10,
-              display: 'flex',
-              gap: '16px', // Spacing between buttons
-            }}
-          >
-            {['recipes', 'users'].map(label => (
-              <DefaultButton
-                key={label}
-                customStyles={{
-                  padding: '4px 36px',
-                  borderRadius: '20px',
-                  fontSize: '18px',
-                  '&.Mui-disabled': {
-                    backgroundColor:
-                      theme.palette.default.primary,
-                    color: theme.palette.customText.button,
-                    border: `1px solid ${theme.palette.default.primary}`,
-                  },
-                }}
-                disabled={
-                  searchParams.get('type') === label
-                }
-                variant={'outlined'}
-                label={t(label)}
-                icon={
-                  label === 'recipes' ? (
-                    <Restaurant fontSize={'large'} />
-                  ) : (
-                    <Person fontSize={'large'} />
-                  )
-                }
-                onClick={() => {
-                  resetScrollData();
-                  searchParams.set('type', label); // Update query parameter
-                  navigate(`/?${searchParams.toString()}`); // Navigate with updated URL
-                }}
-              />
-            ))}
-          </div>
+          {!favorites && (
+            <div
+              style={{
+                position: 'absolute',
+                right: 30,
+                top: 10,
+                display: 'flex',
+                gap: '16px', // Spacing between buttons
+              }}
+            >
+              {['recipes', 'users'].map(label => (
+                <DefaultButton
+                  key={label}
+                  customStyles={{
+                    padding: '4px 36px',
+                    borderRadius: '20px',
+                    fontSize: '18px',
+                    '&.Mui-disabled': {
+                      backgroundColor:
+                        theme.palette.default.primary,
+                      color:
+                        theme.palette.customText.button,
+                      border: `1px solid ${theme.palette.default.primary}`,
+                    },
+                  }}
+                  disabled={
+                    searchParams.get('type') === label
+                  }
+                  variant={'outlined'}
+                  label={t(label)}
+                  icon={
+                    label === 'recipes' ? (
+                      <Restaurant fontSize={'large'} />
+                    ) : (
+                      <Person fontSize={'large'} />
+                    )
+                  }
+                  onClick={() => {
+                    resetScrollData();
+                    searchParams.set('type', label); // Update query parameter
+                    navigate(
+                      `/?${searchParams.toString()}`
+                    ); // Navigate with updated URL
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
-        {!scrollData?.users?.length &&
-        !scrollData?.recipes?.length ? (
+        {feedData.empty ? (
           <div
             style={{
               flexGrow: 1,
@@ -209,32 +288,13 @@ const Feed: React.FC = (): JSX.Element => {
             }}
           >
             <Masonry gutter="14px">
-              {searchParams.get('type') === 'recipes'
-                ? scrollData.recipes.map(
-                    (recipe: Recipe, index: number) => (
-                      <FoodCard
-                        key={index}
-                        height={getRandomHeight()}
-                        recipeData={recipe}
-                        loading={initialLoading} // Pass loading state to FoodCard
-                      />
-                    )
-                  )
-                : scrollData.users.map(
-                    (user: Account, index: number) => (
-                      <UserCard
-                        key={index}
-                        userData={user}
-                        loading={initialLoading}
-                      />
-                    )
-                  )}
+              {feedData.cards}
             </Masonry>
           </ResponsiveMasonry>
         )}
         {infiniteLoading && (
           <div>Loading more recipes...</div>
-        )}{' '}
+        )}
       </div>
       {/* Loading indicator for infinite scroll */}
       <Footer />

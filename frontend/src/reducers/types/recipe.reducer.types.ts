@@ -9,11 +9,23 @@ import {
   GET_RECIPES_SEARCH_DROPDOWN,
   RESET_SCROLL_RECIPES_DATA,
   RATE_RECIPE,
+  ADD_TO_FAVORITES,
+  REMOVE_FROM_FAVORITES,
+  GET_FAVORITE_RECIPES,
+  RESET_SCROLL_FAVORITES_DATA,
 } from '../../actions/types';
 import { Recipe } from '../../utils/types/Recipe';
 
 export interface RecipeState {
   scrollData: {
+    recipes: Recipe[] | [];
+    total: number;
+    limit: number;
+    offset: number;
+    hasMore: boolean;
+    page: number;
+  };
+  favorites: {
     recipes: Recipe[] | [];
     total: number;
     limit: number;
@@ -74,9 +86,31 @@ interface ResetScrollDataAction {
   type: typeof RESET_SCROLL_RECIPES_DATA;
 }
 
+interface ResetFavoritesAction {
+  type: typeof RESET_SCROLL_FAVORITES_DATA;
+}
+
 interface RateRecipeAction {
   type: typeof RATE_RECIPE;
   payload: { avgRating: number };
+}
+
+interface GetFavoriteRecipesAction {
+  type: typeof GET_FAVORITE_RECIPES;
+  payload: {
+    favoriteRecipes: Recipe[] | [];
+    total: number;
+  };
+}
+
+interface AddToFavoritesAction {
+  type: typeof ADD_TO_FAVORITES;
+  payload: { recipeId: number };
+}
+
+interface RemoveFromFavoritesAction {
+  type: typeof REMOVE_FROM_FAVORITES;
+  payload: { recipeId: number };
 }
 
 export type RecipeActionTypes =
@@ -89,4 +123,8 @@ export type RecipeActionTypes =
   | CloseCreateRecipeModalAction
   | ChangeCreateRecipeStep
   | ResetScrollDataAction
-  | RateRecipeAction;
+  | RateRecipeAction
+  | AddToFavoritesAction
+  | RemoveFromFavoritesAction
+  | GetFavoriteRecipesAction
+  | ResetFavoritesAction;

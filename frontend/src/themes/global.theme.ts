@@ -34,6 +34,10 @@ type NewPalleteOptions = {
     fingerFood: string;
     desserts: string;
   };
+  favorite: {
+    unmarked: string;
+    marked: string;
+  };
 };
 
 // Merge the new palette options with the existing PaletteOptions
@@ -88,6 +92,10 @@ const theme = createTheme({
       breakfast: '#FFCA8C',
       fingerFood: '#EEC8AF',
       desserts: '#FF938B',
+    },
+    favorite: {
+      unmarked: '#A0A0A0',
+      marked: '#D62828',
     },
   },
 });

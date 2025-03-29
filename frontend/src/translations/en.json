@@ -175,5 +175,7 @@
   "pizzaDough": "Pizza Dough",
   "freshMozzarella": "Fresh Mozzarella",
   "freshBasil": "Fresh Basil",
-  "rateRecipe": "Top-notch or bottom of the pot? Rate from 1 to 5!"
+  "rateRecipe": "Top-notch or bottom of the pot? Rate from 1 to 5!",
+  "favoriteFeast": "Favorite feast",
+  "addFavorites": "Keep this one!"
 }

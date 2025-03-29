@@ -22,7 +22,7 @@ export enum Difficulties {
 }
 
 export type Recipe = {
-  id?: number;
+  id: number;
   title: string;
   ingredients: RecipeIngredient[];
   preparation: Preparation;
@@ -45,6 +45,7 @@ export type Recipe = {
   avgRating?: number;
   userRating?: number;
   createdAt: Date;
+  isFavorite?: boolean;
 };
 
 export type RecipeInput = {

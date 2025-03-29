@@ -2,7 +2,7 @@ import {
   Avatar,
   Chip,
   Divider,
-  Rating,
+  IconButton,
   Typography,
 } from '@mui/material';
 import theme from '../../themes/global.theme';
@@ -12,7 +12,6 @@ import {
   AccessTimeRounded,
   LocalDiningRounded,
   PeopleRounded,
-  StarRounded,
 } from '@mui/icons-material';
 import { useCallback, useEffect, useState } from 'react';
 import { Recipe } from '../../utils/types/Recipe';
@@ -20,14 +19,17 @@ import { useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import {
+  addRecipeToFavorites,
   getRecipe,
   rateRecipe,
+  removeRecipeFromFavorites,
 } from '../../actions/recipe.actions';
 import moment from 'moment';
 import RecipePreparation from './preparation';
 import RecipeIngredients from './ingredients';
 import ImageContainer from './image-container';
 import RecipeRating from '../../utils/components/rating';
+import { RiHeart3Fill } from 'react-icons/ri';
 
 const RecipePage: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
@@ -35,10 +37,6 @@ const RecipePage: React.FC = (): JSX.Element => {
   const [recipeRating, setRecipeRating] = useState(0);
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  /* const [
-    ingredientsPreparation,
-    setIngredientsPreparation,
-  ] = useState('ingredients'); */
 
   const getRecipeData = useCallback(async () => {
     const recipeData = await dispatch(
@@ -58,6 +56,14 @@ const RecipePage: React.FC = (): JSX.Element => {
     if (newValue && recipe.id) {
       setRecipeRating(newValue);
       await dispatch(rateRecipe(recipe.id, newValue));
+    }
+  };
+
+  const onClickFavBtn = async () => {
+    if (!recipe.isFavorite) {
+      await dispatch(addRecipeToFavorites(recipe.id));
+    } else {
+      await dispatch(removeRecipeFromFavorites(recipe.id));
     }
   };
 
@@ -103,6 +109,31 @@ const RecipePage: React.FC = (): JSX.Element => {
               theme.palette.categories[recipe?.category],
           }}
         />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginLeft: 'auto',
+          }}
+        >
+          <Typography
+            fontSize={18}
+            fontFamily={'Comfortaa'}
+          >
+            {t('addFavorites')}
+          </Typography>
+          <IconButton onClick={() => onClickFavBtn()}>
+            <RiHeart3Fill
+              size={30}
+              fill={
+                recipe.isFavorite
+                  ? theme.palette.favorite.marked
+                  : theme.palette.favorite.unmarked
+              }
+            />
+          </IconButton>
+        </div>
       </div>
       <div
         style={{

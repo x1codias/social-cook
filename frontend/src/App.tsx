@@ -35,9 +35,13 @@ const App: React.FC = (): JSX.Element => {
               element={<RecipePage />}
             />
             <Route
+              path="/favorites"
+              element={<Feed favorites />}
+            />
+            {/*  <Route
               path="*"
               element={<Navigate to="/?type=recipes" />}
-            />
+            /> */}
           </>
         ) : (
           <>

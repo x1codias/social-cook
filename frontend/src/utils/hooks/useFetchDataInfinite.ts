@@ -13,7 +13,8 @@ const useFetchDataInfinite = (
   getFunction: (
     limit: number,
     offset: number,
-    searchTerm?: string
+    searchTerm?: string,
+    favorites?: boolean
   ) => (dispatch: Dispatch) => Promise<void>,
   scrollData: any,
   search?: string

@@ -175,5 +175,7 @@
   "pizzaDough": "Massa de Pizza",
   "freshMozzarella": "Mozzarella Fresca",
   "freshBasil": "Manjericão Fresco",
-  "rateRecipe": "Top ou fundo da panela? Avalia de 1 a 5!"
+  "rateRecipe": "Top ou fundo da panela? Avalia de 1 a 5!",
+  "favoriteFeast": "Banquete favorito",
+  "addFavorites": "Guardar esta!"
 }

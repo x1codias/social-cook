@@ -32,10 +32,10 @@ const addFavorite = async (
   res: Response
 ) => {
   try {
-    const { recipeId } = req.body;
     const { userId } = req.user;
+    const { recipeId } = req.params;
 
-    await addFavoriteService(recipeId, userId);
+    await addFavoriteService(parseInt(recipeId), userId);
 
     res.status(200).json({
       message: 'addedToFavorites',
@@ -51,9 +51,12 @@ const removeFromFavorites = async (
 ) => {
   try {
     const { userId } = req.user;
-    const { recipeId } = req.body;
+    const { recipeId } = req.params;
 
-    await removeFromFavoriteService(recipeId, userId);
+    await removeFromFavoriteService(
+      parseInt(recipeId),
+      userId
+    );
 
     res.status(200).json({
       message: 'removedFromFavorites',

@@ -34,12 +34,6 @@ userRoutes.patch(
   editUser
 );
 userRoutes.get('/:id/favorites', verifyToken, favorites);
-userRoutes.post('/:id/favorites', verifyToken, addFavorite);
-userRoutes.delete(
-  '/:userId/favorites/:favoriteId',
-  verifyToken,
-  removeFromFavorites
-);
 userRoutes.get('/:id/recipes', verifyToken, userRecipes);
 userRoutes.post('/:id/follow', verifyToken, follow);
 userRoutes.post('/:id/unfollow', verifyToken, unfollow);

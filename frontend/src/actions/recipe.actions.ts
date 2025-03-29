@@ -1,12 +1,14 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
+  ADD_TO_FAVORITES,
   CREATE_RECIPE,
   DELETE_RECIPE,
   GET_RECIPE,
   GET_RECIPES,
   GET_RECIPES_SEARCH_DROPDOWN,
   RATE_RECIPE,
+  REMOVE_FROM_FAVORITES,
 } from './types';
 import i18n from '../translations/i18n';
 import { toast } from 'react-toastify';
@@ -175,6 +177,55 @@ export const rateRecipe =
       dispatch({
         type: RATE_RECIPE,
         payload: { avgRating: response },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const addRecipeToFavorites =
+  (recipeId: number) => async (dispatch: Dispatch) => {
+    try {
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
+      await axios.post(
+        import.meta.env.VITE_BACKEND_URL +
+          `/recipes/${recipeId}/favorites`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        }
+      );
+      dispatch({
+        type: ADD_TO_FAVORITES,
+        payload: { recipeId },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const removeRecipeFromFavorites =
+  (recipeId: number) => async (dispatch: Dispatch) => {
+    try {
+      const userToken = JSON.parse(
+        localStorage.getItem('token') as string
+      );
+      await axios.delete(
+        import.meta.env.VITE_BACKEND_URL +
+          `/recipes/${recipeId}/favorites`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken.token}`,
+          },
+        }
+      );
+      dispatch({
+        type: REMOVE_FROM_FAVORITES,
+        payload: { recipeId },
       });
     } catch (error) {
       console.log(error);

@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Rating,
   Skeleton,
   Tooltip,
   Typography,
@@ -11,8 +10,8 @@ import styles from './styles';
 import DefaultButton from '../../../utils/components/button/button';
 import FoodCardExpanded from '../food-card-expanded';
 import { Recipe } from '../../../utils/types/Recipe';
-import { StarRounded } from '@mui/icons-material';
 import RecipeRating from '../../../utils/components/rating';
+import { RiHeart3Fill } from 'react-icons/ri';
 
 type FoodCardProps = {
   height: number;
@@ -92,6 +91,13 @@ const FoodCard: React.FC<FoodCardProps> = (
               <RecipeRating
                 readOnly
                 rating={recipeData.avgRating}
+              />
+            )}
+            {recipeData.isFavorite && (
+              <RiHeart3Fill
+                size={30}
+                fill={theme.palette.favorite.marked}
+                style={{ marginLeft: 'auto' }}
               />
             )}
           </div>

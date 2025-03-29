@@ -5,10 +5,11 @@ import RecipeIngredient from '../models/recipe-ingedient.model';
 import Recipe from '../models/recipe.model';
 import User from '../models/user.model';
 import { dirname } from 'path';
-import { Op, Sequelize } from 'sequelize';
+import { col, fn, Op, Sequelize } from 'sequelize';
 import Rating from '../models/rating.model';
 import Ingredient from '../models/ingredient.model';
 import Unit from '../models/unit.model';
+import Favorite from '../models/favorite.model';
 
 const moveFile = (
   sourcePath: string,
@@ -30,13 +31,28 @@ const getRecipesService = async (
   attributes: string[],
   offset?: number,
   limit?: number,
-  includeUser?: boolean
+  includeUser?: boolean,
+  userId?: number
 ) => {
-  const whereClause = search?.length
+  const whereClause: any = search?.length
     ? { title: { [Op.like]: `%${search}%` } }
     : {};
 
-  const user = includeUser
+  let favoriteRecipeIds: number[] = [];
+
+  if (userId) {
+    // Always fetch user's favorite recipes if `userId` exists
+    const favoriteRecipes = await Favorite.findAll({
+      where: { userId },
+      attributes: ['recipeId'],
+    });
+
+    favoriteRecipeIds = favoriteRecipes.map(
+      fav => fav.get().recipeId
+    );
+  }
+
+  const userInclude = includeUser
     ? [
         {
           model: User,
@@ -51,42 +67,39 @@ const getRecipesService = async (
     limit: limit || 10,
     where: whereClause,
     attributes: attributes,
-    include: user,
+    include: userInclude,
   });
+
+  const recipeIds = rows.map(row => row.get().id);
 
   // Fetch average ratings grouped by recipeId
   const recipeRatingsRaw = await Rating.findAll({
-    where: {
-      recipeId: {
-        [Op.in]: rows.map(row => row.get().id), // Collect recipe IDs from the main query
-      },
-    },
+    where: { recipeId: { [Op.in]: recipeIds } },
     attributes: [
-      'recipeId', // Group by recipeId
-      [
-        Sequelize.fn('AVG', Sequelize.col('rating')),
-        'avgRating',
-      ], // Calculate the average rating
+      'recipeId',
+      [fn('AVG', col('rating')), 'avgRating'],
     ],
     group: ['recipeId'],
   });
 
-  // Convert recipe ratings into a dictionary for fast lookup
+  // Convert recipe ratings into a dictionary
   const recipeRatings = recipeRatingsRaw.reduce(
     (acc, rating) => {
       acc[rating.get().recipeId] = rating.get().avgRating;
-
       return acc;
     },
     {} as Record<number, number | null>
   );
 
-  // Attach avgRating to each recipe
+  // Attach avgRating & isFavorite
   const recipes = rows.map(row => {
     const recipe = row.get();
     return {
       ...recipe,
-      avgRating: recipeRatings[recipe.id] || null, // Default to null if no rating exists
+      avgRating: recipeRatings[recipe.id] || null,
+      isFavorite: userId
+        ? favoriteRecipeIds.includes(recipe.id)
+        : false, // Fix isFavorite logic
     };
   });
 
@@ -148,6 +161,12 @@ const getRecipeService = async (
     ? recipeRatingsRaw?.get().avgRating
     : null;
 
+  // Fetch user's favorite recipes
+  const favoriteRecipe = await Favorite.findOne({
+    where: { userId, recipeId: recipe.get().id },
+    attributes: ['recipeId'],
+  });
+
   const formattedRecipe = {
     ...recipe.dataValues,
     ingredients: recipeIngredients.map(recipeIngredient =>
@@ -155,6 +174,7 @@ const getRecipeService = async (
     ),
     avgRating,
     userRating: userRating ? userRating.get().rating : null,
+    isFavorite: favoriteRecipe ? true : false,
   };
 
   return {

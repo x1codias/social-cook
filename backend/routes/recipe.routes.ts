@@ -16,6 +16,10 @@ import {
 import { recipeIngredients } from '../controllers/ingredient.controller';
 import { recipePreparations } from '../controllers/preparation.controller';
 import { rateEditRecipe } from '../controllers/rating.controller';
+import {
+  addFavorite,
+  removeFromFavorites,
+} from '../controllers/favorite.controller';
 
 const recipeRoutes = Router();
 
@@ -59,7 +63,17 @@ recipeRoutes.post(
   verifyToken,
   rateEditRecipe
 );
-recipeRoutes.get('/:id/comments', verifyToken, comments);
+recipeRoutes.post(
+  '/:recipeId/favorites',
+  verifyToken,
+  addFavorite
+);
+recipeRoutes.delete(
+  '/:recipeId/favorites',
+  verifyToken,
+  removeFromFavorites
+);
+/* recipeRoutes.get('/:id/comments', verifyToken, comments);
 recipeRoutes.post('/:id/comments', verifyToken, comments);
 recipeRoutes.patch(
   '/:recipeId/comments/:commentId',
@@ -70,6 +84,6 @@ recipeRoutes.delete(
   '/:recipeId/comments/:commentId',
   verifyToken,
   deleteComment
-);
+); */
 
 export default recipeRoutes;

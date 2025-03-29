@@ -2,7 +2,6 @@ import {
   Avatar,
   Dialog,
   Divider,
-  Rating,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -10,7 +9,6 @@ import theme from '../../../themes/global.theme';
 import {
   AccessTimeRounded,
   PeopleRounded,
-  StarRounded,
 } from '@mui/icons-material';
 import { LuChefHat } from 'react-icons/lu';
 import DefaultButton from '../../../utils/components/button/button';
@@ -19,6 +17,7 @@ import { Recipe } from '../../../utils/types/Recipe';
 import { encodeForCSS } from '../../../utils/functions/encodeUrl';
 import { capitalizeFirstLetter } from '../../../utils/functions/capitalizeFirstLetter';
 import RecipeRating from '../../../utils/components/rating';
+import { RiHeart3Fill } from 'react-icons/ri';
 
 type FoodCardExpandedProps = {
   recipeId: boolean;
@@ -70,17 +69,33 @@ const FoodCardExpanded: React.FC<FoodCardExpandedProps> = (
                 theme.palette.customBackground.default,
             }}
           >
-            <Typography
+            <div
               style={{
-                fontFamily: 'Fredoka',
-                fontSize: '28px',
-                fontWeight: 600,
-                color: theme.palette.default.dark,
-                borderBottom: `2px solid ${theme.palette.grey?.[400]}`,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
               }}
             >
-              {recipeData.title}
-            </Typography>
+              <Typography
+                style={{
+                  fontFamily: 'Fredoka',
+                  fontSize: '28px',
+                  fontWeight: 600,
+                  color: theme.palette.default.dark,
+                  borderBottom: `2px solid ${theme.palette.grey?.[400]}`,
+                  justifySelf: 'center',
+                }}
+              >
+                {recipeData.title}
+              </Typography>
+              {recipeData.isFavorite && (
+                <RiHeart3Fill
+                  size={30}
+                  fill={theme.palette.favorite.marked}
+                  style={{ marginLeft: 'auto' }}
+                />
+              )}
+            </div>
             <Typography
               style={{
                 fontFamily: 'Fredoka',

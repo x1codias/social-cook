@@ -1,9 +1,11 @@
-import { Op } from 'sequelize';
+import { col, fn, Op } from 'sequelize';
 import Favorite from '../models/favorite.model';
 import Recipe from '../models/recipe.model';
 import { Errors } from '../controllers/error.controller';
 import { createNotification } from './notification.service';
 import { NotificationContext } from '../models/notification.model';
+import User from '../models/user.model';
+import Rating from '../models/rating.model';
 
 const getFavoritesService = async (
   userId: number,
@@ -26,11 +28,46 @@ const getFavoritesService = async (
         ),
       },
     },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'username', 'photo'],
+      },
+    ],
+  });
+
+  const recipeIds = rows.map(row => row.get().id);
+
+  const recipeRatingsRaw = await Rating.findAll({
+    where: { recipeId: { [Op.in]: recipeIds } },
+    attributes: [
+      'recipeId',
+      [fn('AVG', col('rating')), 'avgRating'],
+    ],
+    group: ['recipeId'],
+  });
+
+  const recipeRatings = recipeRatingsRaw.reduce(
+    (acc, rating) => {
+      acc[rating.get().recipeId] = rating.get().avgRating;
+      return acc;
+    },
+    {} as Record<number, number | null>
+  );
+
+  const formattedRecipes = rows.map(row => {
+    const recipe = row.get();
+    return {
+      ...recipe,
+      avgRating: recipeRatings[recipe.id] || null,
+      isFavorite: true,
+    };
   });
 
   return {
     total: count,
-    favoriteRecipes: rows.map(row => row.dataValues),
+    favoriteRecipes: formattedRecipes,
   };
 };
 

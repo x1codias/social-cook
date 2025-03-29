@@ -17,8 +17,9 @@ import { useSelector } from 'react-redux';
 import { Account } from '../../types/Account';
 import ProfileDropdown from './components/profile-dropdown';
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { IoClose, IoStar } from 'react-icons/io5';
+import { useLocation, useNavigate } from 'react-router';
+import { IoClose } from 'react-icons/io5';
+import { RiHeart3Fill } from 'react-icons/ri';
 import SearchHistory from './components/search-history';
 import SearchHints from './components/search-hints';
 import {
@@ -48,6 +49,7 @@ const TopBar: React.FC = (): JSX.Element => {
   const popoverRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const resetScrollData = () => ({
     type: RESET_SCROLL_RECIPES_DATA,
@@ -155,10 +157,16 @@ const TopBar: React.FC = (): JSX.Element => {
           }
           placement="bottom"
         >
-          <IconButton>
-            <IoStar
+          <IconButton
+            onClick={() => navigate('/favorites')}
+          >
+            <RiHeart3Fill
               size={30}
-              fill={theme.palette.grey?.[500]}
+              fill={
+                location.pathname.includes('favorites')
+                  ? theme.palette.default.primary
+                  : theme.palette.grey?.[500]
+              }
             />
           </IconButton>
         </Tooltip>

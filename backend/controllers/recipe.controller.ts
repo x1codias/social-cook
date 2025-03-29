@@ -17,10 +17,15 @@ const recipes = async (req: AuthRequest, res: Response) => {
       'photos',
       'category',
     ];
+    const { userId } = req.user;
 
     const { recipes } = await getRecipesService(
       search,
-      attributes
+      attributes,
+      0,
+      10,
+      false,
+      userId
     );
 
     res.status(200).json({
@@ -50,13 +55,15 @@ const recipesFeed = async (
       'difficulty',
       'servings',
     ];
+    const { userId } = req.user;
 
     const { total, recipes } = await getRecipesService(
       search,
       attributes,
       offset,
       limit,
-      true
+      true,
+      userId
     );
 
     res.status(200).json({
